@@ -1,9 +1,9 @@
-package ru.levin.tm.crud;
+package ru.levin.tm.api;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface Dao<T> {
+public interface AbstractService<T> {
     Optional<T> get(long id);
     List<T> getAll();
     boolean save(T t);

@@ -23,13 +23,13 @@ public class ProjectRemoveByIdCommand extends Command {
             return Command.ERROR_MESSAGE;
         }
 
-        Optional<Project> prj = projectService.get(Long.parseLong(args.get(0)));
+        Optional<Project> optionalProject = projectService.get(Long.parseLong(args.get(0)));
 
-        if (!prj.isPresent()) {
+        if (!optionalProject.isPresent()) {
             return NO_SUCH_ITEM;
         }
 
-        boolean result = projectService.delete(prj.get());
+        boolean result = projectService.delete(optionalProject.get());
 
         return result ? Command.SUCCESS_MESSAGE : Command.ERROR_MESSAGE;
     }

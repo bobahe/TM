@@ -1,12 +1,13 @@
 package ru.levin.tm.crud;
 
+import ru.levin.tm.api.AbstractService;
 import ru.levin.tm.entity.Project;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProjectService implements Dao<Project> {
+public class ProjectService implements AbstractService<Project> {
     private static ProjectService INSTANCE = new ProjectService();
     private List<Project> projectList;
     private long lastIndex;

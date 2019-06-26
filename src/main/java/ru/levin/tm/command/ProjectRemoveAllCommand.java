@@ -5,6 +5,7 @@ import ru.levin.tm.crud.ProjectService;
 import java.util.List;
 
 public class ProjectRemoveAllCommand extends Command {
+    private static final String ALL_PROJECTS_REMOVED_MESSAGE = "[ALL PROJECTS REMOVED]\n";
     private ProjectService projectService = ProjectService.getInstance();
 
     public ProjectRemoveAllCommand() {

@@ -1,18 +1,19 @@
 package ru.levin.tm.command;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public abstract class Command {
-    static final String ERROR_MESSAGE = "[ERROR]\n";
-    static final String SUCCESS_MESSAGE = "[OK]\n";
-    static final String NO_SUCH_ITEM = "[THERE IS NO SUCH ITEM]\n";
-    static final String ALL_TASK_REMOVED_MESSAGE = "[ALL TASKS REMOVED]\n";
-    static final String ALL_PROJECTS_REMOVED_MESSAGE = "[ALL PROJECTS REMOVED]\n";
+    protected static final String ERROR_MESSAGE = "[ERROR]\n";
+    protected static final String SUCCESS_MESSAGE = "[OK]\n";
+    protected static final String NO_SUCH_ITEM = "[THERE IS NO SUCH ITEM]\n";
 
-    String name;
-    String title;
-    String description;
-    List<String> argNameList;
+    protected String name;
+    protected String title;
+    protected String description;
+    protected List<String> argNameList;
+
+    protected final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     public String getName() {
         return name;

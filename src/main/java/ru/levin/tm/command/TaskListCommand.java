@@ -19,7 +19,15 @@ public class TaskListCommand extends Command {
         StringBuilder result = new StringBuilder();
         List<Task> taskList = taskService.getAll();
         for (Task task : taskList) {
-            result.append(task.getId()).append(". ").append(task.getName()).append(System.lineSeparator());
+            result.append(task.getId())
+                    .append(". ")
+                    .append(task.getName())
+                    .append(" (start date: ")
+                    .append(task.getStartDate() == null ? "null" : dateFormat.format(task.getStartDate()))
+                    .append("; end date: ")
+                    .append(task.getEndDate() == null ? "null" : dateFormat.format(task.getEndDate()))
+                    .append(")")
+                    .append(System.lineSeparator());
         }
 
         return result.toString();

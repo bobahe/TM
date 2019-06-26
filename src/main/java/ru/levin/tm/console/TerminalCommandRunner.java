@@ -23,10 +23,12 @@ public class TerminalCommandRunner {
         commands.add(new ProjectRemoveAllCommand());
         commands.add(new ProjectCreateCommand());
         commands.add(new ProjectListCommand());
+        commands.add(new ProjectChangeByIdCommand());
         commands.add(new ProjectRemoveByIdCommand());
         commands.add(new TaskRemoveAllCommand());
         commands.add(new TaskCreateCommand());
         commands.add(new TaskListCommand());
+        commands.add(new TaskChangeByIdCommand());
         commands.add(new TaskRemoveByIdCommand());
     }
 
@@ -63,8 +65,12 @@ public class TerminalCommandRunner {
                 if (result != null) {
                     System.out.println(result);
                 }
+
+                return;
             }
         }
+
+        System.err.println("There is not such command");
     }
 
     private List<String> prepareArgs(List<String> argNameList) {

@@ -19,7 +19,15 @@ public class ProjectListCommand extends Command {
         StringBuilder result = new StringBuilder();
         List<Project> projectList = projectService.getAll();
         for (Project project : projectList) {
-            result.append(project.getId()).append(". ").append(project.getName()).append(System.lineSeparator());
+            result.append(project.getId())
+                    .append(". ")
+                    .append(project.getName())
+                    .append(" ( start date: ")
+                    .append(project.getStartDate() == null ? "null" : dateFormat.format(project.getStartDate()))
+                    .append("; end date: ")
+                    .append(project.getEndDate() == null ? "null" : dateFormat.format(project.getEndDate()))
+                    .append(")")
+                    .append(System.lineSeparator());
         }
 
         return result.toString();

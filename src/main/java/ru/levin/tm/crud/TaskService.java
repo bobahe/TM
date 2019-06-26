@@ -1,12 +1,13 @@
 package ru.levin.tm.crud;
 
+import ru.levin.tm.api.AbstractService;
 import ru.levin.tm.entity.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TaskService implements Dao<Task> {
+public class TaskService implements AbstractService<Task> {
     private static TaskService INSTANCE = new TaskService();
     private List<Task> taskList;
     private long lastIndex;

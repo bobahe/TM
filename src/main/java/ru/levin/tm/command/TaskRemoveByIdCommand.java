@@ -23,13 +23,13 @@ public class TaskRemoveByIdCommand extends Command {
             return Command.ERROR_MESSAGE;
         }
 
-        Optional<Task> task = taskService.get(Long.parseLong(args.get(0)));
+        Optional<Task> optionalTask = taskService.get(Long.parseLong(args.get(0)));
 
-        if (!task.isPresent()) {
+        if (!optionalTask.isPresent()) {
             return NO_SUCH_ITEM;
         }
 
-        boolean result = taskService.delete(task.get());
+        boolean result = taskService.delete(optionalTask.get());
 
         return result ? Command.SUCCESS_MESSAGE : Command.ERROR_MESSAGE;
     }
