@@ -1,27 +1,28 @@
-package ru.levin.tm.command;
+package ru.levin.tm.command.task;
 
-import ru.levin.tm.crud.TaskService;
+import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.entity.Task;
+import ru.levin.tm.service.TaskService;
+import ru.levin.tm.util.CommandUtil;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 
-public class TaskChangeSelectedCommand extends Command {
-    private static final String TASK_NOT_SELECTED_ERR = "TASK IS NOT SELECTED\n";
+public class TaskChangeSelectedCommand extends AbstractCommand {
+    private TaskService taskService;
 
-    private TaskService taskService = TaskService.getInstance();
-
-    public TaskChangeSelectedCommand(Scanner scanner) {
+    public TaskChangeSelectedCommand(Scanner scanner, TaskService service) {
         super(scanner);
         this.name = "task-change";
         this.description = "Change selected task";
         this.title = "[CHANGE TASK]";
+        this.taskService = service;
     }
 
     @Override
     public void run() {
-        if (selectedTask == null) {
-            System.out.println(TASK_NOT_SELECTED_ERR);
+        if (CommandUtil.isSelectedObjectNull(selectedTask, Task.class)) {
             return;
         }
 
@@ -35,7 +36,12 @@ public class TaskChangeSelectedCommand extends Command {
         System.out.println(END_DATE_PROMPT);
         selectedTask.setEndDate(parseDate(false));
 
-        taskService.update(selectedTask);
+        try {
+            taskService.update(selectedTask);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         System.out.println(SUCCESS_MESSAGE);
     }
 

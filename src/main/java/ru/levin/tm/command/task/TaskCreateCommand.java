@@ -1,20 +1,23 @@
-package ru.levin.tm.command;
+package ru.levin.tm.command.task;
 
-import ru.levin.tm.crud.TaskService;
+import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
+import ru.levin.tm.service.TaskService;
+import ru.levin.tm.util.CommandUtil;
 
 import java.util.Scanner;
 
-public class TaskCreateCommand extends Command {
+public class TaskCreateCommand extends AbstractCommand {
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
-    private TaskService taskService = TaskService.getInstance();
+    private TaskService taskService;
 
-    public TaskCreateCommand(Scanner scanner) {
+    public TaskCreateCommand(Scanner scanner, TaskService service) {
         super(scanner);
         this.name = "task-create";
         this.title = "[TASK CREATE]";
         this.description = "Create new task";
+        this.taskService = service;
     }
 
     public void run() {
@@ -26,9 +29,9 @@ public class TaskCreateCommand extends Command {
         System.out.println(DESCRIPTION_PROMPT);
         task.setDescription(scanner.nextLine());
         System.out.println(START_DATE_PROMPT);
-        task.setStartDate(CommandUtils.parseDate(scanner));
+        task.setStartDate(CommandUtil.parseDate(scanner));
         System.out.println(END_DATE_PROMPT);
-        task.setEndDate(CommandUtils.parseDate(scanner));
+        task.setEndDate(CommandUtil.parseDate(scanner));
 
         if (selectedProject != null) {
             System.out.println(JOIN_TO_PROJECT_PROMPT);
@@ -42,7 +45,12 @@ public class TaskCreateCommand extends Command {
             }
         }
 
-        taskService.save(task);
+        try {
+            taskService.save(task);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         System.out.println(SUCCESS_MESSAGE);
     }
 }

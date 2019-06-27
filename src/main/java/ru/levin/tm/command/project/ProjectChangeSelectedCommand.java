@@ -1,27 +1,28 @@
-package ru.levin.tm.command;
+package ru.levin.tm.command.project;
 
-import ru.levin.tm.crud.ProjectService;
+import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.entity.Project;
+import ru.levin.tm.service.ProjectService;
+import ru.levin.tm.util.CommandUtil;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 
-public class ProjectChangeSelectedCommand extends Command {
-    private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED\n";
+public class ProjectChangeSelectedCommand extends AbstractCommand {
+    private ProjectService projectService;
 
-    private ProjectService projectService = ProjectService.getInstance();
-
-    public ProjectChangeSelectedCommand(Scanner scanner) {
+    public ProjectChangeSelectedCommand(Scanner scanner, ProjectService service) {
         super(scanner);
         this.name = "project-change";
         this.description = "Change selected project";
         this.title = "[CHANGE PROJECT]";
+        this.projectService = service;
     }
 
     @Override
     public void run() {
-        if (selectedProject == null) {
-            System.out.println(PROJECT_NOT_SELECTED);
+        if (CommandUtil.isSelectedObjectNull(selectedProject, Project.class)){
             return;
         }
 
@@ -35,7 +36,12 @@ public class ProjectChangeSelectedCommand extends Command {
         System.out.println(END_DATE_PROMPT);
         selectedProject.setEndDate(parseDate(false));
 
-        projectService.update(selectedProject);
+        try {
+            projectService.update(selectedProject);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         System.out.println(SUCCESS_MESSAGE);
     }
 

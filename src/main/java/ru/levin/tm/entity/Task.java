@@ -1,21 +1,20 @@
 package ru.levin.tm.entity;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class Task {
-    private UUID id;
+    private String id;
     private String name;
     private String description;
-    private UUID projectId;
+    private String projectId;
     private Date startDate;
     private Date endDate;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -51,16 +50,16 @@ public class Task {
         this.description = description;
     }
 
-    public UUID getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(UUID projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
     @Override
     public String toString() {
-        return name + " (" + id.toString() + ")";
+        return name + " (" + id + ")";
     }
 }

@@ -6,11 +6,11 @@ import ru.levin.tm.entity.Task;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-public abstract class Command {
+public abstract class AbstractCommand {
     protected static final String ERROR_MESSAGE = "[ERROR]\n";
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
     protected static final String NO_SUCH_ITEM = "[THERE IS NO SUCH ITEM]\n";
-    protected static final String ERR_PARSE_DATE_MESSAGE = "[CAN'T PARSE DATE, SAVING NULL]\n";
+    public static final String ERR_PARSE_DATE_MESSAGE = "[CAN'T PARSE DATE, SAVING NULL]\n";
 
     protected static final String NAME_PROMPT = "ENTER NAME:";
     protected static final String DESCRIPTION_PROMPT = "ENTER DESCRIPTION:";
@@ -26,9 +26,9 @@ public abstract class Command {
     protected String title;
     protected String description;
 
-    protected static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-    public Command(Scanner scanner) {
+    public AbstractCommand(Scanner scanner) {
         this.scanner = scanner;
     }
 
