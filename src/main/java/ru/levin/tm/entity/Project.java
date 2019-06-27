@@ -1,10 +1,12 @@
 package ru.levin.tm.entity;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Project {
-    private long id;
+    private UUID id;
     private String name;
+    private String description;
     private Date startDate;
     private Date endDate;
 
@@ -16,11 +18,11 @@ public class Project {
         this.name = name;
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -38,5 +40,18 @@ public class Project {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + id.toString() + ")";
     }
 }

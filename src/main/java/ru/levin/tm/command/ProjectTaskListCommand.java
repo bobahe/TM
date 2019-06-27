@@ -6,19 +6,29 @@ import ru.levin.tm.entity.Task;
 import java.util.List;
 import java.util.Scanner;
 
-public class TaskListCommand extends Command {
+public class ProjectTaskListCommand extends Command {
+    private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
+
     private TaskService taskService = TaskService.getInstance();
 
-    public TaskListCommand(Scanner scanner) {
+    public ProjectTaskListCommand(Scanner scanner) {
         super(scanner);
-        this.name = "task-list";
-        this.title = "[TASK LIST]";
-        this.description = "Show all tasks";
+        this.name = "project-task-list";
+        this.title = "[PROJECT TASK LIST]";
+        this.description = "Show all tasks for selected project";
     }
 
     @Override
     public void run() {
-        List<Task> taskList = taskService.getAll();
+        if (selectedProject == null) {
+            System.out.println(SELECT_PROJECT_MESSAGE);
+            return;
+        }
+
+        System.out.println(title + " for " + selectedProject.getName());
+
+        List<Task> taskList = taskService.getAllByProjectId(selectedProject.getId());
+
         for (int i = 0; i < taskList.size(); i++) {
             Task task = taskList.get(i);
             System.out.println((i + 1) + ". " + task.getName());
@@ -33,8 +43,6 @@ public class TaskListCommand extends Command {
             } else {
                 System.out.println("\tEnd date: not set");
             }
-
-            System.out.println("\tProject: " + task.getProjectId());
         }
     }
 }

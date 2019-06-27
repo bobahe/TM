@@ -19,17 +19,21 @@ public class TerminalCommandRunner {
     }
 
     private void addCommands() {
-        commands.add(new HelpCommand());
-        commands.add(new ProjectRemoveAllCommand());
-        commands.add(new ProjectCreateCommand());
-        commands.add(new ProjectListCommand());
-        commands.add(new ProjectChangeByIdCommand());
-        commands.add(new ProjectRemoveByIdCommand());
-        commands.add(new TaskRemoveAllCommand());
-        commands.add(new TaskCreateCommand());
-        commands.add(new TaskListCommand());
-        commands.add(new TaskChangeByIdCommand());
-        commands.add(new TaskRemoveByIdCommand());
+        commands.add(new HelpCommand(scanner));
+        commands.add(new ProjectListCommand(scanner));
+        commands.add(new ProjectCreateCommand(scanner));
+        commands.add(new ProjectSelectCommand(scanner));
+        commands.add(new ProjectRemoveAllCommand(scanner));
+        commands.add(new ProjectChangeSelectedCommand(scanner));
+        commands.add(new ProjectRemoveSelectedCommand(scanner));
+        commands.add(new ProjectTaskListCommand(scanner));
+        commands.add(new TaskRemoveAllCommand(scanner));
+        commands.add(new TaskCreateCommand(scanner));
+        commands.add(new TaskSelectCommand(scanner));
+        commands.add(new TaskListCommand(scanner));
+        commands.add(new TaskChangeSelectedCommand(scanner));
+        commands.add(new TaskRemoveSelectedCommand(scanner));
+        commands.add(new TaskToProjectCommand(scanner));
     }
 
     public List<Command> getCommands() {
@@ -55,36 +59,12 @@ public class TerminalCommandRunner {
     private void invokeCommand(String command) {
         for (Command cmd : commands) {
             if (command.equals(cmd.getName())) {
-                if (cmd.getTitle() != null) {
-                    System.out.println(cmd.getTitle());
-                }
-
-                List<String> args = prepareArgs(cmd.getArgsList());
-                String result = cmd.run(args);
-
-                if (result != null) {
-                    System.out.println(result);
-                }
-
+                cmd.run();
                 return;
             }
         }
 
         System.err.println("There is not such command");
-    }
-
-    private List<String> prepareArgs(List<String> argNameList) {
-        if (argNameList == null) {
-            return null;
-        }
-
-        List<String> argList = new ArrayList<>(argNameList.size());
-        for (String s : argNameList) {
-            System.out.println("ENTER " + s + ":");
-            argList.add(scanner.nextLine());
-        }
-
-        return argList;
     }
 
     public static TerminalCommandRunner getInstance() {

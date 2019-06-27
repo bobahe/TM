@@ -2,19 +2,20 @@ package ru.levin.tm.crud;
 
 import ru.levin.tm.api.AbstractService;
 import ru.levin.tm.entity.Project;
+import ru.levin.tm.entity.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ProjectService implements AbstractService<Project> {
+    private TaskService taskService = TaskService.getInstance();
     private static ProjectService INSTANCE = new ProjectService();
     private List<Project> projectList;
-    private long lastIndex;
 
     private ProjectService() {
         this.projectList = new ArrayList<>();
-        lastIndex = 1;
     }
 
     public static ProjectService getInstance() {
@@ -22,10 +23,10 @@ public class ProjectService implements AbstractService<Project> {
     }
 
     @Override
-    public Optional<Project> get(long id) {
-        for (Project prj : projectList) {
-            if (prj.getId() == id) {
-                return Optional.of(prj);
+    public Optional<Project> get(UUID id) {
+        for (Project project : projectList) {
+            if (project.getId().equals(id)) {
+                return Optional.of(project);
             }
         }
 
@@ -39,11 +40,11 @@ public class ProjectService implements AbstractService<Project> {
 
     @Override
     public boolean save(Project project) {
-        if (projectList.stream().anyMatch(prj -> prj.getId() == project.getId())) {
+        if (projectList.stream().anyMatch(prj -> prj.getId().equals(project.getId()))) {
             return false;
         }
 
-        project.setId(lastIndex++);
+        project.setId(UUID.randomUUID());
         projectList.add(project);
         return true;
     }
@@ -62,7 +63,9 @@ public class ProjectService implements AbstractService<Project> {
 
     @Override
     public boolean delete(Project project) {
-        return projectList.removeIf(prj -> prj.getId() == project.getId());
+        List<Task> taskList = taskService.getAllByProjectId(project.getId());
+        taskList.forEach(taskService::delete);
+        return projectList.removeIf(prj -> prj.getId().equals(project.getId()));
     }
 
     @Override

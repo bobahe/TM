@@ -6,15 +6,14 @@ import ru.levin.tm.entity.Task;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class TaskService implements AbstractService<Task> {
     private static TaskService INSTANCE = new TaskService();
     private List<Task> taskList;
-    private long lastIndex;
 
     private TaskService() {
         this.taskList = new ArrayList<>();
-        lastIndex = 1;
     }
 
     public static TaskService getInstance() {
@@ -22,9 +21,9 @@ public class TaskService implements AbstractService<Task> {
     }
 
     @Override
-    public Optional<Task> get(long id) {
+    public Optional<Task> get(UUID id) {
         for (Task task : taskList) {
-            if (task.getId() == id) {
+            if (task.getId().equals(id)) {
                 return Optional.of(task);
             }
         }
@@ -37,13 +36,19 @@ public class TaskService implements AbstractService<Task> {
         return taskList;
     }
 
+    public List<Task> getAllByProjectId(UUID id) {
+        List<Task> resultList = new ArrayList<>();
+        taskList.stream().filter(t -> id.equals(t.getProjectId())).forEach(resultList::add);
+        return resultList;
+    }
+
     @Override
     public boolean save(Task task) {
         if (taskList.stream().anyMatch(t -> t.getId() == task.getId())) {
             return false;
         }
 
-        task.setId(lastIndex++);
+        task.setId(UUID.randomUUID());
         taskList.add(task);
         return true;
     }
@@ -62,7 +67,7 @@ public class TaskService implements AbstractService<Task> {
 
     @Override
     public boolean delete(Task task) {
-        return taskList.removeIf(t -> t.getId() == task.getId());
+        return taskList.removeIf(t -> t.getId().equals(task.getId()));
     }
 
     @Override

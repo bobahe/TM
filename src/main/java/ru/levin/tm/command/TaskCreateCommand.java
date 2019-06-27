@@ -3,38 +3,46 @@ package ru.levin.tm.command;
 import ru.levin.tm.crud.TaskService;
 import ru.levin.tm.entity.Task;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
 public class TaskCreateCommand extends Command {
+    private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
+
     private TaskService taskService = TaskService.getInstance();
 
-    public TaskCreateCommand() {
+    public TaskCreateCommand(Scanner scanner) {
+        super(scanner);
         this.name = "task-create";
         this.title = "[TASK CREATE]";
         this.description = "Create new task";
-        this.argNameList = new ArrayList<>(2);
-
-        this.argNameList.add("NAME");
-        this.argNameList.add("START DATE");
     }
 
-    public String run(List<String> args) {
-        if (args == null) {
-            return Command.ERROR_MESSAGE;
-        }
-
+    public void run() {
         Task task = new Task();
-        try {
-            task.setName(args.get(0));
-            task.setStartDate(dateFormat.parse(args.get(1)));
-        } catch (ParseException pe) {
-            return Command.ERROR_MESSAGE;
+
+        System.out.println(this.title);
+        System.out.println(NAME_PROMPT);
+        task.setName(scanner.nextLine());
+        System.out.println(DESCRIPTION_PROMPT);
+        task.setDescription(scanner.nextLine());
+        System.out.println(START_DATE_PROMPT);
+        task.setStartDate(CommandUtils.parseDate(scanner));
+        System.out.println(END_DATE_PROMPT);
+        task.setEndDate(CommandUtils.parseDate(scanner));
+
+        if (selectedProject != null) {
+            System.out.println(JOIN_TO_PROJECT_PROMPT);
+            String joinAnswer = scanner.nextLine();
+            switch (joinAnswer) {
+                case "Y":
+                case "y":
+                case "":
+                    task.setProjectId(selectedProject.getId());
+                    break;
+            }
         }
 
-        boolean result = taskService.save(task);
-
-        return result ? Command.SUCCESS_MESSAGE : Command.ERROR_MESSAGE;
+        taskService.save(task);
+        System.out.println(SUCCESS_MESSAGE);
     }
 }
