@@ -1,26 +1,25 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
-
-import java.util.Scanner;
 
 public class TaskCreateCommand extends AbstractCommand {
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
     private TaskService taskService;
 
-    public TaskCreateCommand(Scanner scanner, TaskService service) {
-        super(scanner);
+    public TaskCreateCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "task-create";
         this.title = "[TASK CREATE]";
         this.description = "Create new task";
-        this.taskService = service;
+        this.taskService = bootstrap.getTaskService();
     }
 
-    public void run() {
+    public void execute() {
         Task task = new Task();
 
         System.out.println(this.title);

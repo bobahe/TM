@@ -1,24 +1,23 @@
 package ru.levin.tm.command.project;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
-import java.util.Scanner;
-
 public class ProjectCreateCommand extends AbstractCommand {
     private ProjectService projectService;
 
-    public ProjectCreateCommand(Scanner scanner, ProjectService service) {
-        super(scanner);
+    public ProjectCreateCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "project-create";
         this.title = "[PROJECT CREATE]";
         this.description = "Create new project";
-        this.projectService = service;
+        this.projectService = bootstrap.getProjectService();
     }
 
-    public void run() {
+    public void execute() {
         Project project = new Project();
 
         System.out.println(this.title);

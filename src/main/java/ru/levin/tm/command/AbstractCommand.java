@@ -1,5 +1,6 @@
 package ru.levin.tm.command;
 
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.Task;
 
@@ -28,8 +29,8 @@ public abstract class AbstractCommand {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-    public AbstractCommand(Scanner scanner) {
-        this.scanner = scanner;
+    public AbstractCommand(Bootstrap bootstrap) {
+        this.scanner = bootstrap.getScanner();
     }
 
     public String getName() {
@@ -44,5 +45,5 @@ public abstract class AbstractCommand {
         return description;
     }
 
-    public abstract void run();
+    public abstract void execute();
 }

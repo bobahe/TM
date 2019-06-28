@@ -1,28 +1,29 @@
 package ru.levin.tm.command.project;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class ProjectListCommand extends AbstractCommand {
     private ProjectService projectService;
 
-    public ProjectListCommand(Scanner scanner, ProjectService service) {
-        super(scanner);
+    public ProjectListCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "project-list";
         this.title = "[PROJECT LIST]";
         this.description = "Show all projects";
-        this.projectService = service;
+        this.projectService = bootstrap.getProjectService();
     }
 
     @Override
-    public void run() {
+    public void execute() {
         List<Project> projectList = projectService.findAll();
         for (int i = 0; i < projectList.size(); i++) {
             Project project = projectList.get(i);
+            System.out.println(title);
             System.out.println((i + 1) + ". " + project.getName());
             System.out.println("\tDescription: " + project.getDescription());
             if (project.getStartDate() != null) {

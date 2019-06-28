@@ -1,27 +1,27 @@
 package ru.levin.tm.command.project;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Scanner;
 
 public class ProjectChangeSelectedCommand extends AbstractCommand {
     private ProjectService projectService;
 
-    public ProjectChangeSelectedCommand(Scanner scanner, ProjectService service) {
-        super(scanner);
+    public ProjectChangeSelectedCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "project-change";
         this.description = "Change selected project";
         this.title = "[CHANGE PROJECT]";
-        this.projectService = service;
+        this.projectService = bootstrap.getProjectService();
     }
 
     @Override
-    public void run() {
+    public void execute() {
         if (CommandUtil.isSelectedObjectNull(selectedProject, Project.class)){
             return;
         }

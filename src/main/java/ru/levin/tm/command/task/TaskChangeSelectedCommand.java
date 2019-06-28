@@ -1,27 +1,27 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Scanner;
 
 public class TaskChangeSelectedCommand extends AbstractCommand {
     private TaskService taskService;
 
-    public TaskChangeSelectedCommand(Scanner scanner, TaskService service) {
-        super(scanner);
+    public TaskChangeSelectedCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "task-change";
         this.description = "Change selected task";
         this.title = "[CHANGE TASK]";
-        this.taskService = service;
+        this.taskService = bootstrap.getTaskService();
     }
 
     @Override
-    public void run() {
+    public void execute() {
         if (CommandUtil.isSelectedObjectNull(selectedTask, Task.class)) {
             return;
         }

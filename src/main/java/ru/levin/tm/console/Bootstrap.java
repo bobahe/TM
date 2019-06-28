@@ -13,13 +13,13 @@ import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.service.TaskService;
 
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Bootstrap {
     private Scanner scanner = new Scanner(new InputStreamReader(System.in));
-    private List<AbstractCommand> commands;
+    private Map<String, AbstractCommand> commands;
 
     private IRepository<Project> projectRepository;
     private IRepository<Task> taskRepository;
@@ -27,7 +27,7 @@ public class Bootstrap {
     private TaskService taskService;
 
     public void init() {
-        commands = new ArrayList<>();
+        commands = new LinkedHashMap<>();
 
         projectRepository = new ProjectRepository();
         taskRepository = new TaskRepository();
@@ -39,21 +39,39 @@ public class Bootstrap {
     }
 
     private void addCommands() {
-        commands.add(new HelpCommand(scanner, commands));
-        commands.add(new ProjectListCommand(scanner, projectService));
-        commands.add(new ProjectCreateCommand(scanner, projectService));
-        commands.add(new ProjectSelectCommand(scanner, projectService));
-        commands.add(new ProjectRemoveAllCommand(scanner, projectService));
-        commands.add(new ProjectChangeSelectedCommand(scanner, projectService));
-        commands.add(new ProjectRemoveSelectedCommand(scanner, projectService));
-        commands.add(new TaskListInSelectedProjectCommand(scanner, taskService));
-        commands.add(new TaskRemoveAllCommand(scanner, taskService));
-        commands.add(new TaskCreateCommand(scanner, taskService));
-        commands.add(new TaskSelectCommand(scanner, taskService));
-        commands.add(new TaskListCommand(scanner, taskService));
-        commands.add(new TaskChangeSelectedCommand(scanner, taskService));
-        commands.add(new TaskRemoveSelectedCommand(scanner, taskService));
-        commands.add(new TaskToProjectCommand(scanner, taskService));
+        HelpCommand helpCommand = new HelpCommand(this);
+
+        ProjectListCommand projectListCommand = new ProjectListCommand(this);
+        ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
+        ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
+        ProjectRemoveAllCommand projectRemoveAllCommand = new ProjectRemoveAllCommand(this);
+        ProjectChangeSelectedCommand projectChangeSelectedCommand = new ProjectChangeSelectedCommand(this);
+        ProjectRemoveSelectedCommand projectRemoveSelectedCommand = new ProjectRemoveSelectedCommand(this);
+
+        TaskProjectTaskListCommand taskProjectTaskListCommand = new TaskProjectTaskListCommand(this);
+        TaskRemoveAllCommand taskRemoveAllCommand = new TaskRemoveAllCommand(this);
+        TaskCreateCommand taskCreateCommand = new TaskCreateCommand(this);
+        TaskSelectCommand taskSelectCommand = new TaskSelectCommand(this);
+        TaskListCommand taskListCommand = new TaskListCommand(this);
+        TaskChangeSelectedCommand taskChangeSelectedCommand = new TaskChangeSelectedCommand(this);
+        TaskRemoveSelectedCommand taskRemoveSelectedCommand = new TaskRemoveSelectedCommand(this);
+        TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
+
+        commands.put(helpCommand.getName(), helpCommand);
+        commands.put(projectListCommand.getName(), projectListCommand);
+        commands.put(projectCreateCommand.getName(), projectCreateCommand);
+        commands.put(projectSelectCommand.getName(), projectSelectCommand);
+        commands.put(projectRemoveAllCommand.getName(), projectRemoveAllCommand);
+        commands.put(projectChangeSelectedCommand.getName(), projectChangeSelectedCommand);
+        commands.put(projectRemoveSelectedCommand.getName(), projectRemoveSelectedCommand);
+        commands.put(taskProjectTaskListCommand.getName(), taskProjectTaskListCommand);
+        commands.put(taskRemoveAllCommand.getName(), taskRemoveAllCommand);
+        commands.put(taskCreateCommand.getName(), taskCreateCommand);
+        commands.put(taskSelectCommand.getName(), taskSelectCommand);
+        commands.put(taskListCommand.getName(), taskListCommand);
+        commands.put(taskChangeSelectedCommand.getName(), taskChangeSelectedCommand);
+        commands.put(taskRemoveSelectedCommand.getName(), taskRemoveSelectedCommand);
+        commands.put(taskJoinCommand.getName(), taskJoinCommand);
     }
 
     private void process() {
@@ -72,14 +90,30 @@ public class Bootstrap {
         }
     }
 
-    private void invokeCommand(String command) {
-        for (AbstractCommand cmd : commands) {
-            if (command.equals(cmd.getName())) {
-                cmd.run();
-                return;
-            }
+    private void invokeCommand(String commandName) {
+        AbstractCommand command = commands.get(commandName);
+
+        if (command == null) {
+            System.err.println("There is not such command");
+            return;
         }
 
-        System.err.println("There is not such command");
+        command.execute();
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public Map<String, AbstractCommand> getCommands() {
+        return commands;
+    }
+
+    public ProjectService getProjectService() {
+        return projectService;
+    }
+
+    public TaskService getTaskService() {
+        return taskService;
     }
 }

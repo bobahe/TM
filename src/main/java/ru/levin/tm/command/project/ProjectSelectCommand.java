@@ -1,9 +1,8 @@
 package ru.levin.tm.command.project;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.ProjectService;
-
-import java.util.Scanner;
 
 public class ProjectSelectCommand extends AbstractCommand {
     private static final String SELECTED_PROJECT_MESSAGE = "SELECTED PROJECT: ";
@@ -11,15 +10,15 @@ public class ProjectSelectCommand extends AbstractCommand {
 
     private final ProjectService projectService;
 
-    public ProjectSelectCommand(Scanner scanner, ProjectService service) {
-        super(scanner);
+    public ProjectSelectCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "project-select";
         this.title = "[PROJECT SELECT]";
         this.description = "Select project";
-        this.projectService = service;
+        this.projectService = bootstrap.getProjectService();
     }
 
-    public void run() {
+    public void execute() {
         System.out.println(this.title);
         System.out.println(SERIAL_NUMBER_PROMPT);
         try {

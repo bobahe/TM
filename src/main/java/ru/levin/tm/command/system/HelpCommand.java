@@ -1,23 +1,21 @@
 package ru.levin.tm.command.system;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
 
 public class HelpCommand extends AbstractCommand {
-    private List<AbstractCommand> commands;
+    private Map<String, AbstractCommand> commands;
 
-    public HelpCommand(Scanner scanner, List<AbstractCommand> commands) {
-        super(scanner);
+    public HelpCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         name = "help";
         description = "Show all commands";
-        this.commands = commands;
+        this.commands = bootstrap.getCommands();
     }
 
-    public void run() {
-        for (AbstractCommand cmd : commands) {
-            System.out.println(cmd.getName() + ": " + cmd.getDescription());
-        }
+    public void execute() {
+        commands.values().forEach(command -> System.out.println(command.getName() + ": " + command.getDescription()));
     }
 }

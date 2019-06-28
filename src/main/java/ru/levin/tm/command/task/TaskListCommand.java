@@ -1,25 +1,25 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class TaskListCommand extends AbstractCommand {
     private TaskService taskService;
 
-    public TaskListCommand(Scanner scanner, TaskService service) {
-        super(scanner);
+    public TaskListCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "task-list";
         this.title = "[TASK LIST]";
         this.description = "Show all tasks";
-        this.taskService = service;
+        this.taskService = bootstrap.getTaskService();
     }
 
     @Override
-    public void run() {
+    public void execute() {
         List<Task> taskList = taskService.findAll();
         for (int i = 0; i < taskList.size(); i++) {
             Task task = taskList.get(i);

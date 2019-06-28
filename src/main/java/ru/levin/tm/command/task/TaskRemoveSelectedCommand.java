@@ -1,24 +1,23 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.TaskService;
-
-import java.util.Scanner;
 
 public class TaskRemoveSelectedCommand extends AbstractCommand {
     private static final String TASK_NOT_SELECTED = "TASK IS NOT SELECTED";
 
     private TaskService taskService;
 
-    public TaskRemoveSelectedCommand(Scanner scanner, TaskService service) {
-        super(scanner);
+    public TaskRemoveSelectedCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "task-remove";
         this.description = "Remove selected task";
-        this.taskService = service;
+        this.taskService = bootstrap.getTaskService();
     }
 
     @Override
-    public void run() {
+    public void execute() {
         if (selectedTask == null) {
             System.out.println(TASK_NOT_SELECTED);
             return;

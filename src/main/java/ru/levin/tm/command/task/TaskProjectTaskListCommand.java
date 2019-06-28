@@ -1,27 +1,27 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 
 import java.util.List;
-import java.util.Scanner;
 
-public class TaskListInSelectedProjectCommand extends AbstractCommand {
+public class TaskProjectTaskListCommand extends AbstractCommand {
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
 
     private TaskService taskService;
 
-    public TaskListInSelectedProjectCommand(Scanner scanner, TaskService service) {
-        super(scanner);
+    public TaskProjectTaskListCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "project-task-list";
         this.title = "[PROJECT TASK LIST]";
         this.description = "Show all tasks for selected project";
-        this.taskService = service;
+        this.taskService = bootstrap.getTaskService();
     }
 
     @Override
-    public void run() {
+    public void execute() {
         if (selectedProject == null) {
             System.out.println(SELECT_PROJECT_MESSAGE);
             return;

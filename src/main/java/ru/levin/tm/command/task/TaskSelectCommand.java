@@ -1,9 +1,8 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.TaskService;
-
-import java.util.Scanner;
 
 public class TaskSelectCommand extends AbstractCommand {
     private static final String SELECTED_TASK_MESSAGE = "SELECTED TASK: ";
@@ -11,15 +10,15 @@ public class TaskSelectCommand extends AbstractCommand {
 
     private final TaskService taskService;
 
-    public TaskSelectCommand(Scanner scanner, TaskService service) {
-        super(scanner);
+    public TaskSelectCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "task-select";
         this.title = "[TASK SELECT]";
         this.description = "Select task";
-        this.taskService = service;
+        this.taskService = bootstrap.getTaskService();
     }
 
-    public void run() {
+    public void execute() {
         System.out.println(this.title);
         System.out.println(SERIAL_NUMBER_PROMPT);
         try {

@@ -1,11 +1,10 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.TaskService;
 
-import java.util.Scanner;
-
-public class TaskToProjectCommand extends AbstractCommand {
+public class TaskJoinCommand extends AbstractCommand {
     private static final String SELECTED_PROJECT_MESSAGE = "SELECTED TASK: ";
     private static final String SELECTED_TASK_MESSAGE = "SELECTED TASK: ";
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
@@ -13,15 +12,15 @@ public class TaskToProjectCommand extends AbstractCommand {
 
     private final TaskService taskService;
 
-    public TaskToProjectCommand(Scanner scanner, TaskService service) {
-        super(scanner);
+    public TaskJoinCommand(Bootstrap bootstrap) {
+        super(bootstrap);
         this.name = "task-join";
         this.title = "[JOIN TASK TO PROJECT]";
         this.description = "Join selected task to selected project";
-        this.taskService = service;
+        this.taskService = bootstrap.getTaskService();
     }
 
-    public void run() {
+    public void execute() {
         if (selectedProject == null) {
             System.out.println(SELECT_PROJECT_MESSAGE);
             return;
