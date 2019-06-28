@@ -5,6 +5,8 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.command.project.*;
 import ru.levin.tm.command.system.HelpCommand;
 import ru.levin.tm.command.task.*;
+import ru.levin.tm.command.user.UserAuthorizeCommand;
+import ru.levin.tm.command.user.UserLogoutCommand;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.entity.User;
@@ -43,13 +45,23 @@ public class Bootstrap {
         taskService = new TaskService(taskRepository);
         userService = new UserService(userRepository);
 
-        addCommands();
+        addHelpCommand();
+        addUnauthorizedCommands();
         process();
     }
 
-    private void addCommands() {
+    private void addHelpCommand() {
         HelpCommand helpCommand = new HelpCommand(this);
+        commands.put(helpCommand.getName(), helpCommand);
+    }
 
+    private void addUnauthorizedCommands() {
+        UserAuthorizeCommand userAuthorizeCommand = new UserAuthorizeCommand(this);
+
+        commands.put(userAuthorizeCommand.getName(), userAuthorizeCommand);
+    }
+
+    private void addAuthorizedCommands() {
         ProjectListCommand projectListCommand = new ProjectListCommand(this);
         ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
         ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
@@ -66,7 +78,8 @@ public class Bootstrap {
         TaskRemoveSelectedCommand taskRemoveSelectedCommand = new TaskRemoveSelectedCommand(this);
         TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
 
-        commands.put(helpCommand.getName(), helpCommand);
+        UserLogoutCommand userLogoutCommand = new UserLogoutCommand(this);
+
         commands.put(projectListCommand.getName(), projectListCommand);
         commands.put(projectCreateCommand.getName(), projectCreateCommand);
         commands.put(projectSelectCommand.getName(), projectSelectCommand);
@@ -81,6 +94,7 @@ public class Bootstrap {
         commands.put(taskChangeSelectedCommand.getName(), taskChangeSelectedCommand);
         commands.put(taskRemoveSelectedCommand.getName(), taskRemoveSelectedCommand);
         commands.put(taskJoinCommand.getName(), taskJoinCommand);
+        commands.put(userLogoutCommand.getName(), userLogoutCommand);
     }
 
     private void process() {
@@ -132,5 +146,15 @@ public class Bootstrap {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+
+        if (currentUser == null) {
+            commands.clear();
+            addHelpCommand();
+            addUnauthorizedCommands();
+        } else {
+            commands.clear();
+            addHelpCommand();
+            addAuthorizedCommands();
+        }
     }
 }
