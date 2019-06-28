@@ -1,18 +1,18 @@
 # `Task Manager`
 A project for task management
-## `Требования к software`
+## `Prerquisites`
 JRE 1.8
-## `Используемые технологии`
+## `Used technologies`
 * Java SE 8
 * Maven
-## `Авторы`
-* **Владимир Левин** - *bobahe-at-gmail-dot-com*
-## `Сборка приложения`
+## `Authors`
+* **Vladimir Levin** - *bobahe-at-gmail-dot-com*
+## `Compiling project`
 ```
 mvn clean
 mvn install
 ```
-## `Запуск приложения`
+## `Project run`
 ```
 java -jar <path-to-jar>
 ```
