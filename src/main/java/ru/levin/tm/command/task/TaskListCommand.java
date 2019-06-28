@@ -19,6 +19,21 @@ public class TaskListCommand extends AbstractCommand {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
     public void execute() {
         List<Task> taskList = taskService.findAll();
         for (int i = 0; i < taskList.size(); i++) {

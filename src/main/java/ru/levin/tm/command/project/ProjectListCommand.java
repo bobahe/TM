@@ -19,6 +19,21 @@ public class ProjectListCommand extends AbstractCommand {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
     public void execute() {
         List<Project> projectList = projectService.findAll();
         for (int i = 0; i < projectList.size(); i++) {

@@ -3,11 +3,12 @@ package ru.levin.tm.service;
 import ru.levin.tm.api.IRepository;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.repository.TaskRepository;
+import ru.levin.tm.util.ServiceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskService extends AbstractService<Task> {
+public class TaskService extends AbstractEntityService<Task> {
     private static final String PROP_NAME = "name";
     private static final String PROP_ID = "id";
 
@@ -28,17 +29,17 @@ public class TaskService extends AbstractService<Task> {
 
     @Override
     public void save(Task entity) {
-        checkNull(entity);
-        checkNullOrEmpty(entity.getName(), PROP_NAME);
+        ServiceUtil.checkNull(entity);
+        ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
 
         repository.persist(entity);
     }
 
     @Override
     public void update(Task entity) {
-        checkNull(entity);
-        checkNullOrEmpty(entity.getId(), PROP_ID);
-        checkNullOrEmpty(entity.getName(), PROP_NAME);
+        ServiceUtil.checkNull(entity);
+        ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
+        ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
 
         if (repository.findOne(entity.getId()) == null) {
             throw new IllegalStateException("Can not update task. There is no such task in storage.");
@@ -49,8 +50,8 @@ public class TaskService extends AbstractService<Task> {
 
     @Override
     public void remove(Task entity) {
-        checkNull(entity);
-        checkNullOrEmpty(entity.getId(), PROP_ID);
+        ServiceUtil.checkNull(entity);
+        ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
         repository.remove(entity);
     }
 

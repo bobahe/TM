@@ -19,6 +19,21 @@ public class TaskCreateCommand extends AbstractCommand {
         this.taskService = bootstrap.getTaskService();
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
     public void execute() {
         Task task = new Task();
 

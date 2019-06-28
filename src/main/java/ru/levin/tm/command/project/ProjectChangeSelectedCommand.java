@@ -21,6 +21,21 @@ public class ProjectChangeSelectedCommand extends AbstractCommand {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
     public void execute() {
         if (CommandUtil.isSelectedObjectNull(selectedProject, Project.class)){
             return;

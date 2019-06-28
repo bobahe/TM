@@ -1,9 +1,18 @@
 package ru.levin.tm.entity;
 
 public class User {
+    private String id;
     private String login;
     private String password;
     private RoleType roleType;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getLogin() {
         return login;

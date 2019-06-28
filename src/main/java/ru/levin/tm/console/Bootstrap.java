@@ -7,10 +7,13 @@ import ru.levin.tm.command.system.HelpCommand;
 import ru.levin.tm.command.task.*;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.Task;
+import ru.levin.tm.entity.User;
 import ru.levin.tm.repository.ProjectRepository;
 import ru.levin.tm.repository.TaskRepository;
+import ru.levin.tm.repository.UserRepository;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.service.TaskService;
+import ru.levin.tm.service.UserService;
 
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
@@ -23,16 +26,22 @@ public class Bootstrap {
 
     private IRepository<Project> projectRepository;
     private IRepository<Task> taskRepository;
+    private IRepository<User> userRepository;
     private ProjectService projectService;
     private TaskService taskService;
+    private UserService userService;
+
+    private User currentUser;
 
     public void init() {
         commands = new LinkedHashMap<>();
 
         projectRepository = new ProjectRepository();
         taskRepository = new TaskRepository();
+        userRepository = new UserRepository();
         projectService = new ProjectService(projectRepository);
         taskService = new TaskService(taskRepository);
+        userService = new UserService(userRepository);
 
         addCommands();
         process();
@@ -115,5 +124,13 @@ public class Bootstrap {
 
     public TaskService getTaskService() {
         return taskService;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 }

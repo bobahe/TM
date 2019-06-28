@@ -17,6 +17,21 @@ public class TaskRemoveAllCommand extends AbstractCommand {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
     public void execute() {
         taskService.removeAll();
         selectedTask = null;

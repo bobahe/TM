@@ -18,6 +18,21 @@ public class TaskSelectCommand extends AbstractCommand {
         this.taskService = bootstrap.getTaskService();
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
     public void execute() {
         System.out.println(this.title);
         System.out.println(SERIAL_NUMBER_PROMPT);

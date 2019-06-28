@@ -17,6 +17,21 @@ public class ProjectCreateCommand extends AbstractCommand {
         this.projectService = bootstrap.getProjectService();
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
     public void execute() {
         Project project = new Project();
 

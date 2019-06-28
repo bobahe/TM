@@ -19,6 +19,21 @@ public class ProjectRemoveAllCommand extends AbstractCommand {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
     public void execute() {
         projectService.removeAll();
 

@@ -21,6 +21,21 @@ public class TaskProjectTaskListCommand extends AbstractCommand {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
     public void execute() {
         if (selectedProject == null) {
             System.out.println(SELECT_PROJECT_MESSAGE);

@@ -18,6 +18,9 @@ public abstract class AbstractCommand {
     protected static final String START_DATE_PROMPT = "ENTER START DATE:";
     protected static final String END_DATE_PROMPT = "ENTER END DATE:";
 
+    protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
+    protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
+
     protected static Project selectedProject;
     protected static Task selectedTask;
 
@@ -33,17 +36,11 @@ public abstract class AbstractCommand {
         this.scanner = bootstrap.getScanner();
     }
 
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
 
-    public String getTitle() {
-        return title;
-    }
+    public abstract String getTitle();
 
-    public String getDescription() {
-        return description;
-    }
+    public abstract String getDescription();
 
     public abstract void execute();
 }
