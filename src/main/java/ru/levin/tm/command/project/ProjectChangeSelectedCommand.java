@@ -10,7 +10,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class ProjectChangeSelectedCommand extends AbstractCommand {
-    private ProjectService projectService;
+    private final ProjectService projectService;
+    private final Bootstrap bootstrap;
 
     public ProjectChangeSelectedCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -18,6 +19,7 @@ public class ProjectChangeSelectedCommand extends AbstractCommand {
         this.description = "Change selected project";
         this.title = "[CHANGE PROJECT]";
         this.projectService = bootstrap.getProjectService();
+        this.bootstrap = bootstrap;
     }
 
     @Override

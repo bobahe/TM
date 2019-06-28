@@ -10,7 +10,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class TaskChangeSelectedCommand extends AbstractCommand {
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public TaskChangeSelectedCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -18,6 +19,7 @@ public class TaskChangeSelectedCommand extends AbstractCommand {
         this.description = "Change selected task";
         this.title = "[CHANGE TASK]";
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override

@@ -32,5 +32,6 @@ public class HelpCommand extends AbstractCommand {
 
     public void execute() {
         commands.values().forEach(command -> System.out.println(command.getName() + ": " + command.getDescription()));
+        System.out.println("exit: Exit from application");
     }
 }

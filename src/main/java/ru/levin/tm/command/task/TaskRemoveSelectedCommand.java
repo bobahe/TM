@@ -7,13 +7,15 @@ import ru.levin.tm.service.TaskService;
 public class TaskRemoveSelectedCommand extends AbstractCommand {
     private static final String TASK_NOT_SELECTED = "TASK IS NOT SELECTED";
 
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public TaskRemoveSelectedCommand(Bootstrap bootstrap) {
         super(bootstrap);
         this.name = "task-remove";
         this.description = "Remove selected task";
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override

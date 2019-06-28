@@ -10,7 +10,8 @@ import java.util.List;
 public class TaskProjectTaskListCommand extends AbstractCommand {
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
 
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public TaskProjectTaskListCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -18,6 +19,7 @@ public class TaskProjectTaskListCommand extends AbstractCommand {
         this.title = "[PROJECT TASK LIST]";
         this.description = "Show all tasks for selected project";
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override

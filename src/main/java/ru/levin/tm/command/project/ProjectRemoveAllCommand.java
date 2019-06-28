@@ -7,8 +7,9 @@ import ru.levin.tm.service.TaskService;
 
 public class ProjectRemoveAllCommand extends AbstractCommand {
     private static final String ALL_PROJECTS_REMOVED_MESSAGE = "[ALL PROJECTS REMOVED]\n";
-    private ProjectService projectService;
-    private TaskService taskService;
+    private final ProjectService projectService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public ProjectRemoveAllCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -16,6 +17,7 @@ public class ProjectRemoveAllCommand extends AbstractCommand {
         this.description = "Remove all projects";
         this.projectService = bootstrap.getProjectService();
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class ProjectRemoveAllCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        projectService.removeAll();
+        projectService.removeByUserId(bootstrap.getCurrentUser().getId());
 
         taskService.findAll().forEach(task -> {
             if (task.getProjectId() != null) {

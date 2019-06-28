@@ -2,20 +2,19 @@ package ru.levin.tm.command.user;
 
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
+import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
-import java.security.NoSuchAlgorithmException;
-
-public class UserAuthorizeCommand extends AbstractCommand {
+public class UserRegisterCommand extends AbstractCommand {
     UserService userService;
     Bootstrap bootstrap;
 
-    public UserAuthorizeCommand(Bootstrap bootstrap) {
+    public UserRegisterCommand(Bootstrap bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
-        this.name = "login";
-        this.description = "Log in to application";
+        this.name = "register";
+        this.description = "Register user in the application";
         this.bootstrap = bootstrap;
     }
 
@@ -41,18 +40,17 @@ public class UserAuthorizeCommand extends AbstractCommand {
         System.out.println(PASSWORD_PROMPT);
         String password = scanner.nextLine();
 
-        User user = null;
+        User user = new User();
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setRoleType(RoleType.USER);
+
         try {
-            user = userService.getUserByLoginAndPassword(login, password);
-        } catch (NoSuchAlgorithmException e) {
+            userService.save(user);
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
-        if (user == null) {
-            System.err.println("There is no such user with entered login and password");
-            return;
-        }
-
-        bootstrap.setCurrentUser(user);
+        System.out.println("You are registered successfully");
     }
 }

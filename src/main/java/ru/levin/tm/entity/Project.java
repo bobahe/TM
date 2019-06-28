@@ -8,6 +8,7 @@ public class Project {
     private String description;
     private Date startDate;
     private Date endDate;
+    private String userId;
 
     public String getName() {
         return name;
@@ -47,6 +48,14 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

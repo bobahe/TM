@@ -6,6 +6,7 @@ import ru.levin.tm.util.ServiceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProjectService extends AbstractEntityService<Project> {
     private static final String PROP_NAME = "name";
@@ -53,5 +54,13 @@ public class ProjectService extends AbstractEntityService<Project> {
     @Override
     public void removeAll() {
         repository.removeAll();
+    }
+
+    public void removeByUserId(String id) {
+        List<Project> userProjects = repository.findAll().values().stream()
+                .filter(project -> project.getUserId().equals(id))
+                .collect(Collectors.toList());
+
+        userProjects.forEach(repository::remove);
     }
 }

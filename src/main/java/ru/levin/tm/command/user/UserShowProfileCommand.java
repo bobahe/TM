@@ -4,15 +4,15 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.UserService;
 
-public class UserLogoutCommand extends AbstractCommand {
+public class UserShowProfileCommand extends AbstractCommand {
     UserService userService;
     Bootstrap bootstrap;
 
-    public UserLogoutCommand(Bootstrap bootstrap) {
+    public UserShowProfileCommand(Bootstrap bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
-        this.name = "logout";
-        this.description = "Log out";
+        this.name = "show-profile";
+        this.description = "Shows user profile";
         this.bootstrap = bootstrap;
     }
 
@@ -33,7 +33,13 @@ public class UserLogoutCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println("Good bye, " + bootstrap.getCurrentUser().getLogin());
-        bootstrap.setCurrentUser(null);
+        if (bootstrap.getCurrentUser() == null) {
+            return;
+        }
+
+        System.out.println("Id: " + bootstrap.getCurrentUser().getId());
+        System.out.println("Login: " + bootstrap.getCurrentUser().getLogin());
+        System.out.println("Password: " + bootstrap.getCurrentUser().getPassword());
+        System.out.println("Role: " + bootstrap.getCurrentUser().getRoleType().name());
     }
 }

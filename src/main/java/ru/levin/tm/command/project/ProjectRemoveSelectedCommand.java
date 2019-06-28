@@ -11,8 +11,9 @@ import java.util.List;
 public class ProjectRemoveSelectedCommand extends AbstractCommand {
     private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED";
 
-    private ProjectService projectService;
-    private TaskService taskService;
+    private final ProjectService projectService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public ProjectRemoveSelectedCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -20,6 +21,7 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
         this.description = "Remove selected project";
         this.projectService = bootstrap.getProjectService();
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override

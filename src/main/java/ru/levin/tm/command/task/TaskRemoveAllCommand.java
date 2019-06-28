@@ -7,13 +7,15 @@ import ru.levin.tm.service.TaskService;
 public class TaskRemoveAllCommand extends AbstractCommand {
     private static final String ALL_TASK_REMOVED_MESSAGE = "[ALL TASKS REMOVED]\n";
 
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public TaskRemoveAllCommand(Bootstrap bootstrap) {
         super(bootstrap);
         this.name = "task-clear";
         this.description = "Remove all tasks";
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class TaskRemoveAllCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        taskService.removeAll();
+        taskService.removeByUserId(bootstrap.getCurrentUser().getId());
         selectedTask = null;
         System.out.println(ALL_TASK_REMOVED_MESSAGE);
     }

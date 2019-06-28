@@ -4,11 +4,14 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.ProjectService;
 
+import java.util.stream.Collectors;
+
 public class ProjectSelectCommand extends AbstractCommand {
     private static final String SELECTED_PROJECT_MESSAGE = "SELECTED PROJECT: ";
     private static final String SERIAL_NUMBER_PROMPT = "ENTER SERIAL NUMBER:";
 
     private final ProjectService projectService;
+    private final Bootstrap bootstrap;
 
     public ProjectSelectCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -16,6 +19,7 @@ public class ProjectSelectCommand extends AbstractCommand {
         this.title = "[PROJECT SELECT]";
         this.description = "Select project";
         this.projectService = bootstrap.getProjectService();
+        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -38,7 +42,10 @@ public class ProjectSelectCommand extends AbstractCommand {
         System.out.println(SERIAL_NUMBER_PROMPT);
         try {
             int index = Integer.parseInt(scanner.nextLine());
-            selectedProject = projectService.findAll().get(index - 1);
+            selectedProject = projectService.findAll().stream()
+                    .filter(project -> project.getUserId().equals(bootstrap.getCurrentUser().getId()))
+                    .collect(Collectors.toList())
+                    .get(index - 1);
             System.out.println(SELECTED_PROJECT_MESSAGE + selectedProject);
         } catch (NumberFormatException nfe) {
             System.out.println(ERROR_MESSAGE);

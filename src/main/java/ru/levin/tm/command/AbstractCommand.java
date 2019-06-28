@@ -20,6 +20,7 @@ public abstract class AbstractCommand {
 
     protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
     protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
+    protected static final String PASSWORD_AGAIN_PROMPT = "ENTER PASSWORD AGAIN:";
 
     protected static Project selectedProject;
     protected static Task selectedTask;

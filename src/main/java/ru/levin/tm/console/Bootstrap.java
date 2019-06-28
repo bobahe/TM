@@ -5,9 +5,9 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.command.project.*;
 import ru.levin.tm.command.system.HelpCommand;
 import ru.levin.tm.command.task.*;
-import ru.levin.tm.command.user.UserAuthorizeCommand;
-import ru.levin.tm.command.user.UserLogoutCommand;
+import ru.levin.tm.command.user.*;
 import ru.levin.tm.entity.Project;
+import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.entity.User;
 import ru.levin.tm.repository.ProjectRepository;
@@ -18,6 +18,7 @@ import ru.levin.tm.service.TaskService;
 import ru.levin.tm.service.UserService;
 
 import java.io.InputStreamReader;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -43,11 +44,34 @@ public class Bootstrap {
         userRepository = new UserRepository();
         projectService = new ProjectService(projectRepository);
         taskService = new TaskService(taskRepository);
-        userService = new UserService(userRepository);
+
+        try {
+            userService = new UserService(userRepository);
+        } catch (NoSuchAlgorithmException nsae) {
+            System.err.println(nsae.getMessage());
+            return;
+        }
+
+        createDefaultUsers();
 
         addHelpCommand();
         addUnauthorizedCommands();
         process();
+    }
+
+    private void createDefaultUsers() {
+        User admin = new User();
+        admin.setLogin("admin");
+        admin.setPassword("admin");
+        admin.setRoleType(RoleType.ADMIN);
+
+        User user = new User();
+        user.setLogin("user");
+        user.setPassword("user");
+        user.setRoleType(RoleType.USER);
+
+        userService.save(admin);
+        userService.save(user);
     }
 
     private void addHelpCommand() {
@@ -57,8 +81,10 @@ public class Bootstrap {
 
     private void addUnauthorizedCommands() {
         UserAuthorizeCommand userAuthorizeCommand = new UserAuthorizeCommand(this);
+        UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
 
         commands.put(userAuthorizeCommand.getName(), userAuthorizeCommand);
+        commands.put(userRegisterCommand.getName(), userRegisterCommand);
     }
 
     private void addAuthorizedCommands() {
@@ -79,6 +105,9 @@ public class Bootstrap {
         TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
 
         UserLogoutCommand userLogoutCommand = new UserLogoutCommand(this);
+        UserChangePasswordCommand userChangePasswordCommand = new UserChangePasswordCommand(this);
+        UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
+        UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
 
         commands.put(projectListCommand.getName(), projectListCommand);
         commands.put(projectCreateCommand.getName(), projectCreateCommand);
@@ -94,6 +123,9 @@ public class Bootstrap {
         commands.put(taskChangeSelectedCommand.getName(), taskChangeSelectedCommand);
         commands.put(taskRemoveSelectedCommand.getName(), taskRemoveSelectedCommand);
         commands.put(taskJoinCommand.getName(), taskJoinCommand);
+        commands.put(userShowProfileCommand.getName(), userShowProfileCommand);
+        commands.put(userEditProfileCommand.getName(), userEditProfileCommand);
+        commands.put(userChangePasswordCommand.getName(), userChangePasswordCommand);
         commands.put(userLogoutCommand.getName(), userLogoutCommand);
     }
 
@@ -152,9 +184,14 @@ public class Bootstrap {
             addHelpCommand();
             addUnauthorizedCommands();
         } else {
+            System.out.println("Hi, " + currentUser.getLogin() + "!");
             commands.clear();
             addHelpCommand();
             addAuthorizedCommands();
         }
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 }

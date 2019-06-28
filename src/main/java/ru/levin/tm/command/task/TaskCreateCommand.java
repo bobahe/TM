@@ -9,7 +9,8 @@ import ru.levin.tm.util.CommandUtil;
 public class TaskCreateCommand extends AbstractCommand {
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public TaskCreateCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -17,6 +18,7 @@ public class TaskCreateCommand extends AbstractCommand {
         this.title = "[TASK CREATE]";
         this.description = "Create new task";
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -46,6 +48,8 @@ public class TaskCreateCommand extends AbstractCommand {
         task.setStartDate(CommandUtil.parseDate(scanner));
         System.out.println(END_DATE_PROMPT);
         task.setEndDate(CommandUtil.parseDate(scanner));
+
+        task.setUserId(bootstrap.getCurrentUser().getId());
 
         if (selectedProject != null) {
             System.out.println(JOIN_TO_PROJECT_PROMPT);

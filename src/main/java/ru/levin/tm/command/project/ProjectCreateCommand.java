@@ -7,6 +7,7 @@ import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
 public class ProjectCreateCommand extends AbstractCommand {
+    private Bootstrap bootstrap;
     private ProjectService projectService;
 
     public ProjectCreateCommand(Bootstrap bootstrap) {
@@ -15,6 +16,7 @@ public class ProjectCreateCommand extends AbstractCommand {
         this.title = "[PROJECT CREATE]";
         this.description = "Create new project";
         this.projectService = bootstrap.getProjectService();
+        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -44,6 +46,8 @@ public class ProjectCreateCommand extends AbstractCommand {
         project.setStartDate(CommandUtil.parseDate(scanner));
         System.out.println(END_DATE_PROMPT);
         project.setEndDate(CommandUtil.parseDate(scanner));
+
+        project.setUserId(bootstrap.getCurrentUser().getId());
 
         try {
             projectService.save(project);

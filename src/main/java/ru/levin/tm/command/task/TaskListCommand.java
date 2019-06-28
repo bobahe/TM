@@ -6,9 +6,11 @@ import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskListCommand extends AbstractCommand {
-    private TaskService taskService;
+    private final TaskService taskService;
+    private final Bootstrap bootstrap;
 
     public TaskListCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -16,6 +18,7 @@ public class TaskListCommand extends AbstractCommand {
         this.title = "[TASK LIST]";
         this.description = "Show all tasks";
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -35,7 +38,9 @@ public class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        List<Task> taskList = taskService.findAll();
+        List<Task> taskList = taskService.findAll().stream()
+                .filter(task -> task.getUserId().equals(bootstrap.getCurrentUser().getId()))
+                .collect(Collectors.toList());
         for (int i = 0; i < taskList.size(); i++) {
             Task task = taskList.get(i);
             System.out.println((i + 1) + ". " + task.getName());

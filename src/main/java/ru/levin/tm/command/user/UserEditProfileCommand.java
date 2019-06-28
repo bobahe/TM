@@ -2,20 +2,17 @@ package ru.levin.tm.command.user;
 
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
-import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
-import java.security.NoSuchAlgorithmException;
-
-public class UserAuthorizeCommand extends AbstractCommand {
+public class UserEditProfileCommand extends AbstractCommand {
     UserService userService;
     Bootstrap bootstrap;
 
-    public UserAuthorizeCommand(Bootstrap bootstrap) {
+    public UserEditProfileCommand(Bootstrap bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
-        this.name = "login";
-        this.description = "Log in to application";
+        this.name = "edit-profile";
+        this.description = "Edit user profile";
         this.bootstrap = bootstrap;
     }
 
@@ -36,23 +33,20 @@ public class UserAuthorizeCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println(LOGIN_PROMPT);
-        String login = scanner.nextLine();
-        System.out.println(PASSWORD_PROMPT);
-        String password = scanner.nextLine();
-
-        User user = null;
-        try {
-            user = userService.getUserByLoginAndPassword(login, password);
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println(e.getMessage());
-        }
-
-        if (user == null) {
-            System.err.println("There is no such user with entered login and password");
+        if (bootstrap.getCurrentUser() == null) {
             return;
         }
 
-        bootstrap.setCurrentUser(user);
+        System.out.println(LOGIN_PROMPT);
+        bootstrap.getCurrentUser().setLogin(scanner.nextLine());
+
+        try {
+            userService.update(bootstrap.getCurrentUser());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return;
+        }
+
+        System.out.println("Your profile changed successfully");
     }
 }

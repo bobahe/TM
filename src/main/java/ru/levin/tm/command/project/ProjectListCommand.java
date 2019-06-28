@@ -6,9 +6,11 @@ import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProjectListCommand extends AbstractCommand {
-    private ProjectService projectService;
+    private final ProjectService projectService;
+    private final Bootstrap bootstrap;
 
     public ProjectListCommand(Bootstrap bootstrap) {
         super(bootstrap);
@@ -16,6 +18,7 @@ public class ProjectListCommand extends AbstractCommand {
         this.title = "[PROJECT LIST]";
         this.description = "Show all projects";
         this.projectService = bootstrap.getProjectService();
+        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -35,9 +38,12 @@ public class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        List<Project> projectList = projectService.findAll();
+        List<Project> projectList = projectService.findAll().stream()
+                .filter(project -> project.getUserId().equals(bootstrap.getCurrentUser().getId()))
+                .collect(Collectors.toList());
         for (int i = 0; i < projectList.size(); i++) {
             Project project = projectList.get(i);
+
             System.out.println(title);
             System.out.println((i + 1) + ". " + project.getName());
             System.out.println("\tDescription: " + project.getDescription());

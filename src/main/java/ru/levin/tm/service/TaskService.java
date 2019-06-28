@@ -7,6 +7,7 @@ import ru.levin.tm.util.ServiceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskService extends AbstractEntityService<Task> {
     private static final String PROP_NAME = "name";
@@ -58,5 +59,13 @@ public class TaskService extends AbstractEntityService<Task> {
     @Override
     public void removeAll() {
         repository.removeAll();
+    }
+
+    public void removeByUserId(String id) {
+        List<Task> userTasks = repository.findAll().values().stream()
+                .filter(task -> task.getUserId().equals(id))
+                .collect(Collectors.toList());
+
+        userTasks.forEach(repository::remove);
     }
 }

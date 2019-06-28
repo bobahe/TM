@@ -9,7 +9,7 @@ public class ServiceUtil {
 
     public static void checkNullOrEmpty(Object string, String propertyName) {
         if (string == null || "".equals(string.toString())) {
-            throw new IllegalStateException("Can not save project with empty or null " + propertyName + ".");
+            throw new IllegalStateException("Can not save entity with empty or null " + propertyName + ".");
         }
     }
 }

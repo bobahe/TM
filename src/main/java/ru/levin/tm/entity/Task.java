@@ -9,6 +9,7 @@ public class Task {
     private String projectId;
     private Date startDate;
     private Date endDate;
+    private String userId;
 
     public String getId() {
         return id;
@@ -56,6 +57,14 @@ public class Task {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
