@@ -7,7 +7,7 @@ import ru.levin.tm.service.TaskService;
 
 import java.util.List;
 
-public class TaskProjectTaskListCommand extends AbstractCommand {
+public final class TaskProjectTaskListCommand extends AbstractCommand {
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
 
     private final TaskService taskService;

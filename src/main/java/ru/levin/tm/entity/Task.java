@@ -2,7 +2,7 @@ package ru.levin.tm.entity;
 
 import java.util.Date;
 
-public class Task {
+public final class Task {
     private String id;
     private String name;
     private String description;

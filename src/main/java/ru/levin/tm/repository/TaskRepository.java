@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class TaskRepository implements IRepository<Task> {
+public final class TaskRepository implements IRepository<Task> {
     private final Map<String, Task> taskMap = new LinkedHashMap<>();
 
     @Override

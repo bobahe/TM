@@ -8,7 +8,7 @@ import ru.levin.tm.service.TaskService;
 
 import java.util.List;
 
-public class ProjectRemoveSelectedCommand extends AbstractCommand {
+public final class ProjectRemoveSelectedCommand extends AbstractCommand {
     private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED";
 
     private final ProjectService projectService;

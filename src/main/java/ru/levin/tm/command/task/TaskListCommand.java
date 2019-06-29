@@ -9,7 +9,7 @@ import ru.levin.tm.service.TaskService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TaskListCommand extends AbstractCommand {
+public final class TaskListCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 

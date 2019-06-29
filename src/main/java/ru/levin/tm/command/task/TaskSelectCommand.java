@@ -7,7 +7,7 @@ import ru.levin.tm.service.TaskService;
 
 import java.util.stream.Collectors;
 
-public class TaskSelectCommand extends AbstractCommand {
+public final class TaskSelectCommand extends AbstractCommand {
     private static final String SELECTED_TASK_MESSAGE = "SELECTED TASK: ";
     private static final String SERIAL_NUMBER_PROMPT = "ENTER SERIAL NUMBER:";
 

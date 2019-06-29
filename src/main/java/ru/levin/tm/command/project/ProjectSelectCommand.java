@@ -7,7 +7,7 @@ import ru.levin.tm.service.ProjectService;
 
 import java.util.stream.Collectors;
 
-public class ProjectSelectCommand extends AbstractCommand {
+public final class ProjectSelectCommand extends AbstractCommand {
     private static final String SELECTED_PROJECT_MESSAGE = "SELECTED PROJECT: ";
     private static final String SERIAL_NUMBER_PROMPT = "ENTER SERIAL NUMBER:";
 

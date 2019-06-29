@@ -6,7 +6,7 @@ import ru.levin.tm.console.Bootstrap;
 
 import java.util.Map;
 
-public class HelpCommand extends AbstractCommand {
+public final class HelpCommand extends AbstractCommand {
     private final Map<String, AbstractCommand> commands;
 
     public HelpCommand(final IServiceLocator bootstrap) {

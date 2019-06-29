@@ -9,7 +9,7 @@ import ru.levin.tm.service.ProjectService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProjectListCommand extends AbstractCommand {
+public final class ProjectListCommand extends AbstractCommand {
     private final ProjectService projectService;
     private final Bootstrap bootstrap;
 

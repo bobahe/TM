@@ -6,7 +6,7 @@ import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.service.TaskService;
 
-public class ProjectRemoveAllCommand extends AbstractCommand {
+public final class ProjectRemoveAllCommand extends AbstractCommand {
     private static final String ALL_PROJECTS_REMOVED_MESSAGE = "[ALL PROJECTS REMOVED]\n";
     private final ProjectService projectService;
     private final TaskService taskService;

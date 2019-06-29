@@ -6,7 +6,7 @@ import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
-public class UserAuthorizeCommand extends AbstractCommand {
+public final class UserAuthorizeCommand extends AbstractCommand {
     private final UserService userService;
     private final Bootstrap bootstrap;
 

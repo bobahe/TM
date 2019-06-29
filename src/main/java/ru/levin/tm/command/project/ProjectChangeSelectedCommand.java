@@ -9,7 +9,7 @@ import ru.levin.tm.util.CommandUtil;
 import java.text.ParseException;
 import java.util.Date;
 
-public class ProjectChangeSelectedCommand extends AbstractCommand {
+public final class ProjectChangeSelectedCommand extends AbstractCommand {
     private final ProjectService projectService;
 
     public ProjectChangeSelectedCommand(final IServiceLocator bootstrap) {

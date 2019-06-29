@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 
-public class CommandUtil {
+public final class CommandUtil {
     private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED\n";
     private static final String TASK_NOT_SELECTED_ERR = "TASK IS NOT SELECTED\n";
 

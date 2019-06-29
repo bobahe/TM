@@ -7,7 +7,7 @@ import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
-public class ProjectCreateCommand extends AbstractCommand {
+public final class ProjectCreateCommand extends AbstractCommand {
     private final ProjectService projectService;
     private final Bootstrap bootstrap;
 

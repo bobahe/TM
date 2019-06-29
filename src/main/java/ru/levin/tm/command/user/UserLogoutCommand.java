@@ -3,9 +3,8 @@ package ru.levin.tm.command.user;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
-import ru.levin.tm.service.UserService;
 
-public class UserLogoutCommand extends AbstractCommand {
+public final class UserLogoutCommand extends AbstractCommand {
     private final Bootstrap bootstrap;
 
     public UserLogoutCommand(final IServiceLocator bootstrap) {

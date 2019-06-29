@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Bootstrap implements IServiceLocator {
+public final class Bootstrap implements IServiceLocator {
     private final Scanner scanner = new Scanner(new InputStreamReader(System.in));
     private final Map<String, AbstractCommand> commands;
 

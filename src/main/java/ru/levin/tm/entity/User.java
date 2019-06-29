@@ -1,6 +1,6 @@
 package ru.levin.tm.entity;
 
-public class User {
+public final class User {
     private String id;
     private String login;
     private String password;

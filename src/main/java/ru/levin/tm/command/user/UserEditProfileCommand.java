@@ -5,7 +5,7 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.UserService;
 
-public class UserEditProfileCommand extends AbstractCommand {
+public final class UserEditProfileCommand extends AbstractCommand {
     private final UserService userService;
     private final Bootstrap bootstrap;
 

@@ -4,7 +4,7 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.service.TaskService;
 
-public class TaskJoinCommand extends AbstractCommand {
+public final class TaskJoinCommand extends AbstractCommand {
     private static final String SELECTED_PROJECT_MESSAGE = "SELECTED TASK: ";
     private static final String SELECTED_TASK_MESSAGE = "SELECTED TASK: ";
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";

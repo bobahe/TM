@@ -7,7 +7,7 @@ import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
 
-public class TaskCreateCommand extends AbstractCommand {
+public final class TaskCreateCommand extends AbstractCommand {
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
     private final TaskService taskService;

@@ -9,7 +9,7 @@ import ru.levin.tm.util.CommandUtil;
 import java.text.ParseException;
 import java.util.Date;
 
-public class TaskChangeSelectedCommand extends AbstractCommand {
+public final class TaskChangeSelectedCommand extends AbstractCommand {
     private final TaskService taskService;
 
     public TaskChangeSelectedCommand(final IServiceLocator bootstrap) {

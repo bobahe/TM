@@ -1,6 +1,6 @@
 package ru.levin.tm.util;
 
-public class ServiceUtil {
+public final class ServiceUtil {
     public static void checkNull(final Object object) {
         if (object == null) {
             throw new IllegalStateException("Can not save null.");

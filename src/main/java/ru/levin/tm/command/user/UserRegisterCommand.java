@@ -2,12 +2,11 @@ package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
-public class UserRegisterCommand extends AbstractCommand {
+public final class UserRegisterCommand extends AbstractCommand {
     private final UserService userService;
 
     public UserRegisterCommand(final IServiceLocator bootstrap) {

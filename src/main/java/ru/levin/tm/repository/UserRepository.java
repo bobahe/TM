@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class UserRepository implements IRepository<User> {
+public final class UserRepository implements IRepository<User> {
     private final Map<String, User> userMap = new LinkedHashMap<>();
 
     @Override

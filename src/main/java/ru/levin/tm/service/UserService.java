@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService extends AbstractEntityService<User> {
+public final class UserService extends AbstractEntityService<User> {
     private static final String PROP_LOGIN = "login";
     private static final String PROP_PASSWORD = "password";
 

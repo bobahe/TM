@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TaskService extends AbstractEntityService<Task> {
+public final class TaskService extends AbstractEntityService<Task> {
     private static final String PROP_NAME = "name";
     private static final String PROP_ID = "id";
 
