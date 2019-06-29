@@ -16,7 +16,7 @@ public class UserService extends AbstractEntityService<User> {
     private static final String PROP_PASSWORD = "password";
 
     private IRepository<User> repository;
-    MessageDigest md;
+    private MessageDigest md;
 
     public UserService(IRepository<User> userRepository) throws NoSuchAlgorithmException {
         this.repository = userRepository;
@@ -57,7 +57,7 @@ public class UserService extends AbstractEntityService<User> {
         repository.removeAll();
     }
 
-    public User getUserByLoginAndPassword(String login, String password) throws NoSuchAlgorithmException {
+    public User getUserByLoginAndPassword(String login, String password) {
         String hash = DatatypeConverter.printHexBinary(md.digest(password.getBytes()));
         return ((UserRepository) repository).findOneByLoginAndPassword(login, hash);
     }
