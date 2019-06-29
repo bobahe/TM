@@ -1,5 +1,6 @@
 package ru.levin.tm.command.project;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
@@ -7,16 +8,16 @@ import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
 public class ProjectCreateCommand extends AbstractCommand {
-    private Bootstrap bootstrap;
     private ProjectService projectService;
+    private Bootstrap bootstrap;
 
-    public ProjectCreateCommand(Bootstrap bootstrap) {
+    public ProjectCreateCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-create";
         this.title = "[PROJECT CREATE]";
         this.description = "Create new project";
         this.projectService = bootstrap.getProjectService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

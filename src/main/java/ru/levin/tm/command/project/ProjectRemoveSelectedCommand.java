@@ -1,7 +1,7 @@
 package ru.levin.tm.command.project;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.service.TaskService;
@@ -13,15 +13,13 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
 
     private final ProjectService projectService;
     private final TaskService taskService;
-    private final Bootstrap bootstrap;
 
-    public ProjectRemoveSelectedCommand(Bootstrap bootstrap) {
+    public ProjectRemoveSelectedCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-remove";
         this.description = "Remove selected project";
         this.projectService = bootstrap.getProjectService();
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
         try {
             projectService.remove(selectedProject);
             List<Task> tasksInProjectList = taskService.findByProjectId(selectedProject.getId());
-            tasksInProjectList.forEach(task -> taskService.remove(task));
+            tasksInProjectList.forEach(taskService::remove);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return;

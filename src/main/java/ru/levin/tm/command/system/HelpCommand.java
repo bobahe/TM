@@ -1,5 +1,6 @@
 package ru.levin.tm.command.system;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 
@@ -8,11 +9,11 @@ import java.util.Map;
 public class HelpCommand extends AbstractCommand {
     private Map<String, AbstractCommand> commands;
 
-    public HelpCommand(Bootstrap bootstrap) {
+    public HelpCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         name = "help";
         description = "Show all commands";
-        this.commands = bootstrap.getCommands();
+        this.commands = ((Bootstrap) bootstrap).getCommands();
     }
 
     @Override

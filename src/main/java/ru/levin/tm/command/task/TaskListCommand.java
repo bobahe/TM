@@ -1,5 +1,6 @@
 package ru.levin.tm.command.task;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
@@ -12,13 +13,13 @@ public class TaskListCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskListCommand(Bootstrap bootstrap) {
+    public TaskListCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-list";
         this.title = "[TASK LIST]";
         this.description = "Show all tasks";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.levin.tm.command.project;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.ProjectService;
@@ -13,13 +14,13 @@ public class ProjectSelectCommand extends AbstractCommand {
     private final ProjectService projectService;
     private final Bootstrap bootstrap;
 
-    public ProjectSelectCommand(Bootstrap bootstrap) {
+    public ProjectSelectCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-select";
         this.title = "[PROJECT SELECT]";
         this.description = "Select project";
         this.projectService = bootstrap.getProjectService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

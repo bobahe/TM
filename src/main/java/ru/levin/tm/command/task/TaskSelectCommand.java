@@ -1,5 +1,6 @@
 package ru.levin.tm.command.task;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.TaskService;
@@ -13,13 +14,13 @@ public class TaskSelectCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskSelectCommand(Bootstrap bootstrap) {
+    public TaskSelectCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-select";
         this.title = "[TASK SELECT]";
         this.description = "Select task";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

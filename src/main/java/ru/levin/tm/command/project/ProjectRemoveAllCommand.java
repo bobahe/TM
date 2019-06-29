@@ -1,5 +1,6 @@
 package ru.levin.tm.command.project;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.ProjectService;
@@ -11,13 +12,13 @@ public class ProjectRemoveAllCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public ProjectRemoveAllCommand(Bootstrap bootstrap) {
+    public ProjectRemoveAllCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-clear";
         this.description = "Remove all projects";
         this.projectService = bootstrap.getProjectService();
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

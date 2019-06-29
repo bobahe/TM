@@ -1,7 +1,7 @@
 package ru.levin.tm.command.task;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.TaskService;
 
 public class TaskJoinCommand extends AbstractCommand {
@@ -11,15 +11,13 @@ public class TaskJoinCommand extends AbstractCommand {
     private static final String SELECT_TASK_MESSAGE = "You must select a task before";
 
     private final TaskService taskService;
-    private final Bootstrap bootstrap;
 
-    public TaskJoinCommand(Bootstrap bootstrap) {
+    public TaskJoinCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-join";
         this.title = "[JOIN TASK TO PROJECT]";
         this.description = "Join selected task to selected project";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
     }
 
     @Override

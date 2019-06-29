@@ -1,5 +1,6 @@
 package ru.levin.tm.command.user;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.UserService;
@@ -8,12 +9,12 @@ public class UserEditProfileCommand extends AbstractCommand {
     UserService userService;
     Bootstrap bootstrap;
 
-    public UserEditProfileCommand(Bootstrap bootstrap) {
+    public UserEditProfileCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "edit-profile";
         this.description = "Edit user profile";
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.levin.tm.command.project;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
@@ -12,13 +13,13 @@ public class ProjectListCommand extends AbstractCommand {
     private final ProjectService projectService;
     private final Bootstrap bootstrap;
 
-    public ProjectListCommand(Bootstrap bootstrap) {
+    public ProjectListCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-list";
         this.title = "[PROJECT LIST]";
         this.description = "Show all projects";
         this.projectService = bootstrap.getProjectService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

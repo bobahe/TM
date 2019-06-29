@@ -1,6 +1,7 @@
 package ru.levin.tm.console;
 
 import ru.levin.tm.api.IRepository;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.command.project.*;
 import ru.levin.tm.command.system.HelpCommand;
@@ -23,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Bootstrap {
+public class Bootstrap implements IServiceLocator {
     private Scanner scanner = new Scanner(new InputStreamReader(System.in));
     private Map<String, AbstractCommand> commands;
 

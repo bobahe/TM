@@ -1,5 +1,6 @@
 package ru.levin.tm.command.task;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.TaskService;
@@ -10,12 +11,12 @@ public class TaskRemoveAllCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskRemoveAllCommand(Bootstrap bootstrap) {
+    public TaskRemoveAllCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-clear";
         this.description = "Remove all tasks";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

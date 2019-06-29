@@ -1,5 +1,6 @@
 package ru.levin.tm.command;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.Task;
@@ -33,8 +34,8 @@ public abstract class AbstractCommand {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-    public AbstractCommand(Bootstrap bootstrap) {
-        this.scanner = bootstrap.getScanner();
+    public AbstractCommand(IServiceLocator bootstrap) {
+        this.scanner = ((Bootstrap) bootstrap).getScanner();
     }
 
     public abstract String getName();

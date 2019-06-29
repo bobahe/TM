@@ -1,7 +1,7 @@
 package ru.levin.tm.command.project;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
@@ -11,15 +11,13 @@ import java.util.Date;
 
 public class ProjectChangeSelectedCommand extends AbstractCommand {
     private final ProjectService projectService;
-    private final Bootstrap bootstrap;
 
-    public ProjectChangeSelectedCommand(Bootstrap bootstrap) {
+    public ProjectChangeSelectedCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-change";
         this.description = "Change selected project";
         this.title = "[CHANGE PROJECT]";
         this.projectService = bootstrap.getProjectService();
-        this.bootstrap = bootstrap;
     }
 
     @Override

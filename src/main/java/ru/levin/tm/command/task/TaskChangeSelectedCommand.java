@@ -1,7 +1,7 @@
 package ru.levin.tm.command.task;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
@@ -11,15 +11,13 @@ import java.util.Date;
 
 public class TaskChangeSelectedCommand extends AbstractCommand {
     private final TaskService taskService;
-    private final Bootstrap bootstrap;
 
-    public TaskChangeSelectedCommand(Bootstrap bootstrap) {
+    public TaskChangeSelectedCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-change";
         this.description = "Change selected task";
         this.title = "[CHANGE TASK]";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
     }
 
     @Override

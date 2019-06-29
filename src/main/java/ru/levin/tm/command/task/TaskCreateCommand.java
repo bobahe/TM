@@ -1,5 +1,6 @@
 package ru.levin.tm.command.task;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
@@ -12,13 +13,13 @@ public class TaskCreateCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskCreateCommand(Bootstrap bootstrap) {
+    public TaskCreateCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-create";
         this.title = "[TASK CREATE]";
         this.description = "Create new task";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override

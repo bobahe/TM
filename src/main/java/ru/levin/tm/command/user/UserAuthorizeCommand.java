@@ -1,22 +1,21 @@
 package ru.levin.tm.command.user;
 
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
-import java.security.NoSuchAlgorithmException;
-
 public class UserAuthorizeCommand extends AbstractCommand {
     UserService userService;
     Bootstrap bootstrap;
 
-    public UserAuthorizeCommand(Bootstrap bootstrap) {
+    public UserAuthorizeCommand(IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "login";
         this.description = "Log in to application";
-        this.bootstrap = bootstrap;
+        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override
@@ -41,12 +40,8 @@ public class UserAuthorizeCommand extends AbstractCommand {
         System.out.println(PASSWORD_PROMPT);
         String password = scanner.nextLine();
 
-        User user = null;
-        try {
-            user = userService.getUserByLoginAndPassword(login, password);
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println(e.getMessage());
-        }
+        User user;
+        user = userService.getUserByLoginAndPassword(login, password);
 
         if (user == null) {
             System.err.println("There is no such user with entered login and password");
