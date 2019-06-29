@@ -6,10 +6,10 @@ import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.UserService;
 
 public class UserEditProfileCommand extends AbstractCommand {
-    UserService userService;
-    Bootstrap bootstrap;
+    private final UserService userService;
+    private final Bootstrap bootstrap;
 
-    public UserEditProfileCommand(IServiceLocator bootstrap) {
+    public UserEditProfileCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "edit-profile";

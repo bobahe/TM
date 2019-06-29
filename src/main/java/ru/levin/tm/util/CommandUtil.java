@@ -13,8 +13,8 @@ public class CommandUtil {
     private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED\n";
     private static final String TASK_NOT_SELECTED_ERR = "TASK IS NOT SELECTED\n";
 
-    public static Date parseDate(Scanner scanner) {
-        String date = scanner.nextLine();
+    public static Date parseDate(final Scanner scanner) {
+        final String date = scanner.nextLine();
 
         if ("".equals(date)) {
             return null;
@@ -28,7 +28,7 @@ public class CommandUtil {
         }
     }
 
-    public static boolean isSelectedObjectNull(Object object, Class objectClass) {
+    public static boolean isSelectedObjectNull(final Object object, final Class objectClass) {
         if (objectClass == Project.class && object == null) {
             System.out.println(PROJECT_NOT_SELECTED);
             return true;
@@ -40,6 +40,4 @@ public class CommandUtil {
 
         return false;
     }
-
-
 }

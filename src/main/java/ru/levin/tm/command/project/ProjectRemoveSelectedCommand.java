@@ -14,7 +14,7 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
     private final ProjectService projectService;
     private final TaskService taskService;
 
-    public ProjectRemoveSelectedCommand(IServiceLocator bootstrap) {
+    public ProjectRemoveSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-remove";
         this.description = "Remove selected project";
@@ -46,7 +46,7 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
 
         try {
             projectService.remove(selectedProject);
-            List<Task> tasksInProjectList = taskService.findByProjectId(selectedProject.getId());
+            final List<Task> tasksInProjectList = taskService.findByProjectId(selectedProject.getId());
             tasksInProjectList.forEach(taskService::remove);
         } catch (Exception e) {
             System.out.println(e.getMessage());

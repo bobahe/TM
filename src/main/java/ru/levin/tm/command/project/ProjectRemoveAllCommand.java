@@ -12,7 +12,7 @@ public class ProjectRemoveAllCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public ProjectRemoveAllCommand(IServiceLocator bootstrap) {
+    public ProjectRemoveAllCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-clear";
         this.description = "Remove all projects";

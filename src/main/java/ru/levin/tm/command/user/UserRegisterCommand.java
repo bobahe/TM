@@ -8,15 +8,13 @@ import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
 public class UserRegisterCommand extends AbstractCommand {
-    UserService userService;
-    Bootstrap bootstrap;
+    private final UserService userService;
 
-    public UserRegisterCommand(IServiceLocator bootstrap) {
+    public UserRegisterCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "register";
         this.description = "Register user in the application";
-        this.bootstrap = ((Bootstrap) bootstrap);
     }
 
     @Override
@@ -37,11 +35,11 @@ public class UserRegisterCommand extends AbstractCommand {
     @Override
     public void execute() {
         System.out.println(LOGIN_PROMPT);
-        String login = scanner.nextLine();
+        final String login = scanner.nextLine();
         System.out.println(PASSWORD_PROMPT);
-        String password = scanner.nextLine();
+        final String password = scanner.nextLine();
 
-        User user = new User();
+        final User user = new User();
         user.setLogin(login);
         user.setPassword(password);
         user.setRoleType(RoleType.USER);

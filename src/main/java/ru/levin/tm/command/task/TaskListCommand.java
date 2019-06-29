@@ -13,7 +13,7 @@ public class TaskListCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskListCommand(IServiceLocator bootstrap) {
+    public TaskListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-list";
         this.title = "[TASK LIST]";
@@ -39,11 +39,11 @@ public class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        List<Task> taskList = taskService.findAll().stream()
+        final List<Task> taskList = taskService.findAll().stream()
                 .filter(task -> task.getUserId().equals(bootstrap.getCurrentUser().getId()))
                 .collect(Collectors.toList());
         for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
+            final Task task = taskList.get(i);
             System.out.println((i + 1) + ". " + task.getName());
             System.out.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {

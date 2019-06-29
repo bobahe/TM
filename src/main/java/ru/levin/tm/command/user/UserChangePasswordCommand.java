@@ -7,10 +7,10 @@ import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
 public class UserChangePasswordCommand extends AbstractCommand {
-    UserService userService;
-    Bootstrap bootstrap;
+    private final UserService userService;
+    private final Bootstrap bootstrap;
 
-    public UserChangePasswordCommand(IServiceLocator bootstrap) {
+    public UserChangePasswordCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "change-password";
@@ -40,16 +40,16 @@ public class UserChangePasswordCommand extends AbstractCommand {
         }
 
         System.out.println(PASSWORD_PROMPT);
-        String passwordOne = scanner.nextLine();
+        final String passwordOne = scanner.nextLine();
         System.out.println(PASSWORD_AGAIN_PROMPT);
-        String passwordTwo = scanner.nextLine();
+        final String passwordTwo = scanner.nextLine();
 
         if (!passwordOne.equals(passwordTwo)) {
             System.out.println("You have entered different passwords. Abort.");
             return;
         }
 
-        User user = userService.setNewPassword(bootstrap.getCurrentUser(), passwordOne);
+        final User user = userService.setNewPassword(bootstrap.getCurrentUser(), passwordOne);
 
         try {
             userService.update(user);

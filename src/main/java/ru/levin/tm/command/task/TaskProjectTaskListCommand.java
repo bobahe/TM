@@ -12,7 +12,7 @@ public class TaskProjectTaskListCommand extends AbstractCommand {
 
     private final TaskService taskService;
 
-    public TaskProjectTaskListCommand(IServiceLocator bootstrap) {
+    public TaskProjectTaskListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-task-list";
         this.title = "[PROJECT TASK LIST]";
@@ -44,10 +44,10 @@ public class TaskProjectTaskListCommand extends AbstractCommand {
 
         System.out.println(title + " for " + selectedProject.getName());
 
-        List<Task> taskList = taskService.findByProjectId(selectedProject.getId());
+        final List<Task> taskList = taskService.findByProjectId(selectedProject.getId());
 
         for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
+            final Task task = taskList.get(i);
             System.out.println((i + 1) + ". " + task.getName());
             System.out.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {

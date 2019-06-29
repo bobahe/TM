@@ -8,10 +8,10 @@ import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
 public class ProjectCreateCommand extends AbstractCommand {
-    private ProjectService projectService;
-    private Bootstrap bootstrap;
+    private final ProjectService projectService;
+    private final Bootstrap bootstrap;
 
-    public ProjectCreateCommand(IServiceLocator bootstrap) {
+    public ProjectCreateCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-create";
         this.title = "[PROJECT CREATE]";
@@ -36,7 +36,7 @@ public class ProjectCreateCommand extends AbstractCommand {
     }
 
     public void execute() {
-        Project project = new Project();
+        final Project project = new Project();
 
         System.out.println(this.title);
         System.out.println(NAME_PROMPT);

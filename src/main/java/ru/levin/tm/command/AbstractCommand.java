@@ -26,7 +26,7 @@ public abstract class AbstractCommand {
     protected static Project selectedProject;
     protected static Task selectedTask;
 
-    protected Scanner scanner;
+    protected final Scanner scanner;
 
     protected String name;
     protected String title;
@@ -34,7 +34,7 @@ public abstract class AbstractCommand {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-    public AbstractCommand(IServiceLocator bootstrap) {
+    public AbstractCommand(final IServiceLocator bootstrap) {
         this.scanner = ((Bootstrap) bootstrap).getScanner();
     }
 

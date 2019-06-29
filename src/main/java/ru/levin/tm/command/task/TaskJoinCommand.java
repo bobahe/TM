@@ -12,7 +12,7 @@ public class TaskJoinCommand extends AbstractCommand {
 
     private final TaskService taskService;
 
-    public TaskJoinCommand(IServiceLocator bootstrap) {
+    public TaskJoinCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-join";
         this.title = "[JOIN TASK TO PROJECT]";
@@ -49,7 +49,7 @@ public class TaskJoinCommand extends AbstractCommand {
         System.out.println(SELECTED_PROJECT_MESSAGE + selectedProject);
         System.out.println(SELECTED_TASK_MESSAGE + selectedTask);
         System.out.println(description + "? (Y/n)");
-        String joinAnswer = scanner.nextLine();
+        final String joinAnswer = scanner.nextLine();
         switch (joinAnswer) {
             case "Y":
             case "y":

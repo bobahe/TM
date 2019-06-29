@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ProjectRepository implements IRepository<Project> {
-    Map<String, Project> projectMap = new LinkedHashMap<>();
+    private final Map<String, Project> projectMap = new LinkedHashMap<>();
 
     @Override
     public Map<String, Project> findAll() {
@@ -16,24 +16,24 @@ public class ProjectRepository implements IRepository<Project> {
     }
 
     @Override
-    public Project findOne(String id) {
+    public Project findOne(final String id) {
         return projectMap.get(id);
     }
 
     @Override
-    public void persist(Project entity) {
-        String id = UUID.randomUUID().toString();
+    public void persist(final Project entity) {
+        final String id = UUID.randomUUID().toString();
         entity.setId(id);
         projectMap.put(id, entity);
     }
 
     @Override
-    public void merge(Project entity) {
+    public void merge(final Project entity) {
         projectMap.put(entity.getId(), entity);
     }
 
     @Override
-    public void remove(Project entity) {
+    public void remove(final Project entity) {
         projectMap.remove(entity.getId());
     }
 

@@ -22,7 +22,7 @@ public class Project {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -30,7 +30,7 @@ public class Project {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(final Date startDate) {
         this.startDate = startDate;
     }
 
@@ -38,7 +38,7 @@ public class Project {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(final Date endDate) {
         this.endDate = endDate;
     }
 
@@ -46,7 +46,7 @@ public class Project {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -54,7 +54,7 @@ public class Project {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(final String userId) {
         this.userId = userId;
     }
 

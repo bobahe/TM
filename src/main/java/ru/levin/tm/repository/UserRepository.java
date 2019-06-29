@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class UserRepository implements IRepository<User> {
-    Map<String, User> userMap = new LinkedHashMap<>();
+    private final Map<String, User> userMap = new LinkedHashMap<>();
 
     @Override
     public Map<String, User> findAll() {
@@ -16,24 +16,24 @@ public class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public User findOne(String id) {
+    public User findOne(final String id) {
         return userMap.get(id);
     }
 
     @Override
-    public void persist(User entity) {
-        String id = UUID.randomUUID().toString();
+    public void persist(final User entity) {
+        final String id = UUID.randomUUID().toString();
         entity.setId(id);
         userMap.put(id, entity);
     }
 
     @Override
-    public void merge(User entity) {
+    public void merge(final User entity) {
         userMap.put(entity.getId(), entity);
     }
 
     @Override
-    public void remove(User entity) {
+    public void remove(final User entity) {
         userMap.remove(entity.getId());
     }
 
@@ -42,7 +42,7 @@ public class UserRepository implements IRepository<User> {
         userMap.clear();
     }
 
-    public User findOneByLoginAndPassword(String login, String password) {
+    public User findOneByLoginAndPassword(final String login, final String password) {
         return userMap.values().stream()
                 .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(password))
                 .findFirst().orElse(null);

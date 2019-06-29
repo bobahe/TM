@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class TaskRepository implements IRepository<Task> {
-    Map<String, Task> taskMap = new LinkedHashMap<>();
+    private final Map<String, Task> taskMap = new LinkedHashMap<>();
 
     @Override
     public Map<String, Task> findAll() {
@@ -18,24 +18,24 @@ public class TaskRepository implements IRepository<Task> {
     }
 
     @Override
-    public Task findOne(String id) {
+    public Task findOne(final String id) {
         return taskMap.get(id);
     }
 
     @Override
-    public void persist(Task entity) {
-        String id = UUID.randomUUID().toString();
+    public void persist(final Task entity) {
+        final String id = UUID.randomUUID().toString();
         entity.setId(id);
         taskMap.put(id, entity);
     }
 
     @Override
-    public void merge(Task entity) {
+    public void merge(final Task entity) {
         taskMap.put(entity.getId(), entity);
     }
 
     @Override
-    public void remove(Task entity) {
+    public void remove(final Task entity) {
         taskMap.remove(entity.getId());
     }
 
@@ -44,7 +44,7 @@ public class TaskRepository implements IRepository<Task> {
         taskMap.clear();
     }
 
-    public List<Task> findAllByProjectId(String id) {
+    public List<Task> findAllByProjectId(final String id) {
         return taskMap.values().stream().filter(task -> id.equals(task.getProjectId())).collect(Collectors.toList());
     }
 }

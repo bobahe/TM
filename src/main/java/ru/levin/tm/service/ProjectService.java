@@ -14,7 +14,7 @@ public class ProjectService extends AbstractEntityService<Project> {
 
     private final IRepository<Project> repository;
 
-    public ProjectService(IRepository<Project> repository) {
+    public ProjectService(final IRepository<Project> repository) {
         this.repository = repository;
     }
 
@@ -24,7 +24,7 @@ public class ProjectService extends AbstractEntityService<Project> {
     }
 
     @Override
-    public void save(Project entity) {
+    public void save(final Project entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
 
@@ -32,7 +32,7 @@ public class ProjectService extends AbstractEntityService<Project> {
     }
 
     @Override
-    public void update(Project entity) {
+    public void update(final Project entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
         ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
@@ -45,7 +45,7 @@ public class ProjectService extends AbstractEntityService<Project> {
     }
 
     @Override
-    public void remove(Project entity) {
+    public void remove(final Project entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
         repository.remove(entity);
@@ -56,8 +56,8 @@ public class ProjectService extends AbstractEntityService<Project> {
         repository.removeAll();
     }
 
-    public void removeByUserId(String id) {
-        List<Project> userProjects = repository.findAll().values().stream()
+    public void removeByUserId(final String id) {
+        final List<Project> userProjects = repository.findAll().values().stream()
                 .filter(project -> project.getUserId().equals(id))
                 .collect(Collectors.toList());
 

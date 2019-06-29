@@ -12,7 +12,7 @@ import java.util.Date;
 public class ProjectChangeSelectedCommand extends AbstractCommand {
     private final ProjectService projectService;
 
-    public ProjectChangeSelectedCommand(IServiceLocator bootstrap) {
+    public ProjectChangeSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-change";
         this.description = "Change selected project";
@@ -60,8 +60,8 @@ public class ProjectChangeSelectedCommand extends AbstractCommand {
         System.out.println(SUCCESS_MESSAGE);
     }
 
-    private Date parseDate(boolean isStartDate) {
-        String date = scanner.nextLine();
+    private Date parseDate(final boolean isStartDate) {
+        final String date = scanner.nextLine();
 
         if ("".equals(date)) {
             return isStartDate ? selectedProject.getStartDate() : selectedProject.getEndDate();

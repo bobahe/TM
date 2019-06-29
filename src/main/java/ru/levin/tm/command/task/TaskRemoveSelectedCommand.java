@@ -9,7 +9,7 @@ public class TaskRemoveSelectedCommand extends AbstractCommand {
 
     private final TaskService taskService;
 
-    public TaskRemoveSelectedCommand(IServiceLocator bootstrap) {
+    public TaskRemoveSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-remove";
         this.description = "Remove selected task";

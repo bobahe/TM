@@ -14,7 +14,7 @@ public class TaskSelectCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskSelectCommand(IServiceLocator bootstrap) {
+    public TaskSelectCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-select";
         this.title = "[TASK SELECT]";
@@ -42,7 +42,7 @@ public class TaskSelectCommand extends AbstractCommand {
         System.out.println(this.title);
         System.out.println(SERIAL_NUMBER_PROMPT);
         try {
-            int index = Integer.parseInt(scanner.nextLine());
+            final int index = Integer.parseInt(scanner.nextLine());
             selectedTask = taskService.findAll().stream()
                     .filter(task -> task.getUserId().equals(bootstrap.getCurrentUser().getId()))
                     .collect(Collectors.toList())

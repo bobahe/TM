@@ -7,10 +7,10 @@ import ru.levin.tm.entity.User;
 import ru.levin.tm.service.UserService;
 
 public class UserAuthorizeCommand extends AbstractCommand {
-    UserService userService;
-    Bootstrap bootstrap;
+    private final UserService userService;
+    private final Bootstrap bootstrap;
 
-    public UserAuthorizeCommand(IServiceLocator bootstrap) {
+    public UserAuthorizeCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "login";
@@ -36,12 +36,11 @@ public class UserAuthorizeCommand extends AbstractCommand {
     @Override
     public void execute() {
         System.out.println(LOGIN_PROMPT);
-        String login = scanner.nextLine();
+        final String login = scanner.nextLine();
         System.out.println(PASSWORD_PROMPT);
-        String password = scanner.nextLine();
+        final String password = scanner.nextLine();
 
-        User user;
-        user = userService.getUserByLoginAndPassword(login, password);
+        final User user = userService.getUserByLoginAndPassword(login, password);
 
         if (user == null) {
             System.err.println("There is no such user with entered login and password");

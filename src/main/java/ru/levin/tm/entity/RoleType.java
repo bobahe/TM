@@ -4,9 +4,9 @@ public enum RoleType {
     ADMIN ("Administrator"),
     USER ("User");
 
-    private String displayName;
+    private final String displayName;
 
-    RoleType(String displayName) {
+    RoleType(final String displayName) {
         this.displayName = displayName;
     }
 }

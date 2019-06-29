@@ -15,7 +15,7 @@ public class Task {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -23,7 +23,7 @@ public class Task {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -31,7 +31,7 @@ public class Task {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(final Date startDate) {
         this.startDate = startDate;
     }
 
@@ -39,7 +39,7 @@ public class Task {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(final Date endDate) {
         this.endDate = endDate;
     }
 
@@ -47,7 +47,7 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -55,7 +55,7 @@ public class Task {
         return projectId;
     }
 
-    public void setProjectId(String projectId) {
+    public void setProjectId(final String projectId) {
         this.projectId = projectId;
     }
 
@@ -63,7 +63,7 @@ public class Task {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(final String userId) {
         this.userId = userId;
     }
 

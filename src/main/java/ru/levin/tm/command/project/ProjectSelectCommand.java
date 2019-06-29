@@ -14,7 +14,7 @@ public class ProjectSelectCommand extends AbstractCommand {
     private final ProjectService projectService;
     private final Bootstrap bootstrap;
 
-    public ProjectSelectCommand(IServiceLocator bootstrap) {
+    public ProjectSelectCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-select";
         this.title = "[PROJECT SELECT]";
@@ -42,7 +42,7 @@ public class ProjectSelectCommand extends AbstractCommand {
         System.out.println(this.title);
         System.out.println(SERIAL_NUMBER_PROMPT);
         try {
-            int index = Integer.parseInt(scanner.nextLine());
+            final int index = Integer.parseInt(scanner.nextLine());
             selectedProject = projectService.findAll().stream()
                     .filter(project -> project.getUserId().equals(bootstrap.getCurrentUser().getId()))
                     .collect(Collectors.toList())

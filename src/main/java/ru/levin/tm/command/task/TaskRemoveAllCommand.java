@@ -11,7 +11,7 @@ public class TaskRemoveAllCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskRemoveAllCommand(IServiceLocator bootstrap) {
+    public TaskRemoveAllCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-clear";
         this.description = "Remove all tasks";

@@ -13,7 +13,7 @@ public class TaskCreateCommand extends AbstractCommand {
     private final TaskService taskService;
     private final Bootstrap bootstrap;
 
-    public TaskCreateCommand(IServiceLocator bootstrap) {
+    public TaskCreateCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-create";
         this.title = "[TASK CREATE]";
@@ -38,7 +38,7 @@ public class TaskCreateCommand extends AbstractCommand {
     }
 
     public void execute() {
-        Task task = new Task();
+        final Task task = new Task();
 
         System.out.println(this.title);
         System.out.println(NAME_PROMPT);
@@ -54,7 +54,7 @@ public class TaskCreateCommand extends AbstractCommand {
 
         if (selectedProject != null) {
             System.out.println(JOIN_TO_PROJECT_PROMPT);
-            String joinAnswer = scanner.nextLine();
+            final String joinAnswer = scanner.nextLine();
             switch (joinAnswer) {
                 case "Y":
                 case "y":

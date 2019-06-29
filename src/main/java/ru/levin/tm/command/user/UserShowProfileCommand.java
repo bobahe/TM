@@ -6,12 +6,10 @@ import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.UserService;
 
 public class UserShowProfileCommand extends AbstractCommand {
-    UserService userService;
-    Bootstrap bootstrap;
+    private final Bootstrap bootstrap;
 
-    public UserShowProfileCommand(IServiceLocator bootstrap) {
+    public UserShowProfileCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.userService = bootstrap.getUserService();
         this.name = "show-profile";
         this.description = "Shows user profile";
         this.bootstrap = ((Bootstrap) bootstrap);

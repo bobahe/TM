@@ -10,7 +10,7 @@ public class User {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -18,7 +18,7 @@ public class User {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(final String login) {
         this.login = login;
     }
 
@@ -26,7 +26,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -34,7 +34,7 @@ public class User {
         return roleType;
     }
 
-    public void setRoleType(RoleType roleType) {
+    public void setRoleType(final RoleType roleType) {
         this.roleType = roleType;
     }
 }

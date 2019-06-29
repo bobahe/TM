@@ -15,10 +15,10 @@ public class UserService extends AbstractEntityService<User> {
     private static final String PROP_LOGIN = "login";
     private static final String PROP_PASSWORD = "password";
 
-    private IRepository<User> repository;
-    private MessageDigest md;
+    private final IRepository<User> repository;
+    private final MessageDigest md;
 
-    public UserService(IRepository<User> userRepository) throws NoSuchAlgorithmException {
+    public UserService(final IRepository<User> userRepository) throws NoSuchAlgorithmException {
         this.repository = userRepository;
 
         md = MessageDigest.getInstance("MD5");
@@ -30,7 +30,7 @@ public class UserService extends AbstractEntityService<User> {
     }
 
     @Override
-    public void save(User entity) {
+    public void save(final User entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getLogin(), PROP_LOGIN);
         ServiceUtil.checkNullOrEmpty(entity.getPassword(), PROP_PASSWORD);
@@ -40,7 +40,7 @@ public class UserService extends AbstractEntityService<User> {
     }
 
     @Override
-    public void update(User entity) {
+    public void update(final User entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getLogin(), PROP_LOGIN);
         ServiceUtil.checkNullOrEmpty(entity.getPassword(), PROP_PASSWORD);
@@ -48,7 +48,7 @@ public class UserService extends AbstractEntityService<User> {
     }
 
     @Override
-    public void remove(User entity) {
+    public void remove(final User entity) {
         repository.remove(entity);
     }
 
@@ -57,13 +57,13 @@ public class UserService extends AbstractEntityService<User> {
         repository.removeAll();
     }
 
-    public User getUserByLoginAndPassword(String login, String password) {
-        String hash = DatatypeConverter.printHexBinary(md.digest(password.getBytes()));
+    public User getUserByLoginAndPassword(final String login, final String password) {
+        final String hash = DatatypeConverter.printHexBinary(md.digest(password.getBytes()));
         return ((UserRepository) repository).findOneByLoginAndPassword(login, hash);
     }
 
-    public User setNewPassword(User user, String password) {
-        String hash = DatatypeConverter.printHexBinary(md.digest(password.getBytes()));
+    public User setNewPassword(final User user, final String password) {
+        final String hash = DatatypeConverter.printHexBinary(md.digest(password.getBytes()));
         user.setPassword(hash);
         return user;
     }

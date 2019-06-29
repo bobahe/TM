@@ -6,12 +6,10 @@ import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.UserService;
 
 public class UserLogoutCommand extends AbstractCommand {
-    UserService userService;
-    Bootstrap bootstrap;
+    private final Bootstrap bootstrap;
 
-    public UserLogoutCommand(IServiceLocator bootstrap) {
+    public UserLogoutCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.userService = bootstrap.getUserService();
         this.name = "logout";
         this.description = "Log out";
         this.bootstrap = ((Bootstrap) bootstrap);

@@ -25,24 +25,22 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Bootstrap implements IServiceLocator {
-    private Scanner scanner = new Scanner(new InputStreamReader(System.in));
-    private Map<String, AbstractCommand> commands;
+    private final Scanner scanner = new Scanner(new InputStreamReader(System.in));
+    private final Map<String, AbstractCommand> commands;
 
-    private IRepository<Project> projectRepository;
-    private IRepository<Task> taskRepository;
-    private IRepository<User> userRepository;
-    private ProjectService projectService;
-    private TaskService taskService;
+    private final ProjectService projectService;
+    private final TaskService taskService;
     private UserService userService;
 
     private User currentUser;
 
-    public void init() {
+    public Bootstrap() {
         commands = new LinkedHashMap<>();
 
-        projectRepository = new ProjectRepository();
-        taskRepository = new TaskRepository();
-        userRepository = new UserRepository();
+        IRepository<Project> projectRepository = new ProjectRepository();
+        IRepository<Task> taskRepository = new TaskRepository();
+        IRepository<User> userRepository = new UserRepository();
+
         projectService = new ProjectService(projectRepository);
         taskService = new TaskService(taskRepository);
 
@@ -50,9 +48,10 @@ public class Bootstrap implements IServiceLocator {
             userService = new UserService(userRepository);
         } catch (NoSuchAlgorithmException nsae) {
             System.err.println(nsae.getMessage());
-            return;
         }
+    }
 
+    public void init() {
         createDefaultUsers();
 
         addHelpCommand();
@@ -61,12 +60,12 @@ public class Bootstrap implements IServiceLocator {
     }
 
     private void createDefaultUsers() {
-        User admin = new User();
+        final User admin = new User();
         admin.setLogin("admin");
         admin.setPassword("admin");
         admin.setRoleType(RoleType.ADMIN);
 
-        User user = new User();
+        final User user = new User();
         user.setLogin("user");
         user.setPassword("user");
         user.setRoleType(RoleType.USER);
@@ -76,39 +75,39 @@ public class Bootstrap implements IServiceLocator {
     }
 
     private void addHelpCommand() {
-        HelpCommand helpCommand = new HelpCommand(this);
+        final HelpCommand helpCommand = new HelpCommand(this);
         commands.put(helpCommand.getName(), helpCommand);
     }
 
     private void addUnauthorizedCommands() {
-        UserAuthorizeCommand userAuthorizeCommand = new UserAuthorizeCommand(this);
-        UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
+        final UserAuthorizeCommand userAuthorizeCommand = new UserAuthorizeCommand(this);
+        final UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
 
         commands.put(userAuthorizeCommand.getName(), userAuthorizeCommand);
         commands.put(userRegisterCommand.getName(), userRegisterCommand);
     }
 
     private void addAuthorizedCommands() {
-        ProjectListCommand projectListCommand = new ProjectListCommand(this);
-        ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
-        ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
-        ProjectRemoveAllCommand projectRemoveAllCommand = new ProjectRemoveAllCommand(this);
-        ProjectChangeSelectedCommand projectChangeSelectedCommand = new ProjectChangeSelectedCommand(this);
-        ProjectRemoveSelectedCommand projectRemoveSelectedCommand = new ProjectRemoveSelectedCommand(this);
+        final ProjectListCommand projectListCommand = new ProjectListCommand(this);
+        final ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
+        final ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
+        final ProjectRemoveAllCommand projectRemoveAllCommand = new ProjectRemoveAllCommand(this);
+        final ProjectChangeSelectedCommand projectChangeSelectedCommand = new ProjectChangeSelectedCommand(this);
+        final ProjectRemoveSelectedCommand projectRemoveSelectedCommand = new ProjectRemoveSelectedCommand(this);
 
-        TaskProjectTaskListCommand taskProjectTaskListCommand = new TaskProjectTaskListCommand(this);
-        TaskRemoveAllCommand taskRemoveAllCommand = new TaskRemoveAllCommand(this);
-        TaskCreateCommand taskCreateCommand = new TaskCreateCommand(this);
-        TaskSelectCommand taskSelectCommand = new TaskSelectCommand(this);
-        TaskListCommand taskListCommand = new TaskListCommand(this);
-        TaskChangeSelectedCommand taskChangeSelectedCommand = new TaskChangeSelectedCommand(this);
-        TaskRemoveSelectedCommand taskRemoveSelectedCommand = new TaskRemoveSelectedCommand(this);
-        TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
+        final TaskProjectTaskListCommand taskProjectTaskListCommand = new TaskProjectTaskListCommand(this);
+        final TaskRemoveAllCommand taskRemoveAllCommand = new TaskRemoveAllCommand(this);
+        final TaskCreateCommand taskCreateCommand = new TaskCreateCommand(this);
+        final TaskSelectCommand taskSelectCommand = new TaskSelectCommand(this);
+        final TaskListCommand taskListCommand = new TaskListCommand(this);
+        final TaskChangeSelectedCommand taskChangeSelectedCommand = new TaskChangeSelectedCommand(this);
+        final TaskRemoveSelectedCommand taskRemoveSelectedCommand = new TaskRemoveSelectedCommand(this);
+        final TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
 
-        UserLogoutCommand userLogoutCommand = new UserLogoutCommand(this);
-        UserChangePasswordCommand userChangePasswordCommand = new UserChangePasswordCommand(this);
-        UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
-        UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
+        final UserLogoutCommand userLogoutCommand = new UserLogoutCommand(this);
+        final UserChangePasswordCommand userChangePasswordCommand = new UserChangePasswordCommand(this);
+        final UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
+        final UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
 
         commands.put(projectListCommand.getName(), projectListCommand);
         commands.put(projectCreateCommand.getName(), projectCreateCommand);
@@ -147,7 +146,7 @@ public class Bootstrap implements IServiceLocator {
     }
 
     private void invokeCommand(String commandName) {
-        AbstractCommand command = commands.get(commandName);
+        final AbstractCommand command = commands.get(commandName);
 
         if (command == null) {
             System.err.println("There is not such command");

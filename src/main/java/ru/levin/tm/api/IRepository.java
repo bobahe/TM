@@ -4,9 +4,9 @@ import java.util.Map;
 
 public interface IRepository<E> {
     Map<String, E> findAll();
-    E findOne(String id);
-    void persist(E entity);
-    void merge(E entity);
-    void remove(E entity);
+    E findOne(final String id);
+    void persist(final E entity);
+    void merge(final E entity);
+    void remove(final E entity);
     void removeAll();
 }

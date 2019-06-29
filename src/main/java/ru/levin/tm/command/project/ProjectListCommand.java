@@ -13,7 +13,7 @@ public class ProjectListCommand extends AbstractCommand {
     private final ProjectService projectService;
     private final Bootstrap bootstrap;
 
-    public ProjectListCommand(IServiceLocator bootstrap) {
+    public ProjectListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-list";
         this.title = "[PROJECT LIST]";
@@ -39,11 +39,11 @@ public class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        List<Project> projectList = projectService.findAll().stream()
+        final List<Project> projectList = projectService.findAll().stream()
                 .filter(project -> project.getUserId().equals(bootstrap.getCurrentUser().getId()))
                 .collect(Collectors.toList());
         for (int i = 0; i < projectList.size(); i++) {
-            Project project = projectList.get(i);
+            final Project project = projectList.get(i);
 
             System.out.println(title);
             System.out.println((i + 1) + ". " + project.getName());

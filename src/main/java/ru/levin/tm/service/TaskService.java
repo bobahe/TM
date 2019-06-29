@@ -15,7 +15,7 @@ public class TaskService extends AbstractEntityService<Task> {
 
     private final IRepository<Task> repository;
 
-    public TaskService(IRepository<Task> repository) {
+    public TaskService(final IRepository<Task> repository) {
         this.repository = repository;
     }
 
@@ -24,12 +24,12 @@ public class TaskService extends AbstractEntityService<Task> {
         return new ArrayList<>(repository.findAll().values());
     }
 
-    public List<Task> findByProjectId(String id) {
+    public List<Task> findByProjectId(final String id) {
         return ((TaskRepository) repository).findAllByProjectId(id);
     }
 
     @Override
-    public void save(Task entity) {
+    public void save(final Task entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
 
@@ -37,7 +37,7 @@ public class TaskService extends AbstractEntityService<Task> {
     }
 
     @Override
-    public void update(Task entity) {
+    public void update(final Task entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
         ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
@@ -50,7 +50,7 @@ public class TaskService extends AbstractEntityService<Task> {
     }
 
     @Override
-    public void remove(Task entity) {
+    public void remove(final Task entity) {
         ServiceUtil.checkNull(entity);
         ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
         repository.remove(entity);
@@ -61,8 +61,8 @@ public class TaskService extends AbstractEntityService<Task> {
         repository.removeAll();
     }
 
-    public void removeByUserId(String id) {
-        List<Task> userTasks = repository.findAll().values().stream()
+    public void removeByUserId(final String id) {
+        final List<Task> userTasks = repository.findAll().values().stream()
                 .filter(task -> task.getUserId().equals(id))
                 .collect(Collectors.toList());
 
