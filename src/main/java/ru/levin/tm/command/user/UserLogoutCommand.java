@@ -31,6 +31,8 @@ public final class UserLogoutCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        selectedProject = null;
+        selectedTask = null;
         System.out.println("Good bye, " + bootstrap.getCurrentUser().getLogin());
         bootstrap.setCurrentUser(null);
     }

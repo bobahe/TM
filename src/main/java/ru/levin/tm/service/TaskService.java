@@ -5,23 +5,13 @@ import ru.levin.tm.entity.Task;
 import ru.levin.tm.repository.TaskRepository;
 import ru.levin.tm.util.ServiceUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public final class TaskService extends AbstractEntityService<Task> {
+public final class TaskService extends AbstractEntityWithOwnerService<Task> {
     private static final String PROP_NAME = "name";
-    private static final String PROP_ID = "id";
-
-    private final IRepository<Task> repository;
 
     public TaskService(final IRepository<Task> repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public List<Task> findAll() {
-        return new ArrayList<>(repository.findAll().values());
+        super(repository);
     }
 
     public List<Task> findByProjectId(final String id) {
@@ -47,25 +37,5 @@ public final class TaskService extends AbstractEntityService<Task> {
         }
 
         repository.merge(entity);
-    }
-
-    @Override
-    public void remove(final Task entity) {
-        ServiceUtil.checkNull(entity);
-        ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
-        repository.remove(entity);
-    }
-
-    @Override
-    public void removeAll() {
-        repository.removeAll();
-    }
-
-    public void removeByUserId(final String id) {
-        final List<Task> userTasks = repository.findAll().values().stream()
-                .filter(task -> task.getUserId().equals(id))
-                .collect(Collectors.toList());
-
-        userTasks.forEach(repository::remove);
     }
 }

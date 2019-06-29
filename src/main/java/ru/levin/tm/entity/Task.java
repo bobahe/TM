@@ -2,14 +2,12 @@ package ru.levin.tm.entity;
 
 import java.util.Date;
 
-public final class Task {
-    private String id;
+public final class Task extends AbstractHasOwnerEntity {
     private String name;
     private String description;
     private String projectId;
     private Date startDate;
     private Date endDate;
-    private String userId;
 
     public String getId() {
         return id;

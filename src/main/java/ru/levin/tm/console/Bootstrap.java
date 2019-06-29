@@ -176,7 +176,7 @@ public final class Bootstrap implements IServiceLocator {
         return userService;
     }
 
-    public void setCurrentUser(User currentUser) {
+    public void setCurrentUser(final User currentUser) {
         this.currentUser = currentUser;
 
         if (currentUser == null) {

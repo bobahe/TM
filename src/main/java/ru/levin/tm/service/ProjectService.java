@@ -4,23 +4,11 @@ import ru.levin.tm.api.IRepository;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.util.ServiceUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-public final class ProjectService extends AbstractEntityService<Project> {
+public final class ProjectService extends AbstractEntityWithOwnerService<Project> {
     private static final String PROP_NAME = "name";
-    private static final String PROP_ID = "id";
-
-    private final IRepository<Project> repository;
 
     public ProjectService(final IRepository<Project> repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public List<Project> findAll() {
-        return new ArrayList<>(repository.findAll().values());
+        super(repository);
     }
 
     @Override
@@ -42,25 +30,5 @@ public final class ProjectService extends AbstractEntityService<Project> {
         }
 
         repository.merge(entity);
-    }
-
-    @Override
-    public void remove(final Project entity) {
-        ServiceUtil.checkNull(entity);
-        ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
-        repository.remove(entity);
-    }
-
-    @Override
-    public void removeAll() {
-        repository.removeAll();
-    }
-
-    public void removeByUserId(final String id) {
-        final List<Project> userProjects = repository.findAll().values().stream()
-                .filter(project -> project.getUserId().equals(id))
-                .collect(Collectors.toList());
-
-        userProjects.forEach(repository::remove);
     }
 }

@@ -1,6 +1,6 @@
 package ru.levin.tm.entity;
 
-public final class User {
+public final class User extends AbstractEntity {
     private String id;
     private String login;
     private String password;

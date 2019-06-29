@@ -1,49 +1,10 @@
 package ru.levin.tm.repository;
 
-import ru.levin.tm.api.IRepository;
 import ru.levin.tm.entity.User;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
-
-public final class UserRepository implements IRepository<User> {
-    private final Map<String, User> userMap = new LinkedHashMap<>();
-
-    @Override
-    public Map<String, User> findAll() {
-        return userMap;
-    }
-
-    @Override
-    public User findOne(final String id) {
-        return userMap.get(id);
-    }
-
-    @Override
-    public void persist(final User entity) {
-        final String id = UUID.randomUUID().toString();
-        entity.setId(id);
-        userMap.put(id, entity);
-    }
-
-    @Override
-    public void merge(final User entity) {
-        userMap.put(entity.getId(), entity);
-    }
-
-    @Override
-    public void remove(final User entity) {
-        userMap.remove(entity.getId());
-    }
-
-    @Override
-    public void removeAll() {
-        userMap.clear();
-    }
-
+public final class UserRepository extends AbstractRepository<User> {
     public User findOneByLoginAndPassword(final String login, final String password) {
-        return userMap.values().stream()
+        return storageMap.values().stream()
                 .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(password))
                 .findFirst().orElse(null);
     }
