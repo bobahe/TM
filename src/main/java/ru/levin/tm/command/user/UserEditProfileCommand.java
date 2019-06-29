@@ -1,20 +1,19 @@
 package ru.levin.tm.command.user;
 
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.UserService;
 
 public final class UserEditProfileCommand extends AbstractCommand {
     private final UserService userService;
-    private final Bootstrap bootstrap;
+    private final IUserHandlerServiceLocator bootstrap;
 
-    public UserEditProfileCommand(final IServiceLocator bootstrap) {
+    public UserEditProfileCommand(final IUserHandlerServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "edit-profile";
         this.description = "Edit user profile";
-        this.bootstrap = ((Bootstrap) bootstrap);
+        this.bootstrap = bootstrap;
     }
 
     @Override

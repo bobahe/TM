@@ -1,7 +1,8 @@
 package ru.levin.tm.console;
 
+import ru.levin.tm.api.ICommandHandlerServiceLocator;
 import ru.levin.tm.api.IRepository;
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.command.project.*;
 import ru.levin.tm.command.system.AboutCommand;
@@ -25,7 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public final class Bootstrap implements IServiceLocator {
+public final class Bootstrap implements IUserHandlerServiceLocator, ICommandHandlerServiceLocator {
     private final Scanner scanner = new Scanner(new InputStreamReader(System.in));
     private final Map<String, AbstractCommand> commands;
 

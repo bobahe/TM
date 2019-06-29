@@ -1,17 +1,16 @@
 package ru.levin.tm.command.user;
 
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 
 public final class UserShowProfileCommand extends AbstractCommand {
-    private final Bootstrap bootstrap;
+    private final IUserHandlerServiceLocator bootstrap;
 
-    public UserShowProfileCommand(final IServiceLocator bootstrap) {
+    public UserShowProfileCommand(final IUserHandlerServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "show-profile";
         this.description = "Shows user profile";
-        this.bootstrap = ((Bootstrap) bootstrap);
+        this.bootstrap = bootstrap;
     }
 
     @Override

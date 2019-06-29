@@ -1,8 +1,7 @@
 package ru.levin.tm.command.task;
 
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
@@ -11,15 +10,15 @@ public final class TaskCreateCommand extends AbstractCommand {
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
     private final TaskService taskService;
-    private final Bootstrap bootstrap;
+    private final IUserHandlerServiceLocator bootstrap;
 
-    public TaskCreateCommand(final IServiceLocator bootstrap) {
+    public TaskCreateCommand(final IUserHandlerServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-create";
         this.title = "[TASK CREATE]";
         this.description = "Create new task";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = ((Bootstrap) bootstrap);
+        this.bootstrap = bootstrap;
     }
 
     @Override

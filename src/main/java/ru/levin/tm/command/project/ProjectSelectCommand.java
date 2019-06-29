@@ -1,8 +1,7 @@
 package ru.levin.tm.command.project;
 
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.service.ProjectService;
 
 import java.util.stream.Collectors;
@@ -12,15 +11,15 @@ public final class ProjectSelectCommand extends AbstractCommand {
     private static final String SERIAL_NUMBER_PROMPT = "ENTER SERIAL NUMBER:";
 
     private final ProjectService projectService;
-    private final Bootstrap bootstrap;
+    private final IUserHandlerServiceLocator bootstrap;
 
-    public ProjectSelectCommand(final IServiceLocator bootstrap) {
+    public ProjectSelectCommand(final IUserHandlerServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-select";
         this.title = "[PROJECT SELECT]";
         this.description = "Select project";
         this.projectService = bootstrap.getProjectService();
-        this.bootstrap = ((Bootstrap) bootstrap);
+        this.bootstrap = bootstrap;
     }
 
     @Override

@@ -1,8 +1,7 @@
 package ru.levin.tm.command.task;
 
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
 
@@ -11,15 +10,15 @@ import java.util.stream.Collectors;
 
 public final class TaskListCommand extends AbstractCommand {
     private final TaskService taskService;
-    private final Bootstrap bootstrap;
+    private final IUserHandlerServiceLocator bootstrap;
 
-    public TaskListCommand(final IServiceLocator bootstrap) {
+    public TaskListCommand(final IUserHandlerServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-list";
         this.title = "[TASK LIST]";
         this.description = "Show all tasks";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = ((Bootstrap) bootstrap);
+        this.bootstrap = bootstrap;
     }
 
     @Override

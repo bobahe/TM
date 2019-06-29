@@ -1,23 +1,22 @@
 package ru.levin.tm.command.project;
 
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.console.Bootstrap;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
 public final class ProjectCreateCommand extends AbstractCommand {
     private final ProjectService projectService;
-    private final Bootstrap bootstrap;
+    private final IUserHandlerServiceLocator bootstrap;
 
-    public ProjectCreateCommand(final IServiceLocator bootstrap) {
+    public ProjectCreateCommand(final IUserHandlerServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-create";
         this.title = "[PROJECT CREATE]";
         this.description = "Create new project";
         this.projectService = bootstrap.getProjectService();
-        this.bootstrap = ((Bootstrap) bootstrap);
+        this.bootstrap = bootstrap;
     }
 
     @Override
