@@ -48,6 +48,8 @@
                             <mainClass>ru.levin.tm.Application</mainClass>
                         </manifest>
                         <manifestEntries>
+                            <Build-Developer>Developer: Vladimir Levin</Build-Developer>
+                            <Build-Version>Version: ${version}</Build-Version>
                             <Build-Number>Build number: ${buildNumber}</Build-Number>
                         </manifestEntries>
                     </archive>
@@ -91,6 +93,8 @@
                             <mainClass>ru.levin.tm.Application</mainClass>
                         </manifest>
                         <manifestEntries>
+                            <Build-Developer>Developer: Vladimir Levin</Build-Developer>
+                            <Build-Version>Version: ${version}</Build-Version>
                             <Build-Number>Build number: ${buildNumber}</Build-Number>
                         </manifestEntries>
                     </archive>

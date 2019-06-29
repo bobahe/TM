@@ -27,8 +27,12 @@ public final class AboutCommand extends AbstractCommand {
     }
 
     public void execute() {
+        final String buildDeveloper = Manifests.read("Build-Developer");
+        final String buildVersion = Manifests.read("Build-Version");
         final String buildNumber = Manifests.read("Build-Number");
         System.out.println("[ABOUT APPLICATION]");
+        System.out.println(buildDeveloper);
+        System.out.println(buildVersion);
         System.out.println(buildNumber);
     }
 }
