@@ -4,6 +4,7 @@ import ru.levin.tm.api.IRepository;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.command.project.*;
+import ru.levin.tm.command.system.AboutCommand;
 import ru.levin.tm.command.system.HelpCommand;
 import ru.levin.tm.command.task.*;
 import ru.levin.tm.command.user.*;
@@ -82,9 +83,11 @@ public final class Bootstrap implements IServiceLocator {
     private void addUnauthorizedCommands() {
         final UserAuthorizeCommand userAuthorizeCommand = new UserAuthorizeCommand(this);
         final UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
+        final AboutCommand aboutCommand = new AboutCommand(this);
 
         commands.put(userAuthorizeCommand.getName(), userAuthorizeCommand);
         commands.put(userRegisterCommand.getName(), userRegisterCommand);
+        commands.put(aboutCommand.getName(), aboutCommand);
     }
 
     private void addAuthorizedCommands() {
