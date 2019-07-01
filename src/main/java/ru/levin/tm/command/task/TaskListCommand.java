@@ -2,6 +2,7 @@ package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.util.CommandUtil;
@@ -10,28 +11,27 @@ import java.util.List;
 
 public final class TaskListCommand extends AbstractCommand {
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public TaskListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "task-list";
-        this.title = "[TASK LIST]";
-        this.description = "Show all tasks";
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "task-list";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[TASK LIST]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Show all tasks";
     }
 
     @Override
@@ -44,20 +44,20 @@ public final class TaskListCommand extends AbstractCommand {
         final List<Task> taskList = taskService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
         for (int i = 0; i < taskList.size(); i++) {
             final Task task = taskList.get(i);
-            System.out.println((i + 1) + ". " + task.getName());
-            System.out.println("\tDescription: " + task.getDescription());
+            terminalService.println((i + 1) + ". " + task.getName());
+            terminalService.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {
-                System.out.println("\tStart date: " + CommandUtil.DATE_FORMAT.format(task.getStartDate()));
+                terminalService.println("\tStart date: " + CommandUtil.DATE_FORMAT.format(task.getStartDate()));
             } else {
-                System.out.println("\tStar date: not set");
+                terminalService.println("\tStar date: not set");
             }
             if (task.getEndDate() != null) {
-                System.out.println("\tEnd date: " + CommandUtil.DATE_FORMAT.format(task.getEndDate()));
+                terminalService.println("\tEnd date: " + CommandUtil.DATE_FORMAT.format(task.getEndDate()));
             } else {
-                System.out.println("\tEnd date: not set");
+                terminalService.println("\tEnd date: not set");
             }
 
-            System.out.println("\tProject: " + task.getProjectId());
+            terminalService.println("\tProject: " + task.getProjectId());
         }
     }
 }

@@ -1,28 +1,30 @@
 package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class UserLogoutCommand extends AbstractCommand {
+    private final ITerminalService terminalService;
+
     public UserLogoutCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "logout";
-        this.description = "Log out";
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "logout";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Log out";
     }
 
     @Override
@@ -34,7 +36,7 @@ public final class UserLogoutCommand extends AbstractCommand {
     public void execute() {
         selectedProject = null;
         selectedTask = null;
-        System.out.println("Good bye, " + bootstrap.getUserService().getCurrentUser().getLogin());
+        terminalService.println("Good bye, " + bootstrap.getUserService().getCurrentUser().getLogin());
         bootstrap.getUserService().setCurrentUser(null);
     }
 }

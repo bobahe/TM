@@ -1,33 +1,34 @@
 package ru.levin.tm.command.system;
 
 import ru.levin.tm.api.ICommandHandlerServiceLocator;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 import java.util.Map;
 
 public final class HelpCommand extends AbstractCommand {
     private final Map<String, AbstractCommand> commands;
+    private final ITerminalService terminalService;
 
     public HelpCommand(final ICommandHandlerServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "help";
-        this.description = "Show all commands";
         this.commands = bootstrap.getCommands();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "help";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Show all commands";
     }
 
     @Override
@@ -36,7 +37,7 @@ public final class HelpCommand extends AbstractCommand {
     }
 
     public void execute() {
-        commands.values().forEach(command -> System.out.println(command.getName() + ": " + command.getDescription()));
-        System.out.println("exit: Exit from application");
+        commands.values().forEach(command -> terminalService.println(command.getName() + ": " + command.getDescription()));
+        terminalService.println("exit: Exit from application");
     }
 }

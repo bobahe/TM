@@ -8,7 +8,18 @@ import java.util.Scanner;
 public class TerminalService implements ITerminalService {
     private final Scanner scanner = new Scanner(new InputStreamReader(System.in));
 
-    public Scanner getScanner() {
-        return scanner;
+    @Override
+    public void println(final String text) {
+        System.out.println(text);
+    }
+
+    @Override
+    public void printerr(final String text) {
+        System.err.println(text);
+    }
+
+    @Override
+    public String getLine() {
+        return scanner.nextLine();
     }
 }

@@ -1,6 +1,7 @@
 package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
@@ -10,27 +11,27 @@ public final class UserLoginCommand extends AbstractCommand {
     protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
 
     private final IUserService userService;
+    private final ITerminalService terminalService;
 
     public UserLoginCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
-        this.name = "login";
-        this.description = "Log in to application";
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "login";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Log in to application";
     }
 
     @Override
@@ -40,19 +41,19 @@ public final class UserLoginCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println(LOGIN_PROMPT);
-        final String login = scanner.nextLine();
-        System.out.println(PASSWORD_PROMPT);
-        final String password = scanner.nextLine();
+        terminalService.println(LOGIN_PROMPT);
+        final String login = terminalService.getLine();
+        terminalService.println(PASSWORD_PROMPT);
+        final String password = terminalService.getLine();
 
         final User user = userService.getUserByLoginAndPassword(login, password);
 
         if (user == null) {
-            System.err.println("There is no such user with entered login and password");
+            terminalService.printerr("There is no such user with entered login and password");
             return;
         }
 
         bootstrap.getUserService().setCurrentUser(user);
-        System.out.println("Welcome, " + user.getLogin() + "!");
+        terminalService.println("Welcome, " + user.getLogin() + "!");
     }
 }

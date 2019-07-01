@@ -1,28 +1,30 @@
 package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class UserShowProfileCommand extends AbstractCommand {
+    private final ITerminalService terminalService;
+
     public UserShowProfileCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "show-profile";
-        this.description = "Shows user profile";
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "show-profile";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Shows user profile";
     }
 
     @Override
@@ -36,9 +38,9 @@ public final class UserShowProfileCommand extends AbstractCommand {
             return;
         }
 
-        System.out.println("Id: " + bootstrap.getUserService().getCurrentUser().getId());
-        System.out.println("Login: " + bootstrap.getUserService().getCurrentUser().getLogin());
-        System.out.println("Password: " + bootstrap.getUserService().getCurrentUser().getPassword());
-        System.out.println("Role: " + bootstrap.getUserService().getCurrentUser().getRoleType().name());
+        terminalService.println("Id: " + bootstrap.getUserService().getCurrentUser().getId());
+        terminalService.println("Login: " + bootstrap.getUserService().getCurrentUser().getLogin());
+        terminalService.println("Password: " + bootstrap.getUserService().getCurrentUser().getPassword());
+        terminalService.println("Role: " + bootstrap.getUserService().getCurrentUser().getRoleType().name());
     }
 }

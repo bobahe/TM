@@ -3,34 +3,35 @@ package ru.levin.tm.command.project;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class ProjectRemoveAllCommand extends AbstractCommand {
     private static final String ALL_PROJECTS_REMOVED_MESSAGE = "[ALL PROJECTS REMOVED]\n";
     private final IProjectService projectService;
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public ProjectRemoveAllCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "project-clear";
-        this.description = "Remove all projects";
         this.projectService = bootstrap.getProjectService();
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "project-clear";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Remove all projects";
     }
 
     @Override
@@ -50,6 +51,6 @@ public final class ProjectRemoveAllCommand extends AbstractCommand {
         });
 
         selectedProject = null;
-        System.out.println(ALL_PROJECTS_REMOVED_MESSAGE);
+        terminalService.println(ALL_PROJECTS_REMOVED_MESSAGE);
     }
 }

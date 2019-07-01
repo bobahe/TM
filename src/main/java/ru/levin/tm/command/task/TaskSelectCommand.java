@@ -2,6 +2,7 @@ package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskSelectCommand extends AbstractCommand {
@@ -11,28 +12,27 @@ public final class TaskSelectCommand extends AbstractCommand {
     protected static final String NO_SUCH_ITEM = "[THERE IS NO SUCH ITEM]\n";
 
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public TaskSelectCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "task-select";
-        this.title = "[TASK SELECT]";
-        this.description = "Select task";
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "task-select";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[TASK SELECT]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Select task";
     }
 
     @Override
@@ -41,16 +41,16 @@ public final class TaskSelectCommand extends AbstractCommand {
     }
 
     public void execute() {
-        System.out.println(this.title);
-        System.out.println(SERIAL_NUMBER_PROMPT);
+        terminalService.println(this.getTitle());
+        terminalService.println(SERIAL_NUMBER_PROMPT);
         try {
-            final int index = Integer.parseInt(scanner.nextLine());
+            final int index = Integer.parseInt(terminalService.getLine());
             selectedTask = taskService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
-            System.out.println(SELECTED_TASK_MESSAGE + selectedTask);
+            terminalService.println(SELECTED_TASK_MESSAGE + selectedTask);
         } catch (NumberFormatException nfe) {
-            System.out.println(ERROR_MESSAGE);
+            terminalService.println(ERROR_MESSAGE);
         } catch (IndexOutOfBoundsException iobe) {
-            System.out.println(NO_SUCH_ITEM);
+            terminalService.println(NO_SUCH_ITEM);
         }
     }
 }

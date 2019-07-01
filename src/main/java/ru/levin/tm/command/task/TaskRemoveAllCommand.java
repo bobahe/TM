@@ -2,33 +2,34 @@ package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskRemoveAllCommand extends AbstractCommand {
     private static final String ALL_TASK_REMOVED_MESSAGE = "[ALL TASKS REMOVED]\n";
 
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public TaskRemoveAllCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "task-clear";
-        this.description = "Remove all tasks";
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "task-clear";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Remove all tasks";
     }
 
     @Override
@@ -40,6 +41,6 @@ public final class TaskRemoveAllCommand extends AbstractCommand {
     public void execute() {
         taskService.removeByUserId(bootstrap.getUserService().getCurrentUser().getId());
         selectedTask = null;
-        System.out.println(ALL_TASK_REMOVED_MESSAGE);
+        terminalService.println(ALL_TASK_REMOVED_MESSAGE);
     }
 }

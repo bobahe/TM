@@ -1,6 +1,7 @@
 package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 
@@ -8,27 +9,27 @@ public final class UserEditProfileCommand extends AbstractCommand {
     protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
 
     private final IUserService userService;
+    private final ITerminalService terminalService;
 
     public UserEditProfileCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
-        this.name = "edit-profile";
-        this.description = "Edit user profile";
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "edit-profile";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Edit user profile";
     }
 
     @Override
@@ -42,16 +43,16 @@ public final class UserEditProfileCommand extends AbstractCommand {
             return;
         }
 
-        System.out.println(LOGIN_PROMPT);
-        bootstrap.getUserService().getCurrentUser().setLogin(scanner.nextLine());
+        terminalService.println(LOGIN_PROMPT);
+        bootstrap.getUserService().getCurrentUser().setLogin(terminalService.getLine());
 
         try {
             userService.update(bootstrap.getUserService().getCurrentUser());
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            terminalService.printerr(e.getMessage());
             return;
         }
 
-        System.out.println("Your profile changed successfully");
+        terminalService.println("Your profile changed successfully");
     }
 }

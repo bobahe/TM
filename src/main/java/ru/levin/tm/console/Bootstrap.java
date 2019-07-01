@@ -112,16 +112,16 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
     }
 
     private void process() {
-        System.out.println("*** WELCOME TO TASK MANAGER ***");
-        String command = terminalService.getScanner().nextLine();
+        terminalService.println("*** WELCOME TO TASK MANAGER ***");
+        String command = terminalService.getLine();
 
         while (!"exit".equals(command)) {
-            if ("".equals(command)) {
-                command = terminalService.getScanner().nextLine();
+            if (command.isEmpty()) {
+                command = terminalService.getLine();
                 continue;
             }
             invokeCommand(command);
-            command = terminalService.getScanner().nextLine();
+            command = terminalService.getLine();
         }
     }
 
@@ -129,11 +129,11 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
         final AbstractCommand command = commands.get(commandName);
 
         if (command == null) {
-            System.err.println("There is not such command");
+            terminalService.printerr("There is not such command");
             return;
         }
         if (userService.getCurrentUser() == null && command.isRequiredAuthorization()) {
-            System.out.println("You have to log in first.");
+            terminalService.println("You have to log in first.");
             return;
         }
         command.execute();

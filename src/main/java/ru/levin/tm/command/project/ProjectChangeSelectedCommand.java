@@ -2,6 +2,7 @@ package ru.levin.tm.command.project;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.util.CommandUtil;
@@ -17,28 +18,27 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
     private final IProjectService projectService;
+    private final ITerminalService terminalService;
 
     public ProjectChangeSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "project-change";
-        this.description = "Change selected project";
-        this.title = "[CHANGE PROJECT]";
         this.projectService = bootstrap.getProjectService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "project-change";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[CHANGE PROJECT]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Change selected project";
     }
 
     @Override
@@ -48,40 +48,38 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (CommandUtil.isSelectedObjectNull(selectedProject, Project.class)){
-            return;
-        }
+        if (selectedProject == null) return;
 
-        System.out.println(this.title);
-        System.out.println(NAME_PROMPT);
-        selectedProject.setName(scanner.nextLine());
-        System.out.println(DESCRIPTION_PROMPT);
-        selectedProject.setDescription(scanner.nextLine());
-        System.out.println(START_DATE_PROMPT);
+        terminalService.println(this.getTitle());
+        terminalService.println(NAME_PROMPT);
+        selectedProject.setName(terminalService.getLine());
+        terminalService.println(DESCRIPTION_PROMPT);
+        selectedProject.setDescription(terminalService.getLine());
+        terminalService.println(START_DATE_PROMPT);
         selectedProject.setStartDate(parseDate(true));
-        System.out.println(END_DATE_PROMPT);
+        terminalService.println(END_DATE_PROMPT);
         selectedProject.setEndDate(parseDate(false));
 
         try {
             projectService.update(selectedProject);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            terminalService.println(e.getMessage());
             return;
         }
-        System.out.println(SUCCESS_MESSAGE);
+        terminalService.println(SUCCESS_MESSAGE);
     }
 
     private Date parseDate(final boolean isStartDate) {
-        final String date = scanner.nextLine();
+        final String date = terminalService.getLine();
 
-        if ("".equals(date)) {
+        if (date.isEmpty()) {
             return isStartDate ? selectedProject.getStartDate() : selectedProject.getEndDate();
         }
 
         try {
             return CommandUtil.DATE_FORMAT.parse(date);
         } catch (ParseException pe) {
-            System.out.println(ERR_PARSE_DATE_MESSAGE);
+            terminalService.println(ERR_PARSE_DATE_MESSAGE);
             return null;
         }
     }

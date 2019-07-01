@@ -3,10 +3,10 @@ package ru.levin.tm.service;
 import ru.levin.tm.api.repository.IUserRepository;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.util.ServiceUtil;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public final class UserService extends AbstractEntityService<User, IUserRepository> implements IUserService {
     private final IUserRepository repository;
@@ -19,20 +19,12 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
 
     @Override
     public User save(final User entity) {
-        if (entity == null) {
-            return null;
-        }
-        if (entity.getLogin() == null || "".equals(entity.getLogin())) {
-            return null;
-        }
-        if (entity.getPassword() == null || "".equals(entity.getPassword())) {
-            return null;
-        }
+        if (entity == null) return null;
+        if (entity.getLogin() == null || entity.getLogin().isEmpty()) return null;
+        if (entity.getPassword() == null || entity.getPassword().isEmpty()) return null;
 
-        final MessageDigest messageDigest = getMD5();
-        if (messageDigest == null) {
-            return null;
-        }
+        final MessageDigest messageDigest = ServiceUtil.getMD5();
+        if (messageDigest == null) return null;
 
         final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(entity.getPassword().getBytes()));
         entity.setPassword(hash);
@@ -42,15 +34,9 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
 
     @Override
     public User update(final User entity) {
-        if (entity == null) {
-            return null;
-        }
-        if (entity.getLogin() == null || "".equals(entity.getLogin())) {
-            return null;
-        }
-        if (entity.getPassword() == null || "".equals(entity.getPassword())) {
-            return null;
-        }
+        if (entity == null) return null;
+        if (entity.getLogin() == null || entity.getLogin().isEmpty()) return null;
+        if (entity.getPassword() == null || entity.getPassword().isEmpty()) return null;
 
         if (repository.findOne(entity.getId()) == null) {
             throw new IllegalStateException("Can not update user. There is no such user in storage.");
@@ -61,31 +47,21 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
     }
 
     public User getUserByLoginAndPassword(final String login, final String password) {
-        if ("".equals(login)) {
-            return null;
-        }
-        if ("".equals(password)) {
-            return null;
-        }
+        if (login == null || login.isEmpty()) return null;
+        if (password == null || password.isEmpty()) return null;
 
-        final MessageDigest messageDigest = getMD5();
-        if (messageDigest == null) {
-            return null;
-        }
+        final MessageDigest messageDigest = ServiceUtil.getMD5();
+        if (messageDigest == null) return null;
         final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(password.getBytes()));
         return repository.findOneByLoginAndPassword(login, hash);
     }
 
     public User setNewPassword(final User user, final String password) {
-        if ("".equals(password)) {
-            return null;
-        }
+        if (password == null || password.isEmpty()) return null;
 
-        final MessageDigest messageDigest = getMD5();
-        if (messageDigest == null) {
-            return null;
-        }
-        final String hash = DatatypeConverter.printHexBinary(getMD5().digest(password.getBytes()));
+        final MessageDigest messageDigest = ServiceUtil.getMD5();
+        if (messageDigest == null) return null;
+        final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(password.getBytes()));
         user.setPassword(hash);
         return user;
     }
@@ -98,13 +74,5 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
     @Override
     public User getCurrentUser() {
         return currentUser;
-    }
-
-    private MessageDigest getMD5() {
-        try {
-            return MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
     }
 }

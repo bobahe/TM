@@ -3,6 +3,7 @@ package ru.levin.tm.command.project;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public class ProjectRemoveSelectedCommand extends AbstractCommand {
@@ -11,28 +12,28 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
 
     private final IProjectService projectService;
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public ProjectRemoveSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "project-remove";
-        this.description = "Remove selected project";
         this.projectService = bootstrap.getProjectService();
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "project-remove";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Remove selected project";
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
     @Override
     public void execute() {
         if (selectedProject == null) {
-            System.out.println(PROJECT_NOT_SELECTED);
+            terminalService.println(PROJECT_NOT_SELECTED);
             return;
         }
 
@@ -52,11 +53,11 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
             final String userId = bootstrap.getUserService().getCurrentUser().getId();
             taskService.removeAllByUserIdAndProjectId(userId, selectedProject.getId());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            terminalService.println(e.getMessage());
             return;
         }
 
         selectedProject = null;
-        System.out.println(SUCCESS_MESSAGE);
+        terminalService.println(SUCCESS_MESSAGE);
     }
 }

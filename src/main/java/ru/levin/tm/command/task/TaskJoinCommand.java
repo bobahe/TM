@@ -2,6 +2,7 @@ package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskJoinCommand extends AbstractCommand {
@@ -12,28 +13,27 @@ public final class TaskJoinCommand extends AbstractCommand {
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public TaskJoinCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "task-join";
-        this.title = "[JOIN TASK TO PROJECT]";
-        this.description = "Join selected task to selected project";
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "task-join";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[JOIN TASK TO PROJECT]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Join selected task to selected project";
     }
 
     @Override
@@ -43,23 +43,23 @@ public final class TaskJoinCommand extends AbstractCommand {
 
     public void execute() {
         if (selectedProject == null) {
-            System.out.println(SELECT_PROJECT_MESSAGE);
+            terminalService.println(SELECT_PROJECT_MESSAGE);
             return;
         }
         if (selectedTask == null) {
-            System.out.println(SELECT_TASK_MESSAGE);
+            terminalService.println(SELECT_TASK_MESSAGE);
             return;
         }
 
-        System.out.println(this.title);
-        System.out.println(SELECTED_PROJECT_MESSAGE + selectedProject);
-        System.out.println(SELECTED_TASK_MESSAGE + selectedTask);
-        System.out.println(description + "? (Y/n)");
-        final String joinAnswer = scanner.nextLine();
+        terminalService.println(this.getTitle());
+        terminalService.println(SELECTED_PROJECT_MESSAGE + selectedProject);
+        terminalService.println(SELECTED_TASK_MESSAGE + selectedTask);
+        terminalService.println(getDescription() + "? (Y/n)");
+        final String joinAnswer = terminalService.getLine();
         switch (joinAnswer) {
-            case "Y":
-            case "y":
-            case "":
+            case "n":
+                break;
+            default:
                 selectedTask.setProjectId(selectedProject.getId());
                 break;
         }
@@ -67,9 +67,9 @@ public final class TaskJoinCommand extends AbstractCommand {
         try {
             taskService.update(selectedTask);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            terminalService.println(e.getMessage());
             return;
         }
-        System.out.println(SUCCESS_MESSAGE);
+        terminalService.println(SUCCESS_MESSAGE);
     }
 }

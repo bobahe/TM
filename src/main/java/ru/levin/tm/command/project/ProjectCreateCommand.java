@@ -2,6 +2,7 @@ package ru.levin.tm.command.project;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.util.CommandUtil;
@@ -14,28 +15,27 @@ public final class ProjectCreateCommand extends AbstractCommand {
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
     private final IProjectService projectService;
+    private final ITerminalService terminalService;
 
     public ProjectCreateCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "project-create";
-        this.title = "[PROJECT CREATE]";
-        this.description = "Create new project";
         this.projectService = bootstrap.getProjectService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "project-create";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[PROJECT CREATE]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Create new project";
     }
 
     @Override
@@ -46,24 +46,24 @@ public final class ProjectCreateCommand extends AbstractCommand {
     public void execute() {
         final Project project = new Project();
 
-        System.out.println(this.title);
-        System.out.println(NAME_PROMPT);
-        project.setName(scanner.nextLine());
-        System.out.println(DESCRIPTION_PROMPT);
-        project.setDescription(scanner.nextLine());
-        System.out.println(START_DATE_PROMPT);
-        project.setStartDate(CommandUtil.parseDate(scanner));
-        System.out.println(END_DATE_PROMPT);
-        project.setEndDate(CommandUtil.parseDate(scanner));
+        terminalService.println(this.getTitle());
+        terminalService.println(NAME_PROMPT);
+        project.setName(terminalService.getLine());
+        terminalService.println(DESCRIPTION_PROMPT);
+        project.setDescription(terminalService.getLine());
+        terminalService.println(START_DATE_PROMPT);
+        project.setStartDate(CommandUtil.parseDate(terminalService.getLine()));
+        terminalService.println(END_DATE_PROMPT);
+        project.setEndDate(CommandUtil.parseDate(terminalService.getLine()));
 
         project.setUserId(bootstrap.getUserService().getCurrentUser().getId());
 
         try {
             projectService.save(project);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            terminalService.println(e.getMessage());
             return;
         }
-        System.out.println(SUCCESS_MESSAGE);
+        terminalService.println(SUCCESS_MESSAGE);
     }
 }

@@ -13,13 +13,8 @@ public final class ProjectService extends AbstractEntityService<Project, IProjec
 
     @Override
     public Project save(final Project entity) {
-        if (entity == null) {
-            return null;
-        }
-        if (entity.getName() == null || "".equals(entity.getName())) {
-            System.out.println("Can not save project without name.");
-            return null;
-        }
+        if (entity == null) return null;
+        if (entity.getName() == null || entity.getName().isEmpty()) return null;
 
         repository.persist(entity);
         return entity;
@@ -27,17 +22,9 @@ public final class ProjectService extends AbstractEntityService<Project, IProjec
 
     @Override
     public Project update(final Project entity) {
-        if (entity == null) {
-            return null;
-        }
-        if (entity.getId() == null || "".equals(entity.getId())) {
-            System.out.println("Can not update project without id.");
-            return null;
-        }
-        if (entity.getName() == null || "".equals(entity.getName())) {
-            System.out.println("Can not update project without name.");
-            return null;
-        }
+        if (entity == null) return null;
+        if (entity.getId() == null || entity.getId().isEmpty()) return null;
+        if (entity.getName() == null || entity.getName().isEmpty()) return null;
 
         if (repository.findOne(entity.getId()) == null) {
             throw new IllegalStateException("Can not update project. There is no such project in storage.");

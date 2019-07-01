@@ -1,6 +1,7 @@
 package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
@@ -10,27 +11,27 @@ public final class UserChangePasswordCommand extends AbstractCommand {
     protected static final String PASSWORD_AGAIN_PROMPT = "ENTER PASSWORD AGAIN:";
 
     private final IUserService userService;
+    private final ITerminalService terminalService;
 
     public UserChangePasswordCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
-        this.name = "change-password";
-        this.description = "Change password";
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "change-password";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Change password";
     }
 
     @Override
@@ -44,13 +45,13 @@ public final class UserChangePasswordCommand extends AbstractCommand {
             return;
         }
 
-        System.out.println(PASSWORD_PROMPT);
-        final String passwordOne = scanner.nextLine();
-        System.out.println(PASSWORD_AGAIN_PROMPT);
-        final String passwordTwo = scanner.nextLine();
+        terminalService.println(PASSWORD_PROMPT);
+        final String passwordOne = terminalService.getLine();
+        terminalService.println(PASSWORD_AGAIN_PROMPT);
+        final String passwordTwo = terminalService.getLine();
 
         if (!passwordOne.equals(passwordTwo)) {
-            System.out.println("You have entered different passwords. Abort.");
+            terminalService.println("You have entered different passwords. Abort.");
             return;
         }
 
@@ -59,10 +60,10 @@ public final class UserChangePasswordCommand extends AbstractCommand {
         try {
             userService.update(user);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            terminalService.printerr(e.getMessage());
             return;
         }
 
-        System.out.println("Your password has changed successfully");
+        terminalService.println("Your password has changed successfully");
     }
 }

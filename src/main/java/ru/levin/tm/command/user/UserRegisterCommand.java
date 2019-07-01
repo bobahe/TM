@@ -1,6 +1,7 @@
 package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.RoleType;
@@ -11,27 +12,27 @@ public final class UserRegisterCommand extends AbstractCommand {
     protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
 
     private final IUserService userService;
+    private final ITerminalService terminalService;
 
     public UserRegisterCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
-        this.name = "register";
-        this.description = "Register user in the application";
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "register";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Register user in the application";
     }
 
     @Override
@@ -41,10 +42,10 @@ public final class UserRegisterCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println(LOGIN_PROMPT);
-        final String login = scanner.nextLine();
-        System.out.println(PASSWORD_PROMPT);
-        final String password = scanner.nextLine();
+        terminalService.println(LOGIN_PROMPT);
+        final String login = terminalService.getLine();
+        terminalService.println(PASSWORD_PROMPT);
+        final String password = terminalService.getLine();
 
         final User user = new User();
         user.setLogin(login);
@@ -54,9 +55,9 @@ public final class UserRegisterCommand extends AbstractCommand {
         try {
             userService.save(user);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            terminalService.printerr(e.getMessage());
         }
 
-        System.out.println("You are registered successfully");
+        terminalService.println("You are registered successfully");
     }
 }

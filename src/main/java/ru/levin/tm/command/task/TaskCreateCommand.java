@@ -2,6 +2,7 @@ package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.util.CommandUtil;
@@ -15,28 +16,27 @@ public final class TaskCreateCommand extends AbstractCommand {
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public TaskCreateCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "task-create";
-        this.title = "[TASK CREATE]";
-        this.description = "Create new task";
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "task-create";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[TASK CREATE]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Create new task";
     }
 
     @Override
@@ -47,25 +47,25 @@ public final class TaskCreateCommand extends AbstractCommand {
     public void execute() {
         final Task task = new Task();
 
-        System.out.println(this.title);
-        System.out.println(NAME_PROMPT);
-        task.setName(scanner.nextLine());
-        System.out.println(DESCRIPTION_PROMPT);
-        task.setDescription(scanner.nextLine());
-        System.out.println(START_DATE_PROMPT);
-        task.setStartDate(CommandUtil.parseDate(scanner));
-        System.out.println(END_DATE_PROMPT);
-        task.setEndDate(CommandUtil.parseDate(scanner));
+        terminalService.println(this.getTitle());
+        terminalService.println(NAME_PROMPT);
+        task.setName(terminalService.getLine());
+        terminalService.println(DESCRIPTION_PROMPT);
+        task.setDescription(terminalService.getLine());
+        terminalService.println(START_DATE_PROMPT);
+        task.setStartDate(CommandUtil.parseDate(terminalService.getLine()));
+        terminalService.println(END_DATE_PROMPT);
+        task.setEndDate(CommandUtil.parseDate(terminalService.getLine()));
 
         task.setUserId(bootstrap.getUserService().getCurrentUser().getId());
 
         if (selectedProject != null) {
-            System.out.println(JOIN_TO_PROJECT_PROMPT);
-            final String joinAnswer = scanner.nextLine();
+            terminalService.println(JOIN_TO_PROJECT_PROMPT);
+            final String joinAnswer = terminalService.getLine();
             switch (joinAnswer) {
-                case "Y":
-                case "y":
-                case "":
+                case "n":
+                    break;
+                default:
                     task.setProjectId(selectedProject.getId());
                     break;
             }
@@ -74,9 +74,9 @@ public final class TaskCreateCommand extends AbstractCommand {
         try {
             taskService.save(task);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            terminalService.println(e.getMessage());
             return;
         }
-        System.out.println(SUCCESS_MESSAGE);
+        terminalService.println(SUCCESS_MESSAGE);
     }
 }

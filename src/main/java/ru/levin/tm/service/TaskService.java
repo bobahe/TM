@@ -26,12 +26,8 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
 
     @Override
     public void removeAllByUserIdAndProjectId(final String userId, final String projectId) {
-        if (userId == null || "".equals(userId)) {
-            return;
-        }
-        if (projectId == null || "".equals(projectId)) {
-            return;
-        }
+        if (userId == null || userId.isEmpty()) return;
+        if (projectId == null || projectId.isEmpty()) return;
 
         findAllByUserIdAndProjectId(userId, projectId).forEach(repository::remove);
     }
@@ -48,13 +44,8 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
 
     @Override
     public Task save(final Task entity) {
-        if (entity == null) {
-            return null;
-        }
-        if (entity.getName() == null || "".equals(entity.getName())) {
-            System.out.println("Can not save task without name.");
-            return null;
-        }
+        if (entity == null) return null;
+        if (entity.getName() == null || entity.getName().isEmpty()) return null;
 
         repository.persist(entity);
         return entity;
@@ -62,17 +53,9 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
 
     @Override
     public Task update(final Task entity) {
-        if (entity == null) {
-            return null;
-        }
-        if (entity.getId() == null || "".equals(entity.getId())) {
-            System.out.println("Can not update task without id.");
-            return null;
-        }
-        if (entity.getName() == null || "".equals(entity.getName())) {
-            System.out.println("Can not update task without name.");
-            return null;
-        }
+        if (entity == null) return null;
+        if (entity.getId() == null || entity.getId().isEmpty()) return null;
+        if (entity.getName() == null || entity.getName().isEmpty()) return null;
 
         if (repository.findOne(entity.getId()) == null) {
             throw new IllegalStateException("Can not update task. There is no such task in storage.");

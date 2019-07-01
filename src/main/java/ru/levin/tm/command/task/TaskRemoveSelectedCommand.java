@@ -2,6 +2,7 @@ package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskRemoveSelectedCommand extends AbstractCommand {
@@ -9,27 +10,27 @@ public final class TaskRemoveSelectedCommand extends AbstractCommand {
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public TaskRemoveSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "task-remove";
-        this.description = "Remove selected task";
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "task-remove";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Remove selected task";
     }
 
     @Override
@@ -40,17 +41,17 @@ public final class TaskRemoveSelectedCommand extends AbstractCommand {
     @Override
     public void execute() {
         if (selectedTask == null) {
-            System.out.println(TASK_NOT_SELECTED);
+            terminalService.println(TASK_NOT_SELECTED);
             return;
         }
 
         try {
             taskService.remove(selectedTask);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            terminalService.println(e.getMessage());
             return;
         }
         selectedTask = null;
-        System.out.println(SUCCESS_MESSAGE);
+        terminalService.println(SUCCESS_MESSAGE);
     }
 }

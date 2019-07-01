@@ -13,16 +13,9 @@ public abstract class AbstractCommand {
     protected static Task selectedTask;
 
     protected final IServiceLocator bootstrap;
-    protected final Scanner scanner;
-
-    protected String name;
-    protected String title;
-    protected String description;
-    protected boolean requiredAuthorization;
 
     public AbstractCommand(final IServiceLocator bootstrap) {
         this.bootstrap = bootstrap;
-        this.scanner = bootstrap.getTerminalService().getScanner();
     }
 
     public abstract String getName();

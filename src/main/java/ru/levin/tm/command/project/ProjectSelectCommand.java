@@ -2,6 +2,7 @@ package ru.levin.tm.command.project;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class ProjectSelectCommand extends AbstractCommand {
@@ -11,28 +12,27 @@ public final class ProjectSelectCommand extends AbstractCommand {
     protected static final String NO_SUCH_ITEM = "[THERE IS NO SUCH ITEM]\n";
 
     private final IProjectService projectService;
+    private final ITerminalService terminalService;
 
     public ProjectSelectCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "project-select";
-        this.title = "[PROJECT SELECT]";
-        this.description = "Select project";
         this.projectService = bootstrap.getProjectService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "project-select";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[PROJECT SELECT]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Select project";
     }
 
     @Override
@@ -41,16 +41,16 @@ public final class ProjectSelectCommand extends AbstractCommand {
     }
 
     public void execute() {
-        System.out.println(this.title);
-        System.out.println(SERIAL_NUMBER_PROMPT);
+        terminalService.println(this.getTitle());
+        terminalService.println(SERIAL_NUMBER_PROMPT);
         try {
-            final int index = Integer.parseInt(scanner.nextLine());
+            final int index = Integer.parseInt(terminalService.getLine());
             selectedProject = projectService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
-            System.out.println(SELECTED_PROJECT_MESSAGE + selectedProject);
+            terminalService.println(SELECTED_PROJECT_MESSAGE + selectedProject);
         } catch (NumberFormatException nfe) {
-            System.out.println(ERROR_MESSAGE);
+            terminalService.println(ERROR_MESSAGE);
         } catch (IndexOutOfBoundsException iobe) {
-            System.out.println(NO_SUCH_ITEM);
+            terminalService.println(NO_SUCH_ITEM);
         }
     }
 }

@@ -2,6 +2,7 @@ package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.util.CommandUtil;
@@ -17,28 +18,27 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
     private final ITaskService taskService;
+    private final ITerminalService terminalService;
 
     public TaskChangeSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
-        this.name = "task-change";
-        this.description = "Change selected task";
-        this.title = "[CHANGE TASK]";
         this.taskService = bootstrap.getTaskService();
+        this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
     public String getName() {
-        return name;
+        return "task-change";
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return "[CHANGE TASK]";
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return "Change selected task";
     }
 
     @Override
@@ -48,31 +48,29 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (CommandUtil.isSelectedObjectNull(selectedTask, Task.class)) {
-            return;
-        }
+        if (selectedTask == null) return;
 
-        System.out.println(this.title);
-        System.out.println(NAME_PROMPT);
-        selectedTask.setName(scanner.nextLine());
-        System.out.println(DESCRIPTION_PROMPT);
-        selectedTask.setDescription(scanner.nextLine());
-        System.out.println(START_DATE_PROMPT);
+        terminalService.println(this.getTitle());
+        terminalService.println(NAME_PROMPT);
+        selectedTask.setName(terminalService.getLine());
+        terminalService.println(DESCRIPTION_PROMPT);
+        selectedTask.setDescription(terminalService.getLine());
+        terminalService.println(START_DATE_PROMPT);
         selectedTask.setStartDate(parseDate(true));
-        System.out.println(END_DATE_PROMPT);
+        terminalService.println(END_DATE_PROMPT);
         selectedTask.setEndDate(parseDate(false));
 
         try {
             taskService.update(selectedTask);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            terminalService.println(e.getMessage());
             return;
         }
-        System.out.println(SUCCESS_MESSAGE);
+        terminalService.println(SUCCESS_MESSAGE);
     }
 
     private Date parseDate(final boolean isStartDate) {
-        final String date = scanner.nextLine();
+        final String date = terminalService.getLine();
 
         if ("".equals(date)) {
             return isStartDate ? selectedTask.getStartDate() : selectedTask.getEndDate();
@@ -81,7 +79,7 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
         try {
             return CommandUtil.DATE_FORMAT.parse(date);
         } catch (ParseException pe) {
-            System.out.println(ERR_PARSE_DATE_MESSAGE);
+            terminalService.println(ERR_PARSE_DATE_MESSAGE);
             return null;
         }
     }

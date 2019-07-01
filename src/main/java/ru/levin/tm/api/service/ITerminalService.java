@@ -1,7 +1,7 @@
 package ru.levin.tm.api.service;
 
-import java.util.Scanner;
-
 public interface ITerminalService {
-    Scanner getScanner();
+    void println(final String text);
+    void printerr(final String text);
+    String getLine();
 }
