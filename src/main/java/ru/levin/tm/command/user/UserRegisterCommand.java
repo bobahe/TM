@@ -7,6 +7,9 @@ import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.User;
 
 public final class UserRegisterCommand extends AbstractCommand {
+    protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
+    protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
+
     private final IUserService userService;
 
     public UserRegisterCommand(final IServiceLocator bootstrap) {
@@ -29,6 +32,11 @@ public final class UserRegisterCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean isRequiredAuthorization() {
+        return false;
     }
 
     @Override

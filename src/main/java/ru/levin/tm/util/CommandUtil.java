@@ -5,6 +5,7 @@ import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.Task;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -12,6 +13,8 @@ import java.util.Scanner;
 public final class CommandUtil {
     private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED\n";
     private static final String TASK_NOT_SELECTED_ERR = "TASK IS NOT SELECTED\n";
+
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
     public static Date parseDate(final Scanner scanner) {
         final String date = scanner.nextLine();
@@ -21,7 +24,7 @@ public final class CommandUtil {
         }
 
         try {
-            return AbstractCommand.DATE_FORMAT.parse(date);
+            return DATE_FORMAT.parse(date);
         } catch (ParseException pe) {
             System.out.println(AbstractCommand.ERR_PARSE_DATE_MESSAGE);
             return null;

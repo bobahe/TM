@@ -10,10 +10,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public final class UserService extends AbstractEntityService<User, IUserRepository> implements IUserService {
-    private static final String PROP_LOGIN = "login";
-    private static final String PROP_PASSWORD = "password";
-
-    private final MessageDigest md;
+    private final IUserRepository repository;
+    private User currentUser;
 
     public UserService(final IRepository<User> repository) throws NoSuchAlgorithmException {
         super(repository);
@@ -22,26 +20,46 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
     }
 
     @Override
-    public void save(final User entity) {
-        ServiceUtil.checkNull(entity);
-        ServiceUtil.checkNullOrEmpty(entity.getLogin(), PROP_LOGIN);
-        ServiceUtil.checkNullOrEmpty(entity.getPassword(), PROP_PASSWORD);
-        String hash = DatatypeConverter.printHexBinary(md.digest(entity.getPassword().getBytes()));
+    public User save(final User entity) {
+        if (entity == null) {
+            return null;
+        }
+        if (entity.getLogin() == null || "".equals(entity.getLogin())) {
+            return null;
+        }
+        if (entity.getPassword() == null || "".equals(entity.getPassword())) {
+            return null;
+        }
+
+        final MessageDigest messageDigest = getMD5();
+        if (messageDigest == null) {
+            return null;
+        }
+
+        final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(entity.getPassword().getBytes()));
         entity.setPassword(hash);
         repository.persist(entity);
+        return entity;
     }
 
     @Override
-    public void update(final User entity) {
-        ServiceUtil.checkNull(entity);
-        ServiceUtil.checkNullOrEmpty(entity.getLogin(), PROP_LOGIN);
-        ServiceUtil.checkNullOrEmpty(entity.getPassword(), PROP_PASSWORD);
+    public User update(final User entity) {
+        if (entity == null) {
+            return null;
+        }
+        if (entity.getLogin() == null || "".equals(entity.getLogin())) {
+            return null;
+        }
+        if (entity.getPassword() == null || "".equals(entity.getPassword())) {
+            return null;
+        }
 
         if (repository.findOne(entity.getId()) == null) {
             throw new IllegalStateException("Can not update user. There is no such user in storage.");
         }
 
         repository.merge(entity);
+        return entity;
     }
 
     public User getUserByLoginAndPassword(final String login, final String password) {
@@ -50,8 +68,34 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
     }
 
     public User setNewPassword(final User user, final String password) {
-        final String hash = DatatypeConverter.printHexBinary(md.digest(password.getBytes()));
+        if ("".equals(password)) {
+            return null;
+        }
+
+        final MessageDigest messageDigest = getMD5();
+        if (messageDigest == null) {
+            return null;
+        }
+        final String hash = DatatypeConverter.printHexBinary(getMD5().digest(password.getBytes()));
         user.setPassword(hash);
         return user;
+    }
+
+    @Override
+    public void setCurrentUser(final User user) {
+        currentUser = user;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    private MessageDigest getMD5() {
+        try {
+            return MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
     }
 }

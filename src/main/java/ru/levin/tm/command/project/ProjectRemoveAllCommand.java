@@ -11,13 +11,12 @@ public final class ProjectRemoveAllCommand extends AbstractCommand {
     private final TaskService taskService;
     private final IUserHandlerServiceLocator bootstrap;
 
-    public ProjectRemoveAllCommand(final IUserHandlerServiceLocator bootstrap) {
+    public ProjectRemoveAllCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-clear";
         this.description = "Remove all projects";
         this.projectService = bootstrap.getProjectService();
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -36,8 +35,13 @@ public final class ProjectRemoveAllCommand extends AbstractCommand {
     }
 
     @Override
+    public boolean isRequiredAuthorization() {
+        return true;
+    }
+
+    @Override
     public void execute() {
-        projectService.removeByUserId(bootstrap.getCurrentUser().getId());
+        projectService.removeByUserId(bootstrap.getUserService().getCurrentUser().getId());
 
         taskService.findAll().forEach(task -> {
             if (task.getProjectId() != null) {

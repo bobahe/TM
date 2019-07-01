@@ -18,80 +18,36 @@ import ru.levin.tm.repository.TaskRepository;
 import ru.levin.tm.repository.UserRepository;
 import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.service.TaskService;
+import ru.levin.tm.service.TerminalService;
 import ru.levin.tm.service.UserService;
 
-import java.io.InputStreamReader;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 
-public final class Bootstrap implements IUserHandlerServiceLocator, ICommandHandlerServiceLocator {
-    private final Scanner scanner = new Scanner(new InputStreamReader(System.in));
-    private final Map<String, AbstractCommand> commands;
+public final class Bootstrap implements ICommandHandlerServiceLocator {
+    private final Map<String, AbstractCommand> commands = new LinkedHashMap<>();
 
-    private final ProjectService projectService;
-    private final TaskService taskService;
-    private UserService userService;
+    private final ITerminalService terminalService = new TerminalService();
 
-    private User currentUser;
-
-    public Bootstrap() {
-        commands = new LinkedHashMap<>();
-
-        IRepository<Project> projectRepository = new ProjectRepository();
-        IRepository<Task> taskRepository = new TaskRepository();
-        IRepository<User> userRepository = new UserRepository();
-
-        projectService = new ProjectService(projectRepository);
-        taskService = new TaskService(taskRepository);
-
-        try {
-            userService = new UserService(userRepository);
-        } catch (NoSuchAlgorithmException nsae) {
-            System.err.println(nsae.getMessage());
-        }
-    }
+    private final IProjectRepository projectRepository = new ProjectRepository();
+    private final ITaskRepository taskRepository = new TaskRepository();
+    private final IUserRepository userRepository = new UserRepository();
+    private final IProjectService projectService = new ProjectService(projectRepository);
+    private final ITaskService taskService = new TaskService(taskRepository);
+    private final IUserService userService = new UserService(userRepository);
 
     public void init() {
         createDefaultUsers();
-
-        addHelpCommand();
-        addUnauthorizedCommands();
+        addCommands();
         process();
     }
 
-    private void createDefaultUsers() {
-        final User admin = new User();
-        admin.setLogin("admin");
-        admin.setPassword("admin");
-        admin.setRoleType(RoleType.ADMIN);
-
-        final User user = new User();
-        user.setLogin("user");
-        user.setPassword("user");
-        user.setRoleType(RoleType.USER);
-
-        userService.save(admin);
-        userService.save(user);
-    }
-
-    private void addHelpCommand() {
+    private void addCommands() {
         final HelpCommand helpCommand = new HelpCommand(this);
-        commands.put(helpCommand.getName(), helpCommand);
-    }
-
-    private void addUnauthorizedCommands() {
         final UserAuthorizeCommand userAuthorizeCommand = new UserAuthorizeCommand(this);
         final UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
         final AboutCommand aboutCommand = new AboutCommand(this);
 
-        commands.put(userAuthorizeCommand.getName(), userAuthorizeCommand);
-        commands.put(userRegisterCommand.getName(), userRegisterCommand);
-        commands.put(aboutCommand.getName(), aboutCommand);
-    }
-
-    private void addAuthorizedCommands() {
         final ProjectListCommand projectListCommand = new ProjectListCommand(this);
         final ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
         final ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
@@ -113,42 +69,56 @@ public final class Bootstrap implements IUserHandlerServiceLocator, ICommandHand
         final UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
         final UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
 
-        final AboutCommand aboutCommand = new AboutCommand(this);
+        registerCommand(helpCommand);
+        registerCommand(userAuthorizeCommand);
+        registerCommand(userRegisterCommand);
+        registerCommand(projectListCommand);
+        registerCommand(projectCreateCommand);
+        registerCommand(projectSelectCommand);
+        registerCommand(projectRemoveAllCommand);
+        registerCommand(projectChangeSelectedCommand);
+        registerCommand(projectRemoveSelectedCommand);
+        registerCommand(taskProjectTaskListCommand);
+        registerCommand(taskRemoveAllCommand);
+        registerCommand(taskCreateCommand);
+        registerCommand(taskSelectCommand);
+        registerCommand(taskListCommand);
+        registerCommand(taskChangeSelectedCommand);
+        registerCommand(taskRemoveSelectedCommand);
+        registerCommand(taskJoinCommand);
+        registerCommand(userShowProfileCommand);
+        registerCommand(userEditProfileCommand);
+        registerCommand(userChangePasswordCommand);
+        registerCommand(userLogoutCommand);
+        registerCommand(aboutCommand);
+    }
 
-        commands.put(projectListCommand.getName(), projectListCommand);
-        commands.put(projectCreateCommand.getName(), projectCreateCommand);
-        commands.put(projectSelectCommand.getName(), projectSelectCommand);
-        commands.put(projectRemoveAllCommand.getName(), projectRemoveAllCommand);
-        commands.put(projectChangeSelectedCommand.getName(), projectChangeSelectedCommand);
-        commands.put(projectRemoveSelectedCommand.getName(), projectRemoveSelectedCommand);
-        commands.put(taskProjectTaskListCommand.getName(), taskProjectTaskListCommand);
-        commands.put(taskRemoveAllCommand.getName(), taskRemoveAllCommand);
-        commands.put(taskCreateCommand.getName(), taskCreateCommand);
-        commands.put(taskSelectCommand.getName(), taskSelectCommand);
-        commands.put(taskListCommand.getName(), taskListCommand);
-        commands.put(taskChangeSelectedCommand.getName(), taskChangeSelectedCommand);
-        commands.put(taskRemoveSelectedCommand.getName(), taskRemoveSelectedCommand);
-        commands.put(taskJoinCommand.getName(), taskJoinCommand);
-        commands.put(userShowProfileCommand.getName(), userShowProfileCommand);
-        commands.put(userEditProfileCommand.getName(), userEditProfileCommand);
-        commands.put(userChangePasswordCommand.getName(), userChangePasswordCommand);
-        commands.put(userLogoutCommand.getName(), userLogoutCommand);
-        commands.put(aboutCommand.getName(), aboutCommand);
+    private void createDefaultUsers() {
+        final User admin = new User();
+        admin.setLogin("admin");
+        admin.setPassword("admin");
+        admin.setRoleType(RoleType.ADMIN);
+
+        final User user = new User();
+        user.setLogin("user");
+        user.setPassword("user");
+        user.setRoleType(RoleType.USER);
+
+        userService.save(admin);
+        userService.save(user);
     }
 
     private void process() {
         System.out.println("*** WELCOME TO TASK MANAGER ***");
-        String command = scanner.nextLine();
+        String command = terminalService.getScanner().nextLine();
 
         while (!"exit".equals(command)) {
             if ("".equals(command)) {
-                command = scanner.nextLine();
+                command = terminalService.getScanner().nextLine();
                 continue;
             }
-
             invokeCommand(command);
-
-            command = scanner.nextLine();
+            command = terminalService.getScanner().nextLine();
         }
     }
 
@@ -159,12 +129,11 @@ public final class Bootstrap implements IUserHandlerServiceLocator, ICommandHand
             System.err.println("There is not such command");
             return;
         }
-
+        if (userService.getCurrentUser() == null && command.isRequiredAuthorization()) {
+            System.out.println("You have to log in first.");
+            return;
+        }
         command.execute();
-    }
-
-    public Scanner getScanner() {
-        return scanner;
     }
 
     public Map<String, AbstractCommand> getCommands() {
@@ -183,22 +152,11 @@ public final class Bootstrap implements IUserHandlerServiceLocator, ICommandHand
         return userService;
     }
 
-    public void setCurrentUser(final User currentUser) {
-        this.currentUser = currentUser;
-
-        if (currentUser == null) {
-            commands.clear();
-            addHelpCommand();
-            addUnauthorizedCommands();
-        } else {
-            System.out.println("Hi, " + currentUser.getLogin() + "!");
-            commands.clear();
-            addHelpCommand();
-            addAuthorizedCommands();
-        }
+    public ITerminalService getTerminalService() {
+        return terminalService;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+    private void registerCommand(AbstractCommand command) {
+        commands.put(command.getName(), command);
     }
 }

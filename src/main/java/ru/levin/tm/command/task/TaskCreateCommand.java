@@ -1,6 +1,6 @@
 package ru.levin.tm.command.task;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
@@ -8,18 +8,22 @@ import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
 
 public final class TaskCreateCommand extends AbstractCommand {
+    protected static final String NAME_PROMPT = "ENTER NAME:";
+    protected static final String DESCRIPTION_PROMPT = "ENTER DESCRIPTION:";
+    protected static final String START_DATE_PROMPT = "ENTER START DATE:";
+    protected static final String END_DATE_PROMPT = "ENTER END DATE:";
+    protected static final String SUCCESS_MESSAGE = "[OK]\n";
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
     private final TaskService taskService;
     private final IUserHandlerServiceLocator bootstrap;
 
-    public TaskCreateCommand(final IUserHandlerServiceLocator bootstrap) {
+    public TaskCreateCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "task-create";
         this.title = "[TASK CREATE]";
         this.description = "Create new task";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -37,6 +41,11 @@ public final class TaskCreateCommand extends AbstractCommand {
         return description;
     }
 
+    @Override
+    public boolean isRequiredAuthorization() {
+        return true;
+    }
+
     public void execute() {
         final Task task = new Task();
 
@@ -50,7 +59,7 @@ public final class TaskCreateCommand extends AbstractCommand {
         System.out.println(END_DATE_PROMPT);
         task.setEndDate(CommandUtil.parseDate(scanner));
 
-        task.setUserId(bootstrap.getCurrentUser().getId());
+        task.setUserId(bootstrap.getUserService().getCurrentUser().getId());
 
         if (selectedProject != null) {
             System.out.println(JOIN_TO_PROJECT_PROMPT);

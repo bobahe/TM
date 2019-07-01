@@ -1,20 +1,21 @@
 package ru.levin.tm.command.user;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
 
 public final class UserAuthorizeCommand extends AbstractCommand {
-    private final IUserService userService;
-    private final IUserHandlerServiceLocator bootstrap;
+    protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
+    protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
 
-    public UserAuthorizeCommand(final IUserHandlerServiceLocator bootstrap) {
+    private final IUserService userService;
+
+    public UserAuthorizeCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "login";
         this.description = "Log in to application";
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -33,6 +34,11 @@ public final class UserAuthorizeCommand extends AbstractCommand {
     }
 
     @Override
+    public boolean isRequiredAuthorization() {
+        return false;
+    }
+
+    @Override
     public void execute() {
         System.out.println(LOGIN_PROMPT);
         final String login = scanner.nextLine();
@@ -46,6 +52,6 @@ public final class UserAuthorizeCommand extends AbstractCommand {
             return;
         }
 
-        bootstrap.setCurrentUser(user);
+        bootstrap.getUserService().setCurrentUser(user);
     }
 }

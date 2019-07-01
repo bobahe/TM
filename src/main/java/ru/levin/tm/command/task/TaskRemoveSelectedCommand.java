@@ -6,6 +6,7 @@ import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskRemoveSelectedCommand extends AbstractCommand {
     private static final String TASK_NOT_SELECTED = "TASK IS NOT SELECTED";
+    protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
     private final ITaskService taskService;
 
@@ -29,6 +30,11 @@ public final class TaskRemoveSelectedCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean isRequiredAuthorization() {
+        return true;
     }
 
     @Override

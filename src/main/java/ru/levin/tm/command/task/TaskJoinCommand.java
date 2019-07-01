@@ -9,6 +9,7 @@ public final class TaskJoinCommand extends AbstractCommand {
     private static final String SELECTED_TASK_MESSAGE = "SELECTED TASK: ";
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
     private static final String SELECT_TASK_MESSAGE = "You must select a task before";
+    protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
     private final TaskService taskService;
 
@@ -33,6 +34,11 @@ public final class TaskJoinCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean isRequiredAuthorization() {
+        return true;
     }
 
     public void execute() {

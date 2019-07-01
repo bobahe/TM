@@ -1,6 +1,6 @@
 package ru.levin.tm.command.task;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
@@ -13,13 +13,12 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
 
     private final TaskService taskService;
 
-    public TaskProjectTaskListCommand(final IUserHandlerServiceLocator bootstrap) {
+    public TaskProjectTaskListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-task-list";
         this.title = "[PROJECT TASK LIST]";
         this.description = "Show all tasks for selected project";
         this.taskService = bootstrap.getTaskService();
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -38,6 +37,11 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
     }
 
     @Override
+    public boolean isRequiredAuthorization() {
+        return true;
+    }
+
+    @Override
     public void execute() {
         if (selectedProject == null) {
             System.out.println(SELECT_PROJECT_MESSAGE);
@@ -53,12 +57,12 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
             System.out.println((i + 1) + ". " + task.getName());
             System.out.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {
-                System.out.println("\tStart date: " + DATE_FORMAT.format(task.getStartDate()));
+                System.out.println("\tStart date: " + CommandUtil.DATE_FORMAT.format(task.getStartDate()));
             } else {
                 System.out.println("\tStar date: not set");
             }
             if (task.getEndDate() != null) {
-                System.out.println("\tEnd date: " + DATE_FORMAT.format(task.getEndDate()));
+                System.out.println("\tEnd date: " + CommandUtil.DATE_FORMAT.format(task.getEndDate()));
             } else {
                 System.out.println("\tEnd date: not set");
             }

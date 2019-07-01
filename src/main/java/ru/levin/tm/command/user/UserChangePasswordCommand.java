@@ -1,20 +1,21 @@
 package ru.levin.tm.command.user;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
 
 public final class UserChangePasswordCommand extends AbstractCommand {
-    private final IUserService userService;
-    private final IUserHandlerServiceLocator bootstrap;
+    protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
+    protected static final String PASSWORD_AGAIN_PROMPT = "ENTER PASSWORD AGAIN:";
 
-    public UserChangePasswordCommand(final IUserHandlerServiceLocator bootstrap) {
+    private final IUserService userService;
+
+    public UserChangePasswordCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "change-password";
         this.description = "Change password";
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -33,8 +34,13 @@ public final class UserChangePasswordCommand extends AbstractCommand {
     }
 
     @Override
+    public boolean isRequiredAuthorization() {
+        return true;
+    }
+
+    @Override
     public void execute() {
-        if (bootstrap.getCurrentUser() == null) {
+        if (bootstrap.getUserService().getCurrentUser() == null) {
             return;
         }
 
@@ -48,7 +54,7 @@ public final class UserChangePasswordCommand extends AbstractCommand {
             return;
         }
 
-        final User user = userService.setNewPassword(bootstrap.getCurrentUser(), passwordOne);
+        final User user = userService.setNewPassword(bootstrap.getUserService().getCurrentUser(), passwordOne);
 
         try {
             userService.update(user);

@@ -3,7 +3,6 @@ package ru.levin.tm.service;
 import ru.levin.tm.api.repository.ITaskRepository;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.entity.Task;
-import ru.levin.tm.util.ServiceUtil;
 
 import java.util.List;
 
@@ -19,23 +18,38 @@ public final class TaskService extends AbstractEntityWithOwnerService<Task> {
     }
 
     @Override
-    public void save(final Task entity) {
-        ServiceUtil.checkNull(entity);
-        ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
+    public Task save(final Task entity) {
+        if (entity == null) {
+            return null;
+        }
+        if (entity.getName() == null || "".equals(entity.getName())) {
+            System.out.println("Can not save task without name.");
+            return null;
+        }
 
         repository.persist(entity);
+        return entity;
     }
 
     @Override
-    public void update(final Task entity) {
-        ServiceUtil.checkNull(entity);
-        ServiceUtil.checkNullOrEmpty(entity.getId(), PROP_ID);
-        ServiceUtil.checkNullOrEmpty(entity.getName(), PROP_NAME);
+    public Task update(final Task entity) {
+        if (entity == null) {
+            return null;
+        }
+        if (entity.getId() == null || "".equals(entity.getId())) {
+            System.out.println("Can not update task without id.");
+            return null;
+        }
+        if (entity.getName() == null || "".equals(entity.getName())) {
+            System.out.println("Can not update task without name.");
+            return null;
+        }
 
         if (repository.findOne(entity.getId()) == null) {
             throw new IllegalStateException("Can not update task. There is no such task in storage.");
         }
 
         repository.merge(entity);
+        return entity;
     }
 }

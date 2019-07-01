@@ -26,6 +26,11 @@ public final class AboutCommand extends AbstractCommand {
         return description;
     }
 
+    @Override
+    public boolean isRequiredAuthorization() {
+        return false;
+    }
+
     public void execute() {
         final String buildDeveloper = Manifests.read("Build-Developer");
         final String buildVersion = Manifests.read("Build-Version");

@@ -1,16 +1,13 @@
 package ru.levin.tm.command.user;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class UserLogoutCommand extends AbstractCommand {
-    private final IUserHandlerServiceLocator bootstrap;
-
-    public UserLogoutCommand(final IUserHandlerServiceLocator bootstrap) {
+    public UserLogoutCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "logout";
         this.description = "Log out";
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -29,10 +26,15 @@ public final class UserLogoutCommand extends AbstractCommand {
     }
 
     @Override
+    public boolean isRequiredAuthorization() {
+        return true;
+    }
+
+    @Override
     public void execute() {
         selectedProject = null;
         selectedTask = null;
-        System.out.println("Good bye, " + bootstrap.getCurrentUser().getLogin());
-        bootstrap.setCurrentUser(null);
+        System.out.println("Good bye, " + bootstrap.getUserService().getCurrentUser().getLogin());
+        bootstrap.getUserService().setCurrentUser(null);
     }
 }

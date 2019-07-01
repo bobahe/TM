@@ -1,6 +1,6 @@
 package ru.levin.tm.command.project;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
@@ -8,16 +8,20 @@ import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
 public final class ProjectCreateCommand extends AbstractCommand {
-    private final ProjectService projectService;
-    private final IUserHandlerServiceLocator bootstrap;
+    protected static final String NAME_PROMPT = "ENTER NAME:";
+    protected static final String DESCRIPTION_PROMPT = "ENTER DESCRIPTION:";
+    protected static final String START_DATE_PROMPT = "ENTER START DATE:";
+    protected static final String END_DATE_PROMPT = "ENTER END DATE:";
+    protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
-    public ProjectCreateCommand(final IUserHandlerServiceLocator bootstrap) {
+    private final IProjectService projectService;
+
+    public ProjectCreateCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-create";
         this.title = "[PROJECT CREATE]";
         this.description = "Create new project";
         this.projectService = bootstrap.getProjectService();
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -35,6 +39,11 @@ public final class ProjectCreateCommand extends AbstractCommand {
         return description;
     }
 
+    @Override
+    public boolean isRequiredAuthorization() {
+        return true;
+    }
+
     public void execute() {
         final Project project = new Project();
 
@@ -48,7 +57,7 @@ public final class ProjectCreateCommand extends AbstractCommand {
         System.out.println(END_DATE_PROMPT);
         project.setEndDate(CommandUtil.parseDate(scanner));
 
-        project.setUserId(bootstrap.getCurrentUser().getId());
+        project.setUserId(bootstrap.getUserService().getCurrentUser().getId());
 
         try {
             projectService.save(project);

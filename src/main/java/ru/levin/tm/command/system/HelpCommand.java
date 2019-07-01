@@ -30,6 +30,11 @@ public final class HelpCommand extends AbstractCommand {
         return description;
     }
 
+    @Override
+    public boolean isRequiredAuthorization() {
+        return false;
+    }
+
     public void execute() {
         commands.values().forEach(command -> System.out.println(command.getName() + ": " + command.getDescription()));
         System.out.println("exit: Exit from application");

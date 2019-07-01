@@ -1,19 +1,19 @@
 package ru.levin.tm.command.user;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class UserEditProfileCommand extends AbstractCommand {
-    private final IUserService userService;
-    private final IUserHandlerServiceLocator bootstrap;
+    protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
 
-    public UserEditProfileCommand(final IUserHandlerServiceLocator bootstrap) {
+    private final IUserService userService;
+
+    public UserEditProfileCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "edit-profile";
         this.description = "Edit user profile";
-        this.bootstrap = bootstrap;
     }
 
     @Override
@@ -32,16 +32,21 @@ public final class UserEditProfileCommand extends AbstractCommand {
     }
 
     @Override
+    public boolean isRequiredAuthorization() {
+        return true;
+    }
+
+    @Override
     public void execute() {
-        if (bootstrap.getCurrentUser() == null) {
+        if (bootstrap.getUserService().getCurrentUser() == null) {
             return;
         }
 
         System.out.println(LOGIN_PROMPT);
-        bootstrap.getCurrentUser().setLogin(scanner.nextLine());
+        bootstrap.getUserService().getCurrentUser().setLogin(scanner.nextLine());
 
         try {
-            userService.update(bootstrap.getCurrentUser());
+            userService.update(bootstrap.getUserService().getCurrentUser());
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return;

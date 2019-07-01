@@ -11,7 +11,13 @@ import java.text.ParseException;
 import java.util.Date;
 
 public final class TaskChangeSelectedCommand extends AbstractCommand {
-    private final TaskService taskService;
+    protected static final String NAME_PROMPT = "ENTER NAME:";
+    protected static final String DESCRIPTION_PROMPT = "ENTER DESCRIPTION:";
+    protected static final String START_DATE_PROMPT = "ENTER START DATE:";
+    protected static final String END_DATE_PROMPT = "ENTER END DATE:";
+    protected static final String SUCCESS_MESSAGE = "[OK]\n";
+
+    private final ITaskService taskService;
 
     public TaskChangeSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
@@ -34,6 +40,11 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean isRequiredAuthorization() {
+        return true;
     }
 
     @Override
@@ -69,7 +80,7 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
         }
 
         try {
-            return DATE_FORMAT.parse(date);
+            return CommandUtil.DATE_FORMAT.parse(date);
         } catch (ParseException pe) {
             System.out.println(ERR_PARSE_DATE_MESSAGE);
             return null;
