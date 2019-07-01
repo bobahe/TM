@@ -4,11 +4,7 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.entity.Project;
 import ru.levin.tm.util.CommandUtil;
-
-import java.text.ParseException;
-import java.util.Date;
 
 public final class ProjectChangeSelectedCommand extends AbstractCommand {
     protected static final String NAME_PROMPT = "ENTER NAME:";
@@ -56,9 +52,9 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
         terminalService.println(DESCRIPTION_PROMPT);
         selectedProject.setDescription(terminalService.getLine());
         terminalService.println(START_DATE_PROMPT);
-        selectedProject.setStartDate(parseDate(true));
+        selectedProject.setStartDate(CommandUtil.parseDate(terminalService.getLine()));
         terminalService.println(END_DATE_PROMPT);
-        selectedProject.setEndDate(parseDate(false));
+        selectedProject.setEndDate(CommandUtil.parseDate(terminalService.getLine()));
 
         try {
             projectService.update(selectedProject);
@@ -67,20 +63,5 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
             return;
         }
         terminalService.println(SUCCESS_MESSAGE);
-    }
-
-    private Date parseDate(final boolean isStartDate) {
-        final String date = terminalService.getLine();
-
-        if (date.isEmpty()) {
-            return isStartDate ? selectedProject.getStartDate() : selectedProject.getEndDate();
-        }
-
-        try {
-            return CommandUtil.DATE_FORMAT.parse(date);
-        } catch (ParseException pe) {
-            terminalService.println(ERR_PARSE_DATE_MESSAGE);
-            return null;
-        }
     }
 }

@@ -4,11 +4,7 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.entity.Task;
 import ru.levin.tm.util.CommandUtil;
-
-import java.text.ParseException;
-import java.util.Date;
 
 public final class TaskChangeSelectedCommand extends AbstractCommand {
     protected static final String NAME_PROMPT = "ENTER NAME:";
@@ -56,9 +52,9 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
         terminalService.println(DESCRIPTION_PROMPT);
         selectedTask.setDescription(terminalService.getLine());
         terminalService.println(START_DATE_PROMPT);
-        selectedTask.setStartDate(parseDate(true));
+        selectedTask.setStartDate(CommandUtil.parseDate(terminalService.getLine()));
         terminalService.println(END_DATE_PROMPT);
-        selectedTask.setEndDate(parseDate(false));
+        selectedTask.setEndDate(CommandUtil.parseDate(terminalService.getLine()));
 
         try {
             taskService.update(selectedTask);
@@ -67,20 +63,5 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
             return;
         }
         terminalService.println(SUCCESS_MESSAGE);
-    }
-
-    private Date parseDate(final boolean isStartDate) {
-        final String date = terminalService.getLine();
-
-        if ("".equals(date)) {
-            return isStartDate ? selectedTask.getStartDate() : selectedTask.getEndDate();
-        }
-
-        try {
-            return CommandUtil.DATE_FORMAT.parse(date);
-        } catch (ParseException pe) {
-            terminalService.println(ERR_PARSE_DATE_MESSAGE);
-            return null;
-        }
     }
 }
