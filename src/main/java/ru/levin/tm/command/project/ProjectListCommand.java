@@ -4,13 +4,12 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
-import ru.levin.tm.service.ProjectService;
+import ru.levin.tm.util.CommandUtil;
 
 import java.util.List;
 
 public final class ProjectListCommand extends AbstractCommand {
-    private final ProjectService projectService;
-    private final IUserHandlerServiceLocator bootstrap;
+    private final IProjectService projectService;
 
     public ProjectListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
@@ -42,9 +41,7 @@ public final class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Project> projectList = projectService.findAll().stream()
-                .filter(project -> project.getUserId().equals(bootstrap.getCurrentUser().getId()))
-                .collect(Collectors.toList());
+        final List<Project> projectList = projectService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
         for (int i = 0; i < projectList.size(); i++) {
             final Project project = projectList.get(i);
 

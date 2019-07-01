@@ -1,6 +1,7 @@
 package ru.levin.tm.command.project;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class ProjectSelectCommand extends AbstractCommand {
@@ -9,8 +10,7 @@ public final class ProjectSelectCommand extends AbstractCommand {
     protected static final String ERROR_MESSAGE = "[ERROR]\n";
     protected static final String NO_SUCH_ITEM = "[THERE IS NO SUCH ITEM]\n";
 
-    private final ProjectService projectService;
-    private final IUserHandlerServiceLocator bootstrap;
+    private final IProjectService projectService;
 
     public ProjectSelectCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
@@ -45,10 +45,7 @@ public final class ProjectSelectCommand extends AbstractCommand {
         System.out.println(SERIAL_NUMBER_PROMPT);
         try {
             final int index = Integer.parseInt(scanner.nextLine());
-            selectedProject = projectService.findAll().stream()
-                    .filter(project -> project.getUserId().equals(bootstrap.getCurrentUser().getId()))
-                    .collect(Collectors.toList())
-                    .get(index - 1);
+            selectedProject = projectService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
             System.out.println(SELECTED_PROJECT_MESSAGE + selectedProject);
         } catch (NumberFormatException nfe) {
             System.out.println(ERROR_MESSAGE);

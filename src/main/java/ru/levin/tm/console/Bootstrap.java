@@ -1,17 +1,20 @@
 package ru.levin.tm.console;
 
 import ru.levin.tm.api.ICommandHandlerServiceLocator;
-import ru.levin.tm.api.IRepository;
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.repository.IProjectRepository;
+import ru.levin.tm.api.repository.ITaskRepository;
+import ru.levin.tm.api.repository.IUserRepository;
+import ru.levin.tm.api.service.IProjectService;
+import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.ITerminalService;
+import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.command.project.*;
 import ru.levin.tm.command.system.AboutCommand;
 import ru.levin.tm.command.system.HelpCommand;
 import ru.levin.tm.command.task.*;
 import ru.levin.tm.command.user.*;
-import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.RoleType;
-import ru.levin.tm.entity.Task;
 import ru.levin.tm.entity.User;
 import ru.levin.tm.repository.ProjectRepository;
 import ru.levin.tm.repository.TaskRepository;
@@ -140,15 +143,15 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
         return commands;
     }
 
-    public ProjectService getProjectService() {
+    public IProjectService getProjectService() {
         return projectService;
     }
 
-    public TaskService getTaskService() {
+    public ITaskService getTaskService() {
         return taskService;
     }
 
-    public UserService getUserService() {
+    public IUserService getUserService() {
         return userService;
     }
 

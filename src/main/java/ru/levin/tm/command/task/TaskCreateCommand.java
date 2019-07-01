@@ -4,7 +4,6 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
-import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
 
 public final class TaskCreateCommand extends AbstractCommand {
@@ -15,8 +14,7 @@ public final class TaskCreateCommand extends AbstractCommand {
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
     private static final String JOIN_TO_PROJECT_PROMPT = "Would you like to attach this task to selected project? (Y/n)";
 
-    private final TaskService taskService;
-    private final IUserHandlerServiceLocator bootstrap;
+    private final ITaskService taskService;
 
     public TaskCreateCommand(final IServiceLocator bootstrap) {
         super(bootstrap);

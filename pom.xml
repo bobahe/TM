@@ -9,7 +9,7 @@
     <version>1.0.0</version>
     <developers>
         <developer>
-            <name>Vladimir Levin</name>
+            <name>${developer.name}</name>
             <email>bobahe@gmail.com</email>
         </developer>
     </developers>
@@ -17,7 +17,7 @@
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-
+        <developer.name>Vladimir Levin</developer.name>
     </properties>
 
     <dependencies>
@@ -55,8 +55,8 @@
                             <mainClass>ru.levin.tm.Application</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Build-Developer>Developer: Vladimir Levin</Build-Developer>
-                            <Build-Version>Version: ${version}</Build-Version>
+                            <Build-Developer>Developer: ${developer.name}</Build-Developer>
+                            <Build-Version>Version: ${project.version}</Build-Version>
                             <Build-Number>Build number: ${buildNumber}</Build-Number>
                         </manifestEntries>
                     </archive>
@@ -81,34 +81,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>ru.levin.tm.Application</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Build-Developer>Developer: Vladimir Levin</Build-Developer>
-                            <Build-Version>Version: ${version}</Build-Version>
-                            <Build-Number>Build number: ${buildNumber}</Build-Number>
-                        </manifestEntries>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

@@ -1,9 +1,8 @@
 package ru.levin.tm.service;
 
-import ru.levin.tm.api.IRepository;
+import ru.levin.tm.api.repository.IUserRepository;
+import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.entity.User;
-import ru.levin.tm.repository.UserRepository;
-import ru.levin.tm.util.ServiceUtil;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
@@ -13,10 +12,9 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
     private final IUserRepository repository;
     private User currentUser;
 
-    public UserService(final IRepository<User> repository) throws NoSuchAlgorithmException {
+    public UserService(final IUserRepository repository) {
         super(repository);
-
-        md = MessageDigest.getInstance("MD5");
+        this.repository = repository;
     }
 
     @Override
@@ -63,8 +61,19 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
     }
 
     public User getUserByLoginAndPassword(final String login, final String password) {
-        final String hash = DatatypeConverter.printHexBinary(md.digest(password.getBytes()));
-        return ((UserRepository) repository).findOneByLoginAndPassword(login, hash);
+        if ("".equals(login)) {
+            return null;
+        }
+        if ("".equals(password)) {
+            return null;
+        }
+
+        final MessageDigest messageDigest = getMD5();
+        if (messageDigest == null) {
+            return null;
+        }
+        final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(password.getBytes()));
+        return repository.findOneByLoginAndPassword(login, hash);
     }
 
     public User setNewPassword(final User user, final String password) {

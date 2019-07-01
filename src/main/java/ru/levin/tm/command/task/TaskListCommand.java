@@ -4,13 +4,12 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
-import ru.levin.tm.service.TaskService;
+import ru.levin.tm.util.CommandUtil;
 
 import java.util.List;
 
 public final class TaskListCommand extends AbstractCommand {
-    private final TaskService taskService;
-    private final IUserHandlerServiceLocator bootstrap;
+    private final ITaskService taskService;
 
     public TaskListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
@@ -42,9 +41,7 @@ public final class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Task> taskList = taskService.findAll().stream()
-                .filter(task -> task.getUserId().equals(bootstrap.getCurrentUser().getId()))
-                .collect(Collectors.toList());
+        final List<Task> taskList = taskService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
         for (int i = 0; i < taskList.size(); i++) {
             final Task task = taskList.get(i);
             System.out.println((i + 1) + ". " + task.getName());

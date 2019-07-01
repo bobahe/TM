@@ -1,8 +1,8 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.service.TaskService;
 
 public final class TaskJoinCommand extends AbstractCommand {
     private static final String SELECTED_PROJECT_MESSAGE = "SELECTED TASK: ";
@@ -11,7 +11,7 @@ public final class TaskJoinCommand extends AbstractCommand {
     private static final String SELECT_TASK_MESSAGE = "You must select a task before";
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
 
-    private final TaskService taskService;
+    private final ITaskService taskService;
 
     public TaskJoinCommand(final IServiceLocator bootstrap) {
         super(bootstrap);

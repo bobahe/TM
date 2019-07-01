@@ -4,7 +4,6 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
-import ru.levin.tm.service.TaskService;
 import ru.levin.tm.util.CommandUtil;
 
 import java.text.ParseException;

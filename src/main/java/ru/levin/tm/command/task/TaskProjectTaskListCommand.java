@@ -4,14 +4,14 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
-import ru.levin.tm.service.TaskService;
+import ru.levin.tm.util.CommandUtil;
 
 import java.util.List;
 
 public final class TaskProjectTaskListCommand extends AbstractCommand {
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
 
-    private final TaskService taskService;
+    private final ITaskService taskService;
 
     public TaskProjectTaskListCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
@@ -50,7 +50,8 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
 
         System.out.println(title + " for " + selectedProject.getName());
 
-        final List<Task> taskList = taskService.findByProjectId(selectedProject.getId());
+        final List<Task> taskList = taskService
+                .findAllByUserIdAndProjectId(bootstrap.getUserService().getCurrentUser().getId(), selectedProject.getId());
 
         for (int i = 0; i < taskList.size(); i++) {
             final Task task = taskList.get(i);

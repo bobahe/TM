@@ -45,10 +45,7 @@ public final class TaskSelectCommand extends AbstractCommand {
         System.out.println(SERIAL_NUMBER_PROMPT);
         try {
             final int index = Integer.parseInt(scanner.nextLine());
-            selectedTask = taskService.findAll().stream()
-                    .filter(task -> task.getUserId().equals(bootstrap.getCurrentUser().getId()))
-                    .collect(Collectors.toList())
-                    .get(index - 1);
+            selectedTask = taskService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
             System.out.println(SELECTED_TASK_MESSAGE + selectedTask);
         } catch (NumberFormatException nfe) {
             System.out.println(ERROR_MESSAGE);

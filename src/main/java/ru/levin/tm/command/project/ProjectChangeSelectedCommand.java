@@ -4,7 +4,6 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
-import ru.levin.tm.service.ProjectService;
 import ru.levin.tm.util.CommandUtil;
 
 import java.text.ParseException;

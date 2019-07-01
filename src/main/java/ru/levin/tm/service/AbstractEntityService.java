@@ -7,7 +7,9 @@ import ru.levin.tm.entity.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEntityService<T extends AbstractEntity> extends AbstractService<T>{
+public abstract class AbstractEntityService<T extends AbstractEntity, E extends IRepository<T>>
+        extends AbstractService<T>
+        implements IEntityService<T> {
     protected static final String PROP_ID = "id";
 
     protected final E repository;
@@ -16,7 +18,7 @@ public abstract class AbstractEntityService<T extends AbstractEntity> extends Ab
         this.repository = repository;
     }
 
-    public List<T> findAll() {
+    public List<T> getAll() {
         return new ArrayList<>(repository.findAll().values());
     }
 

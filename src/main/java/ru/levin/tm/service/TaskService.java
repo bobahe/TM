@@ -6,11 +6,22 @@ import ru.levin.tm.entity.Task;
 
 import java.util.List;
 
-public final class TaskService extends AbstractEntityWithOwnerService<Task> {
-    private static final String PROP_NAME = "name";
+public final class TaskService extends AbstractEntityService<Task, ITaskRepository> implements ITaskService {
+    private final ITaskRepository repository;
 
-    public TaskService(final IRepository<Task> repository) {
+    public TaskService(final ITaskRepository repository) {
         super(repository);
+        this.repository = repository;
+    }
+
+    @Override
+    public List<Task> findAllByUserIdAndProjectId(final String userId, final String projectId) {
+        return repository.findAllByUserIdProjectId(userId, projectId);
+    }
+
+    @Override
+    public List<Task> findAllByUserId(final String userId) {
+        return repository.findAllByUserId(userId);
     }
 
     @Override

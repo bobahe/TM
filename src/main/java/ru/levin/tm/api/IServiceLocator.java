@@ -6,8 +6,8 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 
 public interface IServiceLocator {
-    ProjectService getProjectService();
-    TaskService getTaskService();
-    UserService getUserService();
-    User getCurrentUser();
+    IProjectService getProjectService();
+    ITaskService getTaskService();
+    IUserService getUserService();
+    ITerminalService getTerminalService();
 }

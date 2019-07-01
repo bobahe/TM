@@ -1,15 +1,14 @@
 package ru.levin.tm.command.project;
 
-import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.IProjectService;
+import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.service.ProjectService;
-import ru.levin.tm.service.TaskService;
 
 public final class ProjectRemoveAllCommand extends AbstractCommand {
     private static final String ALL_PROJECTS_REMOVED_MESSAGE = "[ALL PROJECTS REMOVED]\n";
-    private final ProjectService projectService;
-    private final TaskService taskService;
-    private final IUserHandlerServiceLocator bootstrap;
+    private final IProjectService projectService;
+    private final ITaskService taskService;
 
     public ProjectRemoveAllCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
@@ -44,8 +43,8 @@ public final class ProjectRemoveAllCommand extends AbstractCommand {
         final String userId = bootstrap.getUserService().getCurrentUser().getId();
         projectService.removeByUserId(userId);
 
-        taskService.findAll().forEach(task -> {
-            if (task.getProjectId() != null) {
+        taskService.getAll().forEach(task -> {
+            if (task.getProjectId() != null && task.getUserId().equals(userId)) {
                 taskService.remove(task);
             }
         });
