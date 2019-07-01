@@ -1,6 +1,7 @@
 package ru.levin.tm.command.task;
 
-import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;
@@ -12,12 +13,13 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
 
     private final TaskService taskService;
 
-    public TaskProjectTaskListCommand(final IServiceLocator bootstrap) {
+    public TaskProjectTaskListCommand(final IUserHandlerServiceLocator bootstrap) {
         super(bootstrap);
         this.name = "project-task-list";
         this.title = "[PROJECT TASK LIST]";
         this.description = "Show all tasks for selected project";
         this.taskService = bootstrap.getTaskService();
+        this.bootstrap = bootstrap;
     }
 
     @Override

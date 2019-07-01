@@ -1,12 +1,12 @@
 package ru.levin.tm.command.project;
 
 import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.service.ProjectService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class ProjectListCommand extends AbstractCommand {
     private final ProjectService projectService;

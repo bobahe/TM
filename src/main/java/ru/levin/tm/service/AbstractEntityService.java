@@ -1,6 +1,7 @@
 package ru.levin.tm.service;
 
-import ru.levin.tm.api.IRepository;
+import ru.levin.tm.api.repository.IRepository;
+import ru.levin.tm.api.service.IEntityService;
 import ru.levin.tm.entity.AbstractEntity;
 import ru.levin.tm.util.ServiceUtil;
 
@@ -10,9 +11,9 @@ import java.util.List;
 public abstract class AbstractEntityService<T extends AbstractEntity> extends AbstractService<T>{
     protected static final String PROP_ID = "id";
 
-    protected final IRepository<T> repository;
+    protected final E repository;
 
-    public AbstractEntityService(IRepository<T> repository) {
+    public AbstractEntityService(E repository) {
         this.repository = repository;
     }
 

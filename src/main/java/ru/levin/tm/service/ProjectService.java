@@ -1,13 +1,16 @@
 package ru.levin.tm.service;
 
-import ru.levin.tm.api.IRepository;
+import ru.levin.tm.api.repository.IProjectRepository;
+import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.util.ServiceUtil;
 
-public final class ProjectService extends AbstractEntityWithOwnerService<Project> {
+import java.util.List;
+
+public final class ProjectService extends AbstractEntityService<Project, IProjectRepository> implements IProjectService {
     private static final String PROP_NAME = "name";
 
-    public ProjectService(final IRepository<Project> repository) {
+    public ProjectService(final IProjectRepository repository) {
         super(repository);
     }
 
@@ -30,5 +33,20 @@ public final class ProjectService extends AbstractEntityWithOwnerService<Project
         }
 
         repository.merge(entity);
+    }
+
+    @Override
+    public void removeByUserId(String userId) {
+        repository.removeByUserId(userId);
+    }
+
+    @Override
+    public Project findOneByIndex(String userId, int index) throws IndexOutOfBoundsException {
+        return repository.findAllByUserId(userId).get(index - 1);
+    }
+
+    @Override
+    public List<Project> findAllByUserId(String userId) {
+        return repository.findAllByUserId(userId);
     }
 }

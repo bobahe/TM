@@ -1,16 +1,14 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.service.TaskService;
-
-import java.util.stream.Collectors;
 
 public final class TaskSelectCommand extends AbstractCommand {
     private static final String SELECTED_TASK_MESSAGE = "SELECTED TASK: ";
     private static final String SERIAL_NUMBER_PROMPT = "ENTER SERIAL NUMBER:";
 
-    private final TaskService taskService;
+    private final ITaskService taskService;
     private final IUserHandlerServiceLocator bootstrap;
 
     public TaskSelectCommand(final IUserHandlerServiceLocator bootstrap) {

@@ -1,9 +1,8 @@
 package ru.levin.tm.api;
 
-import ru.levin.tm.entity.User;
-import ru.levin.tm.service.ProjectService;
-import ru.levin.tm.service.TaskService;
-import ru.levin.tm.service.UserService;
+import ru.levin.tm.api.service.IProjectService;
+import ru.levin.tm.api.service.ITaskService;
+import ru.levin.tm.api.service.IUserService;
 
 public interface IServiceLocator {
     ProjectService getProjectService();

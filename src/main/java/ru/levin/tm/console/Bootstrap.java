@@ -113,6 +113,8 @@ public final class Bootstrap implements IUserHandlerServiceLocator, ICommandHand
         final UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
         final UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
 
+        final AboutCommand aboutCommand = new AboutCommand(this);
+
         commands.put(projectListCommand.getName(), projectListCommand);
         commands.put(projectCreateCommand.getName(), projectCreateCommand);
         commands.put(projectSelectCommand.getName(), projectSelectCommand);
@@ -131,6 +133,7 @@ public final class Bootstrap implements IUserHandlerServiceLocator, ICommandHand
         commands.put(userEditProfileCommand.getName(), userEditProfileCommand);
         commands.put(userChangePasswordCommand.getName(), userChangePasswordCommand);
         commands.put(userLogoutCommand.getName(), userLogoutCommand);
+        commands.put(aboutCommand.getName(), aboutCommand);
     }
 
     private void process() {

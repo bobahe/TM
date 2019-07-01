@@ -9,7 +9,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public final class UserService extends AbstractEntityService<User> {
+public final class UserService extends AbstractEntityService<User, IUserRepository> implements IUserService {
     private static final String PROP_LOGIN = "login";
     private static final String PROP_PASSWORD = "password";
 

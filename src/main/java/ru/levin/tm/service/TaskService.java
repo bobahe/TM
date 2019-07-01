@@ -1,8 +1,8 @@
 package ru.levin.tm.service;
 
-import ru.levin.tm.api.IRepository;
+import ru.levin.tm.api.repository.ITaskRepository;
+import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.entity.Task;
-import ru.levin.tm.repository.TaskRepository;
 import ru.levin.tm.util.ServiceUtil;
 
 import java.util.List;

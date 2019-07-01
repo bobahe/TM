@@ -1,6 +1,6 @@
 package ru.levin.tm.repository;
 
-import ru.levin.tm.api.IRepository;
+import ru.levin.tm.api.repository.IRepository;
 import ru.levin.tm.entity.AbstractEntity;
 
 import java.util.LinkedHashMap;

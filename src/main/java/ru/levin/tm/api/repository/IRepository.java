@@ -1,4 +1,4 @@
-package ru.levin.tm.api;
+package ru.levin.tm.api.repository;
 
 import java.util.Map;
 

@@ -1,6 +1,7 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.service.TaskService;

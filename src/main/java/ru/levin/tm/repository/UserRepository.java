@@ -1,5 +1,6 @@
 package ru.levin.tm.repository;
 
+import ru.levin.tm.api.repository.IUserRepository;
 import ru.levin.tm.entity.User;
 
 public final class UserRepository extends AbstractRepository<User> {

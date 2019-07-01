@@ -1,11 +1,11 @@
 package ru.levin.tm.command.user;
 
 import ru.levin.tm.api.IUserHandlerServiceLocator;
+import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.service.UserService;
 
 public final class UserEditProfileCommand extends AbstractCommand {
-    private final UserService userService;
+    private final IUserService userService;
     private final IUserHandlerServiceLocator bootstrap;
 
     public UserEditProfileCommand(final IUserHandlerServiceLocator bootstrap) {

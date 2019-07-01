@@ -1,13 +1,13 @@
 package ru.levin.tm.command.task;
 
 import ru.levin.tm.api.IServiceLocator;
+import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.service.TaskService;
 
 public final class TaskRemoveSelectedCommand extends AbstractCommand {
     private static final String TASK_NOT_SELECTED = "TASK IS NOT SELECTED";
 
-    private final TaskService taskService;
+    private final ITaskService taskService;
 
     public TaskRemoveSelectedCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
