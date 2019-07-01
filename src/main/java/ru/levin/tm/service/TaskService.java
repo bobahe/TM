@@ -13,8 +13,26 @@ public final class TaskService extends AbstractEntityWithOwnerService<Task> {
         super(repository);
     }
 
-    public List<Task> findByProjectId(final String id) {
-        return ((TaskRepository) repository).findAllByProjectId(id);
+    @Override
+    public void removeAllByUserIdAndProjectId(final String userId, final String projectId) {
+        if (userId == null || "".equals(userId)) {
+            return;
+        }
+        if (projectId == null || "".equals(projectId)) {
+            return;
+        }
+
+        findAllByUserIdAndProjectId(userId, projectId).forEach(repository::remove);
+    }
+
+    @Override
+    public void removeByUserId(String userId) {
+        repository.findAllByUserId(userId);
+    }
+
+    @Override
+    public Task findOneByIndex(final String userId, final int index) {
+        return repository.findAllByUserId(userId).get(index - 1);
     }
 
     @Override

@@ -44,7 +44,7 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
 
     private void addCommands() {
         final HelpCommand helpCommand = new HelpCommand(this);
-        final UserAuthorizeCommand userAuthorizeCommand = new UserAuthorizeCommand(this);
+        final UserLoginCommand userLoginCommand = new UserLoginCommand(this);
         final UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
         final AboutCommand aboutCommand = new AboutCommand(this);
 
@@ -70,7 +70,7 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
         final UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
 
         registerCommand(helpCommand);
-        registerCommand(userAuthorizeCommand);
+        registerCommand(userLoginCommand);
         registerCommand(userRegisterCommand);
         registerCommand(projectListCommand);
         registerCommand(projectCreateCommand);

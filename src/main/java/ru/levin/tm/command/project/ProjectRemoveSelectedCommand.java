@@ -4,9 +4,6 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.entity.Task;
-
-import java.util.List;
 
 public class ProjectRemoveSelectedCommand extends AbstractCommand {
     private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED";
@@ -52,9 +49,8 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
 
         try {
             projectService.remove(selectedProject);
-            final List<Task> tasksInProjectList = taskService
-                    .findAllByUserIdAndProjectId(bootstrap.getUserService().getCurrentUser().getId(), selectedProject.getId());
-            tasksInProjectList.forEach(taskService::remove);
+            final String userId = bootstrap.getUserService().getCurrentUser().getId();
+            taskService.removeAllByUserIdAndProjectId(userId, selectedProject.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return;

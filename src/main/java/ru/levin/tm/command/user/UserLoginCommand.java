@@ -5,13 +5,13 @@ import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
 
-public final class UserAuthorizeCommand extends AbstractCommand {
+public final class UserLoginCommand extends AbstractCommand {
     protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
     protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
 
     private final IUserService userService;
 
-    public UserAuthorizeCommand(final IServiceLocator bootstrap) {
+    public UserLoginCommand(final IServiceLocator bootstrap) {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.name = "login";
@@ -53,5 +53,6 @@ public final class UserAuthorizeCommand extends AbstractCommand {
         }
 
         bootstrap.getUserService().setCurrentUser(user);
+        System.out.println("Welcome, " + user.getLogin() + "!");
     }
 }

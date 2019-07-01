@@ -41,7 +41,8 @@ public final class ProjectRemoveAllCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        projectService.removeByUserId(bootstrap.getUserService().getCurrentUser().getId());
+        final String userId = bootstrap.getUserService().getCurrentUser().getId();
+        projectService.removeByUserId(userId);
 
         taskService.findAll().forEach(task -> {
             if (task.getProjectId() != null) {
