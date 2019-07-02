@@ -11,6 +11,8 @@ import java.util.List;
 
 public final class ProjectService extends AbstractEntityService<Project, IProjectRepository> implements IProjectService {
 
+    @NotNull final List<Project> list = new ArrayList<>();
+
     public ProjectService(@NotNull final IProjectRepository repository) {
         super(repository);
     }
@@ -56,8 +58,14 @@ public final class ProjectService extends AbstractEntityService<Project, IProjec
     @Override
     @NotNull
     public List<Project> findAllByUserId(@Nullable final String userId) {
-        if (userId == null) return new ArrayList<>();
+        if (userId == null) return list;
         return repository.findAllByUserId(userId);
+    }
+
+    @Override
+    public @NotNull List<Project> findAllByPartOfNameOrDescription(final @Nullable String partOfName) {
+        if (partOfName == null) return list;
+        return repository.findAllByPartOfNameOrDescription(partOfName);
     }
 
 }

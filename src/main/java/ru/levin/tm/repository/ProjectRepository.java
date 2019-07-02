@@ -25,4 +25,13 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public @NotNull List<Project> findAllByPartOfNameOrDescription(final @NotNull String name) {
+        return storageMap.values().stream()
+                .filter(project -> {
+                    if (project.getName() == null || project.getDescription() == null) return false;
+                    return project.getName().contains(name) || project.getDescription().contains(name);
+                }).collect(Collectors.toList());
+    }
+
 }

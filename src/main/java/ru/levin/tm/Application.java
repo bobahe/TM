@@ -14,6 +14,7 @@ public final class Application {
     private static final Class[] COMMANDS = {
             HelpCommand.class, UserLoginCommand.class, UserRegisterCommand.class,
             AboutCommand.class, ProjectListCommand.class, ProjectCreateCommand.class,
+            ProjectFindCommand.class,
             ProjectSelectCommand.class, ProjectRemoveAllCommand.class, ProjectChangeSelectedCommand.class,
             ProjectRemoveSelectedCommand.class, TaskProjectTaskListCommand.class,
             TaskRemoveAllCommand.class, TaskCreateCommand.class, TaskSelectCommand.class,

@@ -3,6 +3,7 @@ package ru.levin.tm.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.IContainsDatesAndStatus;
@@ -12,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public final class Project extends AbstractHasOwnerEntity implements IContainsDatesAndStatus {
 
     @Nullable
@@ -45,12 +47,6 @@ public final class Project extends AbstractHasOwnerEntity implements IContainsDa
 
     public void setUserId(@NotNull final String userId) {
         this.userId = userId;
-    }
-
-    @Override
-    @NotNull
-    public String toString() {
-        return name + " (" + id + ")";
     }
 
     @Override
