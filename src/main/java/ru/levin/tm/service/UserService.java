@@ -1,5 +1,7 @@
 package ru.levin.tm.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.repository.IUserRepository;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.entity.User;
@@ -9,34 +11,40 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 
 public final class UserService extends AbstractEntityService<User, IUserRepository> implements IUserService {
+    @NotNull
     private final IUserRepository repository;
+
+    @Nullable
     private User currentUser;
 
-    public UserService(final IUserRepository repository) {
+    public UserService(@NotNull final IUserRepository repository) {
         super(repository);
         this.repository = repository;
     }
 
     @Override
-    public User save(final User entity) {
+    @Nullable
+    public User save(@Nullable final User entity) {
         if (entity == null) return null;
         if (entity.getLogin() == null || entity.getLogin().isEmpty()) return null;
         if (entity.getPassword() == null || entity.getPassword().isEmpty()) return null;
 
-        final MessageDigest messageDigest = ServiceUtil.getMD5();
+        @Nullable final MessageDigest messageDigest = ServiceUtil.getMD5();
         if (messageDigest == null) return null;
 
-        final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(entity.getPassword().getBytes()));
+        @NotNull final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(entity.getPassword().getBytes()));
         entity.setPassword(hash);
         repository.persist(entity);
         return entity;
     }
 
     @Override
-    public User update(final User entity) {
+    @Nullable
+    public User update(@Nullable final User entity) {
         if (entity == null) return null;
         if (entity.getLogin() == null || entity.getLogin().isEmpty()) return null;
         if (entity.getPassword() == null || entity.getPassword().isEmpty()) return null;
+        if (entity.getId() == null || entity.getId().isEmpty()) return null;
 
         if (repository.findOne(entity.getId()) == null) {
             throw new IllegalStateException("Can not update user. There is no such user in storage.");
@@ -46,32 +54,38 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
         return entity;
     }
 
-    public User getUserByLoginAndPassword(final String login, final String password) {
+    @Override
+    @Nullable
+    public User getUserByLoginAndPassword(@Nullable final String login, @Nullable final String password) {
         if (login == null || login.isEmpty()) return null;
         if (password == null || password.isEmpty()) return null;
 
-        final MessageDigest messageDigest = ServiceUtil.getMD5();
+        @Nullable final MessageDigest messageDigest = ServiceUtil.getMD5();
         if (messageDigest == null) return null;
-        final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(password.getBytes()));
+        @NotNull final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(password.getBytes()));
         return repository.findOneByLoginAndPassword(login, hash);
     }
 
-    public User setNewPassword(final User user, final String password) {
+    @Override
+    @Nullable
+    public User setNewPassword(@Nullable final User user, @Nullable final String password) {
         if (password == null || password.isEmpty()) return null;
+        if (user == null) return null;
 
-        final MessageDigest messageDigest = ServiceUtil.getMD5();
+        @Nullable final MessageDigest messageDigest = ServiceUtil.getMD5();
         if (messageDigest == null) return null;
-        final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(password.getBytes()));
+        @NotNull final String hash = DatatypeConverter.printHexBinary(messageDigest.digest(password.getBytes()));
         user.setPassword(hash);
         return user;
     }
 
     @Override
-    public void setCurrentUser(final User user) {
+    public void setCurrentUser(@Nullable final User user) {
         currentUser = user;
     }
 
     @Override
+    @Nullable
     public User getCurrentUser() {
         return currentUser;
     }

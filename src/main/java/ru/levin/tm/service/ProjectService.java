@@ -1,18 +1,22 @@
 package ru.levin.tm.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.repository.IProjectRepository;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.entity.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class ProjectService extends AbstractEntityService<Project, IProjectRepository> implements IProjectService {
-    public ProjectService(final IProjectRepository repository) {
+    public ProjectService(@NotNull final IProjectRepository repository) {
         super(repository);
     }
 
     @Override
-    public Project save(final Project entity) {
+    @Nullable
+    public Project save(@Nullable final Project entity) {
         if (entity == null) return null;
         if (entity.getName() == null || entity.getName().isEmpty()) return null;
 
@@ -21,7 +25,8 @@ public final class ProjectService extends AbstractEntityService<Project, IProjec
     }
 
     @Override
-    public Project update(final Project entity) {
+    @Nullable
+    public Project update(@Nullable final Project entity) {
         if (entity == null) return null;
         if (entity.getId() == null || entity.getId().isEmpty()) return null;
         if (entity.getName() == null || entity.getName().isEmpty()) return null;
@@ -35,17 +40,22 @@ public final class ProjectService extends AbstractEntityService<Project, IProjec
     }
 
     @Override
-    public void removeByUserId(String userId) {
+    public void removeByUserId(@Nullable final String userId) {
+        if (userId == null) return;
         repository.removeByUserId(userId);
     }
 
     @Override
-    public Project findOneByIndex(String userId, int index) throws IndexOutOfBoundsException {
+    @Nullable
+    public Project findOneByIndex(@Nullable final String userId, int index) throws IndexOutOfBoundsException {
+        if (userId == null) return null;
         return repository.findAllByUserId(userId).get(index - 1);
     }
 
     @Override
-    public List<Project> findAllByUserId(String userId) {
+    @NotNull
+    public List<Project> findAllByUserId(@Nullable final String userId) {
+        if (userId == null) return new ArrayList<>();
         return repository.findAllByUserId(userId);
     }
 }

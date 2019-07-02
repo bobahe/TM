@@ -1,12 +1,15 @@
 package ru.levin.tm.api.repository;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 
 public interface IRepository<E> {
-    Map<String, E> findAll();
-    E findOne(final String id);
-    void persist(final E entity);
-    void merge(final E entity);
-    void remove(final E entity);
+    @NotNull Map<String, E> findAll();
+    @Nullable E findOne(@NotNull final String id);
+    void persist(@NotNull final E entity);
+    void merge(@NotNull final E entity);
+    void remove(@NotNull final E entity);
     void removeAll();
 }

@@ -1,5 +1,6 @@
 package ru.levin.tm.command.task;
 
+import org.jetbrains.annotations.NotNull;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
@@ -10,26 +11,32 @@ import ru.levin.tm.util.CommandUtil;
 import java.util.List;
 
 public final class TaskListCommand extends AbstractCommand {
+    @NotNull
     private final ITaskService taskService;
+
+    @NotNull
     private final ITerminalService terminalService;
 
-    public TaskListCommand(final IServiceLocator bootstrap) {
+    public TaskListCommand(@NotNull final IServiceLocator bootstrap) {
         super(bootstrap);
         this.taskService = bootstrap.getTaskService();
         this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
+    @NotNull
     public String getName() {
         return "task-list";
     }
 
     @Override
+    @NotNull
     public String getTitle() {
         return "[TASK LIST]";
     }
 
     @Override
+    @NotNull
     public String getDescription() {
         return "Show all tasks";
     }
@@ -41,9 +48,10 @@ public final class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Task> taskList = taskService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
+        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        @NotNull final List<Task> taskList = taskService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
         for (int i = 0; i < taskList.size(); i++) {
-            final Task task = taskList.get(i);
+            @NotNull final Task task = taskList.get(i);
             terminalService.println((i + 1) + ". " + task.getName());
             terminalService.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {

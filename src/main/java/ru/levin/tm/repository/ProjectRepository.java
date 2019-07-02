@@ -1,5 +1,6 @@
 package ru.levin.tm.repository;
 
+import org.jetbrains.annotations.NotNull;
 import ru.levin.tm.api.repository.IProjectRepository;
 import ru.levin.tm.entity.Project;
 
@@ -8,18 +9,18 @@ import java.util.stream.Collectors;
 
 public final class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
     @Override
-    public void removeByUserId(String userId) {
+    public void removeByUserId(@NotNull String userId) {
         storageMap.values().forEach(project -> {
-            if (project.getUserId().equals(userId)) {
+            if (userId.equals(project.getUserId())) {
                 remove(project);
             }
         });
     }
 
     @Override
-    public List<Project> findAllByUserId(String userId) {
+    public @NotNull List<Project> findAllByUserId(@NotNull String userId) {
         return storageMap.values().stream()
-                .filter(project -> project.getUserId().equals(userId))
+                .filter(project -> userId.equals(project.getUserId()))
                 .collect(Collectors.toList());
     }
 }

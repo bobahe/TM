@@ -1,31 +1,39 @@
 package ru.levin.tm.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.repository.ITaskRepository;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.entity.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class TaskService extends AbstractEntityService<Task, ITaskRepository> implements ITaskService {
+    @NotNull
     private final ITaskRepository repository;
 
-    public TaskService(final ITaskRepository repository) {
+    public TaskService(@NotNull final ITaskRepository repository) {
         super(repository);
         this.repository = repository;
     }
 
     @Override
-    public List<Task> findAllByUserIdAndProjectId(final String userId, final String projectId) {
+    @NotNull
+    public List<Task> findAllByUserIdAndProjectId(@Nullable final String userId, @Nullable final String projectId) {
+        if (userId == null || projectId == null) return new ArrayList<>();
         return repository.findAllByUserIdProjectId(userId, projectId);
     }
 
     @Override
-    public List<Task> findAllByUserId(final String userId) {
+    @NotNull
+    public List<Task> findAllByUserId(@Nullable final String userId) {
+        if (userId == null) return new ArrayList<>();
         return repository.findAllByUserId(userId);
     }
 
     @Override
-    public void removeAllByUserIdAndProjectId(final String userId, final String projectId) {
+    public void removeAllByUserIdAndProjectId(@Nullable final String userId, @Nullable final String projectId) {
         if (userId == null || userId.isEmpty()) return;
         if (projectId == null || projectId.isEmpty()) return;
 
@@ -33,17 +41,22 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
     }
 
     @Override
-    public void removeByUserId(String userId) {
+    public void removeByUserId(@Nullable final String userId) {
+        if (userId == null) return;
         repository.findAllByUserId(userId);
     }
 
     @Override
-    public Task findOneByIndex(final String userId, final int index) {
+    @Nullable
+    public Task findOneByIndex(@Nullable final String userId, final int index) {
+        if  (userId == null) return null;
+        if (index < 0) return null;
         return repository.findAllByUserId(userId).get(index - 1);
     }
 
     @Override
-    public Task save(final Task entity) {
+    @Nullable
+    public Task save(@Nullable final Task entity) {
         if (entity == null) return null;
         if (entity.getName() == null || entity.getName().isEmpty()) return null;
 
@@ -52,7 +65,8 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
     }
 
     @Override
-    public Task update(final Task entity) {
+    @Nullable
+    public Task update(@Nullable final Task entity) {
         if (entity == null) return null;
         if (entity.getId() == null || entity.getId().isEmpty()) return null;
         if (entity.getName() == null || entity.getName().isEmpty()) return null;

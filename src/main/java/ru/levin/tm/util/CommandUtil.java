@@ -1,19 +1,20 @@
 package ru.levin.tm.util;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.entity.Project;
-import ru.levin.tm.entity.Task;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 
 public final class CommandUtil {
+    @NotNull
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-    public static Date parseDate(final String date) {
+    @Nullable
+    public static Date parseDate(@Nullable final String date) {
         if (date == null || date.isEmpty()) return null;
 
         try {

@@ -1,13 +1,15 @@
 package ru.levin.tm.api.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.entity.AbstractEntity;
 
 import java.util.List;
 
 public interface IEntityService<T extends AbstractEntity> extends IService<T> {
-    List<T> getAll();
-    T save(T entity);
-    T update(T entity);
-    boolean remove(T entity);
+    @NotNull List<T> getAll();
+    @Nullable T save(@Nullable T entity);
+    @Nullable T update(@Nullable T entity);
+    boolean remove(@Nullable T entity);
     boolean removeAll();
 }

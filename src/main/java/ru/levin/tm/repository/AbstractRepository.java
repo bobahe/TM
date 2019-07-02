@@ -1,5 +1,7 @@
 package ru.levin.tm.repository;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.repository.IRepository;
 import ru.levin.tm.entity.AbstractEntity;
 
@@ -11,29 +13,31 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements IR
     protected final Map<String, T> storageMap = new LinkedHashMap<>();
 
     @Override
-    public Map<String, T> findAll() {
+    @NotNull
+    public  Map<String, T> findAll() {
         return storageMap;
     }
 
     @Override
-    public T findOne(final String id) {
+    @Nullable
+    public  T findOne(@NotNull final String id) {
         return storageMap.get(id);
     }
 
     @Override
-    public void persist(final T entity) {
+    public void persist(@NotNull final T entity) {
         final String id = UUID.randomUUID().toString();
         entity.setId(id);
         storageMap.put(id, entity);
     }
 
     @Override
-    public void merge(final T entity) {
+    public void merge(@NotNull final T entity) {
         storageMap.put(entity.getId(), entity);
     }
 
     @Override
-    public void remove(final T entity) {
+    public void remove(@NotNull final T entity) {
         storageMap.remove(entity.getId());
     }
 

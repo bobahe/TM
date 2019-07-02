@@ -1,5 +1,7 @@
 package ru.levin.tm.console;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.ICommandHandlerServiceLocator;
 import ru.levin.tm.api.repository.IProjectRepository;
 import ru.levin.tm.api.repository.ITaskRepository;
@@ -28,15 +30,28 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class Bootstrap implements ICommandHandlerServiceLocator {
+    @NotNull
     private final Map<String, AbstractCommand> commands = new LinkedHashMap<>();
 
+    @NotNull
     private final ITerminalService terminalService = new TerminalService();
 
+    @NotNull
     private final IProjectRepository projectRepository = new ProjectRepository();
+
+    @NotNull
     private final ITaskRepository taskRepository = new TaskRepository();
+
+    @NotNull
     private final IUserRepository userRepository = new UserRepository();
+
+    @NotNull
     private final IProjectService projectService = new ProjectService(projectRepository);
+
+    @NotNull
     private final ITaskService taskService = new TaskService(taskRepository);
+
+    @NotNull
     private final IUserService userService = new UserService(userRepository);
 
     public void init() {
@@ -46,31 +61,31 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
     }
 
     private void addCommands() {
-        final HelpCommand helpCommand = new HelpCommand(this);
-        final UserLoginCommand userLoginCommand = new UserLoginCommand(this);
-        final UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
-        final AboutCommand aboutCommand = new AboutCommand(this);
+        @NotNull final HelpCommand helpCommand = new HelpCommand(this);
+        @NotNull final UserLoginCommand userLoginCommand = new UserLoginCommand(this);
+        @NotNull final UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
+        @NotNull final AboutCommand aboutCommand = new AboutCommand(this);
 
-        final ProjectListCommand projectListCommand = new ProjectListCommand(this);
-        final ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
-        final ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
-        final ProjectRemoveAllCommand projectRemoveAllCommand = new ProjectRemoveAllCommand(this);
-        final ProjectChangeSelectedCommand projectChangeSelectedCommand = new ProjectChangeSelectedCommand(this);
-        final ProjectRemoveSelectedCommand projectRemoveSelectedCommand = new ProjectRemoveSelectedCommand(this);
+        @NotNull final ProjectListCommand projectListCommand = new ProjectListCommand(this);
+        @NotNull final ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
+        @NotNull final ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
+        @NotNull final ProjectRemoveAllCommand projectRemoveAllCommand = new ProjectRemoveAllCommand(this);
+        @NotNull final ProjectChangeSelectedCommand projectChangeSelectedCommand = new ProjectChangeSelectedCommand(this);
+        @NotNull final ProjectRemoveSelectedCommand projectRemoveSelectedCommand = new ProjectRemoveSelectedCommand(this);
 
-        final TaskProjectTaskListCommand taskProjectTaskListCommand = new TaskProjectTaskListCommand(this);
-        final TaskRemoveAllCommand taskRemoveAllCommand = new TaskRemoveAllCommand(this);
-        final TaskCreateCommand taskCreateCommand = new TaskCreateCommand(this);
-        final TaskSelectCommand taskSelectCommand = new TaskSelectCommand(this);
-        final TaskListCommand taskListCommand = new TaskListCommand(this);
-        final TaskChangeSelectedCommand taskChangeSelectedCommand = new TaskChangeSelectedCommand(this);
-        final TaskRemoveSelectedCommand taskRemoveSelectedCommand = new TaskRemoveSelectedCommand(this);
-        final TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
+        @NotNull final TaskProjectTaskListCommand taskProjectTaskListCommand = new TaskProjectTaskListCommand(this);
+        @NotNull final TaskRemoveAllCommand taskRemoveAllCommand = new TaskRemoveAllCommand(this);
+        @NotNull final TaskCreateCommand taskCreateCommand = new TaskCreateCommand(this);
+        @NotNull final TaskSelectCommand taskSelectCommand = new TaskSelectCommand(this);
+        @NotNull final TaskListCommand taskListCommand = new TaskListCommand(this);
+        @NotNull final TaskChangeSelectedCommand taskChangeSelectedCommand = new TaskChangeSelectedCommand(this);
+        @NotNull final TaskRemoveSelectedCommand taskRemoveSelectedCommand = new TaskRemoveSelectedCommand(this);
+        @NotNull final TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
 
-        final UserLogoutCommand userLogoutCommand = new UserLogoutCommand(this);
-        final UserChangePasswordCommand userChangePasswordCommand = new UserChangePasswordCommand(this);
-        final UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
-        final UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
+        @NotNull final UserLogoutCommand userLogoutCommand = new UserLogoutCommand(this);
+        @NotNull final UserChangePasswordCommand userChangePasswordCommand = new UserChangePasswordCommand(this);
+        @NotNull final UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
+        @NotNull final UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
 
         registerCommand(helpCommand);
         registerCommand(userLoginCommand);
@@ -97,12 +112,12 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
     }
 
     private void createDefaultUsers() {
-        final User admin = new User();
+        @NotNull final User admin = new User();
         admin.setLogin("admin");
         admin.setPassword("admin");
         admin.setRoleType(RoleType.ADMIN);
 
-        final User user = new User();
+        @NotNull final User user = new User();
         user.setLogin("user");
         user.setPassword("user");
         user.setRoleType(RoleType.USER);
@@ -113,7 +128,7 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
 
     private void process() {
         terminalService.println("*** WELCOME TO TASK MANAGER ***");
-        String command = terminalService.getLine();
+        @NotNull String command = terminalService.getLine();
 
         while (!"exit".equals(command)) {
             if (command.isEmpty()) {
@@ -126,7 +141,7 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
     }
 
     private void invokeCommand(String commandName) {
-        final AbstractCommand command = commands.get(commandName);
+        @Nullable final AbstractCommand command = commands.get(commandName);
 
         if (command == null) {
             terminalService.printerr("There is not such command");
@@ -139,22 +154,27 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
         command.execute();
     }
 
+    @NotNull
     public Map<String, AbstractCommand> getCommands() {
         return commands;
     }
 
+    @NotNull
     public IProjectService getProjectService() {
         return projectService;
     }
 
+    @NotNull
     public ITaskService getTaskService() {
         return taskService;
     }
 
+    @NotNull
     public IUserService getUserService() {
         return userService;
     }
 
+    @NotNull
     public ITerminalService getTerminalService() {
         return terminalService;
     }

@@ -1,5 +1,6 @@
 package ru.levin.tm.command.project;
 
+import org.jetbrains.annotations.NotNull;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITerminalService;
@@ -10,26 +11,32 @@ import ru.levin.tm.util.CommandUtil;
 import java.util.List;
 
 public final class ProjectListCommand extends AbstractCommand {
+    @NotNull
     private final IProjectService projectService;
+
+    @NotNull
     private final ITerminalService terminalService;
 
-    public ProjectListCommand(final IServiceLocator bootstrap) {
+    public ProjectListCommand(@NotNull final IServiceLocator bootstrap) {
         super(bootstrap);
         this.projectService = bootstrap.getProjectService();
         this.terminalService = bootstrap.getTerminalService();
     }
 
     @Override
+    @NotNull
     public String getName() {
         return "project-list";
     }
 
     @Override
+    @NotNull
     public String getTitle() {
         return "[PROJECT LIST]";
     }
 
     @Override
+    @NotNull
     public String getDescription() {
         return "Show all projects";
     }
@@ -41,9 +48,10 @@ public final class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Project> projectList = projectService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
+        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        @NotNull final List<Project> projectList = projectService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
         for (int i = 0; i < projectList.size(); i++) {
-            final Project project = projectList.get(i);
+            @NotNull final Project project = projectList.get(i);
 
             terminalService.println(this.getTitle());
             terminalService.println((i + 1) + ". " + project.getName());

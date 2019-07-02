@@ -1,10 +1,11 @@
 package ru.levin.tm.api.service;
 
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.entity.User;
 
 public interface IUserService extends IEntityService<User> {
-    User getUserByLoginAndPassword(final String login, final String password);
-    User setNewPassword(final User user, final String password);
-    void setCurrentUser(final User user);
-    User getCurrentUser();
+    @Nullable User getUserByLoginAndPassword(@Nullable final String login, @Nullable final String password);
+    @Nullable User setNewPassword(@Nullable final User user, @Nullable final String password);
+    void setCurrentUser(@Nullable final User user);
+    @Nullable User getCurrentUser();
 }
