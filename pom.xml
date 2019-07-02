@@ -155,7 +155,7 @@
                     <executable>java</executable>
                     <arguments>
                         <argument>-jar</argument>
-                        <argument>target/tmse-1.0.0.jar</argument>
+                        <argument>target/release/bin/taskmanager.jar</argument>
                     </arguments>
                 </configuration>
             </plugin>

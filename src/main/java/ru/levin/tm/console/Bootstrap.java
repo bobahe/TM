@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.levin.tm.api.ICommandHandlerServiceLocator;
+import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.repository.IProjectRepository;
 import ru.levin.tm.api.repository.ITaskRepository;
 import ru.levin.tm.api.repository.IUserRepository;
@@ -13,11 +13,6 @@ import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
-import ru.levin.tm.command.project.*;
-import ru.levin.tm.command.system.AboutCommand;
-import ru.levin.tm.command.system.HelpCommand;
-import ru.levin.tm.command.task.*;
-import ru.levin.tm.command.user.*;
 import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.User;
 import ru.levin.tm.repository.ProjectRepository;
@@ -28,11 +23,12 @@ import ru.levin.tm.service.TaskService;
 import ru.levin.tm.service.TerminalService;
 import ru.levin.tm.service.UserService;
 
+import java.lang.reflect.Constructor;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @NoArgsConstructor
-public final class Bootstrap implements ICommandHandlerServiceLocator {
+public final class Bootstrap implements IServiceLocator {
     @NotNull
     @Getter
     private final Map<String, AbstractCommand> commands = new LinkedHashMap<>();
@@ -62,61 +58,25 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
     @Getter
     private final IUserService userService = new UserService(userRepository);
 
-    public void init() {
+    public void init(@NotNull final Class[] commands) {
         createDefaultUsers();
-        addCommands();
+        registerCommands(commands);
         process();
     }
 
-    private void addCommands() {
-        @NotNull final HelpCommand helpCommand = new HelpCommand(this);
-        @NotNull final UserLoginCommand userLoginCommand = new UserLoginCommand(this);
-        @NotNull final UserRegisterCommand userRegisterCommand = new UserRegisterCommand(this);
-        @NotNull final AboutCommand aboutCommand = new AboutCommand(this);
-
-        @NotNull final ProjectListCommand projectListCommand = new ProjectListCommand(this);
-        @NotNull final ProjectCreateCommand projectCreateCommand = new ProjectCreateCommand(this);
-        @NotNull final ProjectSelectCommand projectSelectCommand = new ProjectSelectCommand(this);
-        @NotNull final ProjectRemoveAllCommand projectRemoveAllCommand = new ProjectRemoveAllCommand(this);
-        @NotNull final ProjectChangeSelectedCommand projectChangeSelectedCommand = new ProjectChangeSelectedCommand(this);
-        @NotNull final ProjectRemoveSelectedCommand projectRemoveSelectedCommand = new ProjectRemoveSelectedCommand(this);
-
-        @NotNull final TaskProjectTaskListCommand taskProjectTaskListCommand = new TaskProjectTaskListCommand(this);
-        @NotNull final TaskRemoveAllCommand taskRemoveAllCommand = new TaskRemoveAllCommand(this);
-        @NotNull final TaskCreateCommand taskCreateCommand = new TaskCreateCommand(this);
-        @NotNull final TaskSelectCommand taskSelectCommand = new TaskSelectCommand(this);
-        @NotNull final TaskListCommand taskListCommand = new TaskListCommand(this);
-        @NotNull final TaskChangeSelectedCommand taskChangeSelectedCommand = new TaskChangeSelectedCommand(this);
-        @NotNull final TaskRemoveSelectedCommand taskRemoveSelectedCommand = new TaskRemoveSelectedCommand(this);
-        @NotNull final TaskJoinCommand taskJoinCommand = new TaskJoinCommand(this);
-
-        @NotNull final UserLogoutCommand userLogoutCommand = new UserLogoutCommand(this);
-        @NotNull final UserChangePasswordCommand userChangePasswordCommand = new UserChangePasswordCommand(this);
-        @NotNull final UserShowProfileCommand userShowProfileCommand = new UserShowProfileCommand(this);
-        @NotNull final UserEditProfileCommand userEditProfileCommand = new UserEditProfileCommand(this);
-
-        registerCommand(helpCommand);
-        registerCommand(userLoginCommand);
-        registerCommand(userRegisterCommand);
-        registerCommand(projectListCommand);
-        registerCommand(projectCreateCommand);
-        registerCommand(projectSelectCommand);
-        registerCommand(projectRemoveAllCommand);
-        registerCommand(projectChangeSelectedCommand);
-        registerCommand(projectRemoveSelectedCommand);
-        registerCommand(taskProjectTaskListCommand);
-        registerCommand(taskRemoveAllCommand);
-        registerCommand(taskCreateCommand);
-        registerCommand(taskSelectCommand);
-        registerCommand(taskListCommand);
-        registerCommand(taskChangeSelectedCommand);
-        registerCommand(taskRemoveSelectedCommand);
-        registerCommand(taskJoinCommand);
-        registerCommand(userShowProfileCommand);
-        registerCommand(userEditProfileCommand);
-        registerCommand(userChangePasswordCommand);
-        registerCommand(userLogoutCommand);
-        registerCommand(aboutCommand);
+    private void registerCommands(@NotNull final Class[] commands) {
+        for (final Class<?> cmdClass : commands) {
+            if (cmdClass.getSuperclass().equals(AbstractCommand.class)) {
+                try {
+                    @NotNull final Constructor<?> constructor = cmdClass.getConstructor(IServiceLocator.class);
+                    AbstractCommand command =
+                            ((AbstractCommand) constructor.newInstance(this));
+                    this.commands.put(command.getName(), command);
+                } catch (Exception e) {
+                    terminalService.printerr(e.getMessage());
+                }
+            }
+        }
     }
 
     private void createDefaultUsers() {
@@ -160,9 +120,5 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
             return;
         }
         command.execute();
-    }
-
-    private void registerCommand(AbstractCommand command) {
-        commands.put(command.getName(), command);
     }
 }
