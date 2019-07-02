@@ -11,6 +11,8 @@ import java.util.List;
 
 public final class TaskService extends AbstractEntityService<Task, ITaskRepository> implements ITaskService {
 
+    @NotNull final List<Task> list = new ArrayList<>();
+
     @NotNull
     private final ITaskRepository repository;
 
@@ -22,14 +24,14 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
     @Override
     @NotNull
     public List<Task> findAllByUserIdAndProjectId(@Nullable final String userId, @Nullable final String projectId) {
-        if (userId == null || projectId == null) return new ArrayList<>();
+        if (userId == null || projectId == null) return list;
         return repository.findAllByUserIdProjectId(userId, projectId);
     }
 
     @Override
     @NotNull
     public List<Task> findAllByUserId(@Nullable final String userId) {
-        if (userId == null) return new ArrayList<>();
+        if (userId == null) return list;
         return repository.findAllByUserId(userId);
     }
 
@@ -53,6 +55,12 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
         if  (userId == null) return null;
         if (index < 0) return null;
         return repository.findAllByUserId(userId).get(index - 1);
+    }
+
+    @Override
+    public @NotNull List<Task> findAllByPartOfNameOrDescription(final @Nullable String partOfName) {
+        if (partOfName == null) return list;
+        return repository.findAllByPartOfNameOrDescription(partOfName);
     }
 
     @Override

@@ -33,4 +33,13 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
         });
     }
 
+    @Override
+    public @NotNull List<Task> findAllByPartOfNameOrDescription(final @NotNull String name) {
+        return storageMap.values().stream()
+                .filter(task -> {
+                    if (task.getName() == null || task.getDescription() == null) return false;
+                    return task.getName().contains(name) || task.getDescription().contains(name);
+                }).collect(Collectors.toList());
+    }
+
 }

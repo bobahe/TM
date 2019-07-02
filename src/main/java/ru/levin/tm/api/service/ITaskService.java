@@ -13,5 +13,6 @@ public interface ITaskService extends IEntityService<Task> {
     void removeAllByUserIdAndProjectId(@Nullable final String userId, @Nullable final String projectId);
     void removeByUserId(@Nullable final String userId);
     @Nullable Task findOneByIndex(@Nullable final String userId, final int index);
+    @NotNull List<Task> findAllByPartOfNameOrDescription(@Nullable final String partOfName);
 
 }

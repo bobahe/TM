@@ -10,5 +10,6 @@ public interface ITaskRepository extends IRepository<Task> {
     @NotNull List<Task> findAllByUserIdProjectId(@NotNull final String userId, @NotNull final String projectId);
     @NotNull List<Task> findAllByUserId(@NotNull final String userId);
     void removeByUserId(@NotNull final String userId);
+    @NotNull List<Task> findAllByPartOfNameOrDescription(@NotNull final String name);
 
 }
