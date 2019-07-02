@@ -1,4 +1,4 @@
-package ru.levin.tm.console;
+package ru.levin.tm.context;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

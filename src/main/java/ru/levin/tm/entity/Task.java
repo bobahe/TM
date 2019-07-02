@@ -5,13 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.levin.tm.api.IContainsDatesAndStatus;
 
 import java.util.Date;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public final class Task extends AbstractHasOwnerEntity {
+public final class Task extends AbstractHasOwnerEntity implements IContainsDatesAndStatus {
 
     @Nullable
     private String name;

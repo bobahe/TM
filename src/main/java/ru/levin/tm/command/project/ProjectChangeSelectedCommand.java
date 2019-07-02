@@ -5,6 +5,7 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.entity.Status;
 import ru.levin.tm.util.CommandUtil;
 
 public final class ProjectChangeSelectedCommand extends AbstractCommand {
@@ -20,6 +21,9 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
 
     @NotNull
     protected static final String END_DATE_PROMPT = "ENTER END DATE:";
+
+    @NotNull
+    protected static final String STATUS_PROMPT = "ENTER STATUS:";
 
     @NotNull
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
@@ -75,6 +79,14 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
         selectedProject.setStartDate(CommandUtil.parseDate(terminalService.getLine()));
         terminalService.println(END_DATE_PROMPT);
         selectedProject.setEndDate(CommandUtil.parseDate(terminalService.getLine()));
+        terminalService.println(STATUS_PROMPT);
+        @NotNull final Status[] values = Status.values();
+        for (int i = 0; i < values.length; i++) {
+            @NotNull final Status status = values[i];
+            terminalService.println("\t" + (i + 1) + ". " + status.toString());
+        }
+        @NotNull final int statusType = Integer.parseInt(terminalService.getLine());
+        selectedProject.setStatus(Status.values()[statusType - 1]);
 
         try {
             projectService.update(selectedProject);

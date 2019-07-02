@@ -51,8 +51,16 @@ public final class TaskListCommand extends AbstractCommand {
     public void execute() {
         if (bootstrap.getUserService().getCurrentUser() == null) return;
         @NotNull final List<Task> taskList = taskService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
+        terminalService.println("Select option to sort list (1 by default):");
+        terminalService.println("1. Saved order");
+        terminalService.println("2. Start date");
+        terminalService.println("3. End date");
+        terminalService.println("4. Status");
+        @NotNull final String orderType = terminalService.getLine();
+        CommandUtil.sort(orderType, taskList);
         for (int i = 0; i < taskList.size(); i++) {
             @NotNull final Task task = taskList.get(i);
+            if (task.getStatus() == null) return;
             terminalService.println((i + 1) + ". " + task.getName());
             terminalService.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {
@@ -67,6 +75,7 @@ public final class TaskListCommand extends AbstractCommand {
             }
 
             terminalService.println("\tProject: " + task.getProjectId());
+            terminalService.println("\tStatus: " + task.getStatus().getDisplayName());
         }
     }
 

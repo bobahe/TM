@@ -50,9 +50,18 @@ public final class ProjectListCommand extends AbstractCommand {
     @Override
     public void execute() {
         if (bootstrap.getUserService().getCurrentUser() == null) return;
-        @NotNull final List<Project> projectList = projectService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
+        @NotNull final List<Project> projectList =
+                projectService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
+        terminalService.println("Select option to sort list (1 by default):");
+        terminalService.println("1. Saved order");
+        terminalService.println("2. Start date");
+        terminalService.println("3. End date");
+        terminalService.println("4. Status");
+        @NotNull final String orderType = terminalService.getLine();
+        CommandUtil.sort(orderType, projectList);
         for (int i = 0; i < projectList.size(); i++) {
             @NotNull final Project project = projectList.get(i);
+            if (project.getStatus() == null) return;
 
             terminalService.println(this.getTitle());
             terminalService.println((i + 1) + ". " + project.getName());
@@ -67,6 +76,7 @@ public final class ProjectListCommand extends AbstractCommand {
             } else {
                 terminalService.println("\tEnd date: not set");
             }
+            terminalService.println("\tStatus: " + project.getStatus().getDisplayName());
         }
     }
 

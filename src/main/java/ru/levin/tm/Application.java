@@ -6,7 +6,7 @@ import ru.levin.tm.command.system.AboutCommand;
 import ru.levin.tm.command.system.HelpCommand;
 import ru.levin.tm.command.task.*;
 import ru.levin.tm.command.user.*;
-import ru.levin.tm.console.Bootstrap;
+import ru.levin.tm.context.Bootstrap;
 
 public final class Application {
 
