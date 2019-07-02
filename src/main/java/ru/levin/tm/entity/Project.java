@@ -26,6 +26,9 @@ public final class Project extends AbstractHasOwnerEntity {
     private Date endDate;
 
     @Nullable
+    private Status status = Status.PLANNED;
+
+    @Nullable
     public String getDescription() {
         return description;
     }

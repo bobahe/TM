@@ -29,6 +29,9 @@ public final class Task extends AbstractHasOwnerEntity {
     private Date endDate;
 
     @Nullable
+    private Status status = Status.PLANNED;
+
+    @Nullable
     public String getId() {
         return id;
     }
