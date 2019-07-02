@@ -26,8 +26,9 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements IR
 
     @Override
     public void persist(@NotNull final T entity) {
-        final String id = UUID.randomUUID().toString();
+        @NotNull final String id = UUID.randomUUID().toString();
         entity.setId(id);
+        System.out.println(entity.getId());
         storageMap.put(id, entity);
     }
 

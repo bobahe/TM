@@ -1,5 +1,7 @@
 package ru.levin.tm.console;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.ICommandHandlerServiceLocator;
@@ -29,11 +31,14 @@ import ru.levin.tm.service.UserService;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@NoArgsConstructor
 public final class Bootstrap implements ICommandHandlerServiceLocator {
     @NotNull
+    @Getter
     private final Map<String, AbstractCommand> commands = new LinkedHashMap<>();
 
     @NotNull
+    @Getter
     private final ITerminalService terminalService = new TerminalService();
 
     @NotNull
@@ -46,12 +51,15 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
     private final IUserRepository userRepository = new UserRepository();
 
     @NotNull
+    @Getter
     private final IProjectService projectService = new ProjectService(projectRepository);
 
     @NotNull
+    @Getter
     private final ITaskService taskService = new TaskService(taskRepository);
 
     @NotNull
+    @Getter
     private final IUserService userService = new UserService(userRepository);
 
     public void init() {
@@ -152,31 +160,6 @@ public final class Bootstrap implements ICommandHandlerServiceLocator {
             return;
         }
         command.execute();
-    }
-
-    @NotNull
-    public Map<String, AbstractCommand> getCommands() {
-        return commands;
-    }
-
-    @NotNull
-    public IProjectService getProjectService() {
-        return projectService;
-    }
-
-    @NotNull
-    public ITaskService getTaskService() {
-        return taskService;
-    }
-
-    @NotNull
-    public IUserService getUserService() {
-        return userService;
-    }
-
-    @NotNull
-    public ITerminalService getTerminalService() {
-        return terminalService;
     }
 
     private void registerCommand(AbstractCommand command) {

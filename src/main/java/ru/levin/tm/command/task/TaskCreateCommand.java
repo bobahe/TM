@@ -66,10 +66,12 @@ public final class TaskCreateCommand extends AbstractCommand {
 
     public void execute() {
         @Nullable final User currentUser = bootstrap.getUserService().getCurrentUser();
-        if (currentUser == null || currentUser.getId() == null) return;
-        if (selectedProject == null || selectedProject.getId() == null) return;
-        @NotNull final Task task = new Task();
+        if (currentUser == null || currentUser.getId() == null) {
+            terminalService.printerr("There is no authorized user.");
+            return;
+        }
 
+        @NotNull final Task task = new Task();
         terminalService.println(this.getTitle());
         terminalService.println(NAME_PROMPT);
         task.setName(terminalService.getLine());
@@ -81,9 +83,11 @@ public final class TaskCreateCommand extends AbstractCommand {
         task.setEndDate(CommandUtil.parseDate(terminalService.getLine()));
         task.setUserId(currentUser.getId());
 
-        terminalService.println(JOIN_TO_PROJECT_PROMPT);
-        @NotNull final String joinAnswer = terminalService.getLine();
-        if (!"n".equals(joinAnswer)) task.setProjectId(selectedProject.getId());
+        if (selectedProject != null && selectedProject.getId() != null) {
+            terminalService.println(JOIN_TO_PROJECT_PROMPT);
+            @NotNull final String joinAnswer = terminalService.getLine();
+            if (!"n".equals(joinAnswer)) task.setProjectId(selectedProject.getId());
+        }
 
         try {
             taskService.save(task);

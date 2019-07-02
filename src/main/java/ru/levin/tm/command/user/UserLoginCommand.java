@@ -25,6 +25,8 @@ public final class UserLoginCommand extends AbstractCommand {
         super(bootstrap);
         this.userService = bootstrap.getUserService();
         this.terminalService = bootstrap.getTerminalService();
+        selectedProject = null;
+        selectedTask = null;
     }
 
     @Override

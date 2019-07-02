@@ -1,10 +1,16 @@
 package ru.levin.tm.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public final class Project extends AbstractHasOwnerEntity {
     @Nullable
     private String name;
@@ -17,42 +23,6 @@ public final class Project extends AbstractHasOwnerEntity {
 
     @Nullable
     private Date endDate;
-
-    @Nullable
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@NotNull final String name) {
-        this.name = name;
-    }
-
-    @Nullable
-    public String getId() {
-        return id;
-    }
-
-    public void setId(@Nullable final String id) {
-        this.id = id;
-    }
-
-    @Nullable
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(@Nullable final Date startDate) {
-        this.startDate = startDate;
-    }
-
-    @Nullable
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(@Nullable final Date endDate) {
-        this.endDate = endDate;
-    }
 
     @Nullable
     public String getDescription() {
@@ -76,5 +46,15 @@ public final class Project extends AbstractHasOwnerEntity {
     @NotNull
     public String toString() {
         return name + " (" + id + ")";
+    }
+
+    @Override
+    public @Nullable String getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(final @NotNull String id) {
+        this.id = id;
     }
 }
