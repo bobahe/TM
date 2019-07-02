@@ -44,7 +44,10 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (selectedProject == null) return;
+        if (selectedProject == null) {
+            terminalService.println("You have to choose project first.");
+            return;
+        }
 
         terminalService.println(this.getTitle());
         terminalService.println(NAME_PROMPT);
@@ -59,7 +62,7 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
         try {
             projectService.update(selectedProject);
         } catch (Exception e) {
-            terminalService.println(e.getMessage());
+            terminalService.printerr(e.getMessage());
             return;
         }
         terminalService.println(SUCCESS_MESSAGE);
