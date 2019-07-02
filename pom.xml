@@ -64,6 +64,7 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
+                            <classpathPrefix>../lib/</classpathPrefix>
                             <mainClass>ru.levin.tm.Application</mainClass>
                         </manifest>
                         <manifestEntries>
@@ -81,18 +82,40 @@
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputDirectory>${project.build.directory}/release/lib</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
                 </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>ru.levin.tm</groupId>
+                            <artifactId>tmse</artifactId>
+                            <version>1.0.0</version>
+                            <type>jar</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>${project.build.directory}/release/bin</outputDirectory>
+                            <destFileName>taskmanager.jar</destFileName>
+                        </artifactItem>
+                    </artifactItems>
+                    <overWriteReleases>false</overWriteReleases>
+                    <overWriteSnapshots>true</overWriteSnapshots>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
