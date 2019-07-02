@@ -4,15 +4,16 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public enum RoleType {
+public enum Status {
 
-    ADMIN ("Administrator"),
-    USER ("User");
+    PLANNED ("Planned"),
+    IN_PROCESS ("In process"),
+    READY ("Ready");
 
     @NotNull
     private final String displayName;
 
-    RoleType(@NotNull final String displayName) {
+    Status(@NotNull final String displayName) {
         this.displayName = displayName;
     }
 
