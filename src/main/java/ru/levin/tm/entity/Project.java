@@ -12,6 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 public final class Project extends AbstractHasOwnerEntity {
+
     @Nullable
     private String name;
 
@@ -57,4 +58,5 @@ public final class Project extends AbstractHasOwnerEntity {
     public void setId(final @NotNull String id) {
         this.id = id;
     }
+
 }

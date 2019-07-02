@@ -12,6 +12,7 @@ import java.util.List;
 public abstract class AbstractEntityService<T extends AbstractEntity, E extends IRepository<T>>
         extends AbstractService<T>
         implements IEntityService<T> {
+
     @NotNull
     protected final E repository;
 
@@ -45,4 +46,5 @@ public abstract class AbstractEntityService<T extends AbstractEntity, E extends 
         repository.removeAll();
         return true;
     }
+
 }

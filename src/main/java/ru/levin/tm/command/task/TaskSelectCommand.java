@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskSelectCommand extends AbstractCommand {
+
     @NotNull
     private static final String SELECTED_TASK_MESSAGE = "SELECTED TASK: ";
 
@@ -68,4 +69,5 @@ public final class TaskSelectCommand extends AbstractCommand {
             terminalService.println(NO_SUCH_ITEM);
         }
     }
+
 }

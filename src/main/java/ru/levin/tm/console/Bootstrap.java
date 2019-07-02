@@ -29,6 +29,7 @@ import java.util.Map;
 
 @NoArgsConstructor
 public final class Bootstrap implements IServiceLocator {
+
     @NotNull
     @Getter
     private final Map<String, AbstractCommand> commands = new LinkedHashMap<>();
@@ -121,4 +122,5 @@ public final class Bootstrap implements IServiceLocator {
         }
         command.execute();
     }
+
 }

@@ -9,6 +9,7 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
 
 public final class UserLoginCommand extends AbstractCommand {
+
     @NotNull
     protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
 
@@ -69,4 +70,5 @@ public final class UserLoginCommand extends AbstractCommand {
         bootstrap.getUserService().setCurrentUser(user);
         terminalService.println("Welcome, " + user.getLogin() + "!");
     }
+
 }

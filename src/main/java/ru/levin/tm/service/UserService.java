@@ -11,6 +11,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 
 public final class UserService extends AbstractEntityService<User, IUserRepository> implements IUserService {
+
     @NotNull
     private final IUserRepository repository;
 
@@ -89,4 +90,5 @@ public final class UserService extends AbstractEntityService<User, IUserReposito
     public User getCurrentUser() {
         return currentUser;
     }
+
 }

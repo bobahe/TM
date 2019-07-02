@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class AboutCommand extends AbstractCommand {
+
     @NotNull
     private final ITerminalService terminalService;
 
@@ -51,4 +52,5 @@ public final class AboutCommand extends AbstractCommand {
             terminalService.println(iae.getMessage());
         }
     }
+
 }

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 @Setter
 public final class User extends AbstractEntity {
+
     @Nullable
     private String id;
 
@@ -20,4 +21,5 @@ public final class User extends AbstractEntity {
 
     @Nullable
     private RoleType roleType;
+
 }

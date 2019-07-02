@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class TerminalService implements ITerminalService {
+
     @NotNull
     private final Scanner scanner = new Scanner(new InputStreamReader(System.in));
 
@@ -26,4 +27,5 @@ public class TerminalService implements ITerminalService {
     public String getLine() {
         return scanner.nextLine();
     }
+
 }

@@ -8,6 +8,7 @@ import ru.levin.tm.command.AbstractCommand;
 import java.util.Map;
 
 public final class HelpCommand extends AbstractCommand {
+
     @NotNull
     private final Map<String, AbstractCommand> commands;
 
@@ -47,4 +48,5 @@ public final class HelpCommand extends AbstractCommand {
         commands.values().forEach(command -> terminalService.println(command.getName() + ": " + command.getDescription()));
         terminalService.println("exit: Exit from application");
     }
+
 }

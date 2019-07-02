@@ -9,6 +9,7 @@ import ru.levin.tm.command.user.*;
 import ru.levin.tm.console.Bootstrap;
 
 public final class Application {
+
     @NotNull
     private static final Class[] COMMANDS = {
             HelpCommand.class, UserLoginCommand.class, UserRegisterCommand.class,
@@ -25,4 +26,5 @@ public final class Application {
         @NotNull final Bootstrap bootstrap = new Bootstrap();
         bootstrap.init(COMMANDS);
     }
+
 }

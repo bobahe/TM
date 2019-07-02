@@ -8,6 +8,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public class ProjectRemoveSelectedCommand extends AbstractCommand {
+
     @NotNull
     private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED";
 
@@ -75,4 +76,5 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
         selectedProject = null;
         terminalService.println(SUCCESS_MESSAGE);
     }
+
 }

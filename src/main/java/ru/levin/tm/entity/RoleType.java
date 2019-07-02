@@ -3,6 +3,7 @@ package ru.levin.tm.entity;
 import org.jetbrains.annotations.NotNull;
 
 public enum RoleType {
+
     ADMIN ("Administrator"),
     USER ("User");
 
@@ -12,4 +13,5 @@ public enum RoleType {
     RoleType(@NotNull final String displayName) {
         this.displayName = displayName;
     }
+
 }

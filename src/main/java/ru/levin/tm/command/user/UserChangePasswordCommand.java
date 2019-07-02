@@ -8,6 +8,7 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
 
 public final class UserChangePasswordCommand extends AbstractCommand {
+
     @NotNull
     protected static final String PASSWORD_PROMPT = "ENTER PASSWORD:";
 
@@ -76,4 +77,5 @@ public final class UserChangePasswordCommand extends AbstractCommand {
 
         terminalService.println("Your password has changed successfully");
     }
+
 }

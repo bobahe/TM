@@ -9,6 +9,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class ProjectRemoveAllCommand extends AbstractCommand {
+
     @NotNull
     private static final String ALL_PROJECTS_REMOVED_MESSAGE = "[ALL PROJECTS REMOVED]\n";
 
@@ -67,4 +68,5 @@ public final class ProjectRemoveAllCommand extends AbstractCommand {
         selectedProject = null;
         terminalService.println(ALL_PROJECTS_REMOVED_MESSAGE);
     }
+
 }

@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class ServiceUtil {
+
     @Nullable
     public static MessageDigest getMD5() {
         try {
@@ -14,4 +15,5 @@ public class ServiceUtil {
             return null;
         }
     }
+
 }

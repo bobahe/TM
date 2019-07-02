@@ -9,6 +9,7 @@ import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.User;
 
 public final class UserRegisterCommand extends AbstractCommand {
+
     @NotNull
     protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
 
@@ -70,4 +71,5 @@ public final class UserRegisterCommand extends AbstractCommand {
 
         terminalService.println("You are registered successfully");
     }
+
 }

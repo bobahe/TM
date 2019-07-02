@@ -8,14 +8,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
-    public @NotNull List<Task> findAllByUserIdProjectId(@NotNull final String userId, @NotNull final String projectId) {
+
+    @NotNull
+    public List<Task> findAllByUserIdProjectId(@NotNull final String userId, @NotNull final String projectId) {
         return storageMap.values().stream()
                 .filter(task -> userId.equals(task.getUserId()) && projectId.equals(task.getProjectId()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public @NotNull List<Task> findAllByUserId(@NotNull final String userId) {
+    @NotNull
+    public List<Task> findAllByUserId(@NotNull final String userId) {
         return storageMap.values().stream()
                 .filter(task -> userId.equals(task.getUserId()))
                 .collect(Collectors.toList());
@@ -29,4 +32,5 @@ public final class TaskRepository extends AbstractRepository<Task> implements IT
             }
         });
     }
+
 }

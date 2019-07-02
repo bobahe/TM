@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHasOwnerEntity extends AbstractEntity {
+
     @Nullable
     protected String userId;
 
@@ -11,4 +12,5 @@ public abstract class AbstractHasOwnerEntity extends AbstractEntity {
     public abstract String getUserId();
 
     public abstract void setUserId(@NotNull final String userId);
+
 }

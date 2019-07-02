@@ -12,6 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 public final class Task extends AbstractHasOwnerEntity {
+
     @Nullable
     private String name;
 
@@ -50,4 +51,5 @@ public final class Task extends AbstractHasOwnerEntity {
     public String toString() {
         return name + " (" + id + ")";
     }
+
 }

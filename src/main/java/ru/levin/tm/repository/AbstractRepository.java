@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public abstract class AbstractRepository<T extends AbstractEntity> implements IRepository<T> {
+
+    @NotNull
     protected final Map<String, T> storageMap = new LinkedHashMap<>();
 
     @Override
@@ -45,4 +47,5 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements IR
     public void removeAll() {
         storageMap.clear();
     }
+
 }

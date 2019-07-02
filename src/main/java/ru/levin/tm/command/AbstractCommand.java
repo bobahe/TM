@@ -7,6 +7,7 @@ import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.Task;
 
 public abstract class AbstractCommand {
+
     @NotNull
     public static final String ERR_PARSE_DATE_MESSAGE = "[CAN'T PARSE DATE, SAVING NULL]\n";
 
@@ -35,4 +36,5 @@ public abstract class AbstractCommand {
     public abstract boolean isRequiredAuthorization();
 
     public abstract void execute();
+
 }

@@ -11,6 +11,7 @@ import ru.levin.tm.util.CommandUtil;
 import java.util.List;
 
 public final class ProjectListCommand extends AbstractCommand {
+
     @NotNull
     private final IProjectService projectService;
 
@@ -68,4 +69,5 @@ public final class ProjectListCommand extends AbstractCommand {
             }
         }
     }
+
 }

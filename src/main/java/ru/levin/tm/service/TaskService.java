@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class TaskService extends AbstractEntityService<Task, ITaskRepository> implements ITaskService {
+
     @NotNull
     private final ITaskRepository repository;
 
@@ -78,4 +79,5 @@ public final class TaskService extends AbstractEntityService<Task, ITaskReposito
         repository.merge(entity);
         return entity;
     }
+
 }

@@ -10,9 +10,11 @@ import ru.levin.tm.command.AbstractCommand;
 import java.util.Map;
 
 public interface IServiceLocator {
+
     @NotNull IProjectService getProjectService();
     @NotNull ITaskService getTaskService();
     @NotNull IUserService getUserService();
     @NotNull ITerminalService getTerminalService();
     @NotNull Map<String, AbstractCommand> getCommands();
+
 }

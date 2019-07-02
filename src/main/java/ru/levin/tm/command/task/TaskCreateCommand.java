@@ -11,6 +11,7 @@ import ru.levin.tm.entity.User;
 import ru.levin.tm.util.CommandUtil;
 
 public final class TaskCreateCommand extends AbstractCommand {
+
     @NotNull
     protected static final String NAME_PROMPT = "ENTER NAME:";
 
@@ -97,4 +98,5 @@ public final class TaskCreateCommand extends AbstractCommand {
         }
         terminalService.println(SUCCESS_MESSAGE);
     }
+
 }

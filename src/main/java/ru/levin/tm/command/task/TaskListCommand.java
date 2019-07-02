@@ -11,6 +11,7 @@ import ru.levin.tm.util.CommandUtil;
 import java.util.List;
 
 public final class TaskListCommand extends AbstractCommand {
+
     @NotNull
     private final ITaskService taskService;
 
@@ -68,4 +69,5 @@ public final class TaskListCommand extends AbstractCommand {
             terminalService.println("\tProject: " + task.getProjectId());
         }
     }
+
 }

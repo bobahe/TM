@@ -10,6 +10,7 @@ import java.util.Date;
 
 
 public final class CommandUtil {
+
     @NotNull
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -24,4 +25,5 @@ public final class CommandUtil {
             return null;
         }
     }
+
 }

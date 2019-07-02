@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ProjectService extends AbstractEntityService<Project, IProjectRepository> implements IProjectService {
+
     public ProjectService(@NotNull final IProjectRepository repository) {
         super(repository);
     }
@@ -58,4 +59,5 @@ public final class ProjectService extends AbstractEntityService<Project, IProjec
         if (userId == null) return new ArrayList<>();
         return repository.findAllByUserId(userId);
     }
+
 }

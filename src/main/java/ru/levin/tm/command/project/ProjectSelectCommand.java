@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class ProjectSelectCommand extends AbstractCommand {
+
     @NotNull
     private static final String SELECTED_PROJECT_MESSAGE = "SELECTED PROJECT: ";
 
@@ -69,4 +70,5 @@ public final class ProjectSelectCommand extends AbstractCommand {
             terminalService.println(NO_SUCH_ITEM);
         }
     }
+
 }

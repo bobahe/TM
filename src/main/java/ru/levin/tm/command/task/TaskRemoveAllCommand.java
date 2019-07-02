@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskRemoveAllCommand extends AbstractCommand {
+
     @NotNull
     private static final String ALL_TASK_REMOVED_MESSAGE = "[ALL TASKS REMOVED]\n";
 
@@ -52,4 +53,5 @@ public final class TaskRemoveAllCommand extends AbstractCommand {
         selectedTask = null;
         terminalService.println(ALL_TASK_REMOVED_MESSAGE);
     }
+
 }

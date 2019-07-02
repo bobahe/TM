@@ -6,6 +6,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class UserShowProfileCommand extends AbstractCommand {
+
     @NotNull
     private final ITerminalService terminalService;
 
@@ -47,4 +48,5 @@ public final class UserShowProfileCommand extends AbstractCommand {
         terminalService.println("Password: " + bootstrap.getUserService().getCurrentUser().getPassword());
         terminalService.println("Role: " + bootstrap.getUserService().getCurrentUser().getRoleType().name());
     }
+
 }

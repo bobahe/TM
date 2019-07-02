@@ -6,9 +6,12 @@ import ru.levin.tm.api.repository.IUserRepository;
 import ru.levin.tm.entity.User;
 
 public final class UserRepository extends AbstractRepository<User> implements IUserRepository {
-    public @Nullable User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
+
+    @Nullable
+    public User findOneByLoginAndPassword(@NotNull final String login, @NotNull final String password) {
         return storageMap.values().stream()
                 .filter(user -> login.equals(user.getLogin()) && password.equals(user.getPassword()))
                 .findFirst().orElse(null);
     }
+
 }

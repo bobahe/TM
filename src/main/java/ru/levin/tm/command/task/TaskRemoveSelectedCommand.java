@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class TaskRemoveSelectedCommand extends AbstractCommand {
+
     @NotNull
     private static final String TASK_NOT_SELECTED = "TASK IS NOT SELECTED";
 
@@ -64,4 +65,5 @@ public final class TaskRemoveSelectedCommand extends AbstractCommand {
         selectedTask = null;
         terminalService.println(SUCCESS_MESSAGE);
     }
+
 }

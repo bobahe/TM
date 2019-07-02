@@ -11,6 +11,7 @@ import ru.levin.tm.util.CommandUtil;
 import java.util.List;
 
 public final class TaskProjectTaskListCommand extends AbstractCommand {
+
     @NotNull
     private static final String SELECT_PROJECT_MESSAGE = "You must select a project before";
 
@@ -77,4 +78,5 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
             }
         }
     }
+
 }

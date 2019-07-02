@@ -6,6 +6,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class UserLogoutCommand extends AbstractCommand {
+
     @NotNull
     private final ITerminalService terminalService;
 
@@ -45,4 +46,5 @@ public final class UserLogoutCommand extends AbstractCommand {
         terminalService.println("Good bye, " + bootstrap.getUserService().getCurrentUser().getLogin());
         bootstrap.getUserService().setCurrentUser(null);
     }
+
 }

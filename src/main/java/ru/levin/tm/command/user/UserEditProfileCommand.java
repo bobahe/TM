@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 
 public final class UserEditProfileCommand extends AbstractCommand {
+
     @NotNull
     protected static final String LOGIN_PROMPT = "ENTER LOGIN:";
 
@@ -63,4 +64,5 @@ public final class UserEditProfileCommand extends AbstractCommand {
 
         terminalService.println("Your profile changed successfully");
     }
+
 }

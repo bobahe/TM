@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
+
     @Override
     public void removeByUserId(@NotNull String userId) {
         storageMap.values().forEach(project -> {
@@ -23,4 +24,5 @@ public final class ProjectRepository extends AbstractRepository<Project> impleme
                 .filter(project -> userId.equals(project.getUserId()))
                 .collect(Collectors.toList());
     }
+
 }

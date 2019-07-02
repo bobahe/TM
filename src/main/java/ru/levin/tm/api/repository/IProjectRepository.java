@@ -6,6 +6,8 @@ import ru.levin.tm.entity.Project;
 import java.util.List;
 
 public interface IProjectRepository extends IRepository<Project> {
+
     void removeByUserId(@NotNull final String userId);
     @NotNull List<Project> findAllByUserId(@NotNull final String userId);
+
 }

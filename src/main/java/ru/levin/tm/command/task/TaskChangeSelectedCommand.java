@@ -8,6 +8,7 @@ import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.util.CommandUtil;
 
 public final class TaskChangeSelectedCommand extends AbstractCommand {
+
     @NotNull
     protected static final String NAME_PROMPT = "ENTER NAME:";
 
@@ -80,4 +81,5 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
         }
         terminalService.println(SUCCESS_MESSAGE);
     }
+
 }
