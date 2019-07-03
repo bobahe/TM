@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @Getter
 @Setter
-public final class User extends AbstractEntity {
+public final class User extends AbstractEntity implements Serializable {
 
     @Nullable
     private String id;

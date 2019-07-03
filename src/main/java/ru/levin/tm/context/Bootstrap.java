@@ -84,11 +84,13 @@ public final class Bootstrap implements IServiceLocator {
 
     private void createDefaultUsers() {
         @NotNull final User admin = new User();
+        admin.setId("38aca227-dc47-459f-bc0b-2134e260135c");
         admin.setLogin("admin");
         admin.setPassword("admin");
         admin.setRoleType(RoleType.ADMIN);
 
         @NotNull final User user = new User();
+        user.setId("54d01220-0ecd-4ca2-a300-ff6ffc9b1254");
         user.setLogin("user");
         user.setPassword("user");
         user.setRoleType(RoleType.USER);

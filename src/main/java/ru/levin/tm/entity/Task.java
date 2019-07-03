@@ -8,13 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.IContainsDatesAndStatus;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public final class Task extends AbstractHasOwnerEntity implements IContainsDatesAndStatus {
+public final class Task extends AbstractHasOwnerEntity implements IContainsDatesAndStatus, Serializable {
 
     @Nullable
     private String name;

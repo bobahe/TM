@@ -16,21 +16,23 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements IR
 
     @Override
     @NotNull
-    public  Map<String, T> findAll() {
+    public Map<String, T> findAll() {
         return storageMap;
     }
 
     @Override
     @Nullable
-    public  T findOne(@NotNull final String id) {
+    public T findOne(@NotNull final String id) {
         return storageMap.get(id);
     }
 
     @Override
     public void persist(@NotNull final T entity) {
-        @NotNull final String id = UUID.randomUUID().toString();
-        entity.setId(id);
-        storageMap.put(id, entity);
+        if (entity.getId() == null) {
+            @NotNull final String id = UUID.randomUUID().toString();
+            entity.setId(id);
+        }
+        storageMap.put(entity.getId(), entity);
     }
 
     @Override
