@@ -63,6 +63,8 @@ public final class UserLoginCommand extends AbstractCommand {
         @Nullable final User user = userService.getUserByLoginAndPassword(login, password);
         if (user == null) throw new AuthorizationException();
         bootstrap.getUserService().setCurrentUser(user);
+        selectedProject = null;
+        selectedTask = null;
         terminalService.println("Welcome, " + user.getLogin() + "!");
     }
 

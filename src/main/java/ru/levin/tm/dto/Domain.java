@@ -2,27 +2,33 @@ package ru.levin.tm.dto;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.IServiceLocator;
-import ru.levin.tm.entity.Project;
-import ru.levin.tm.entity.Task;
+import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.NoCurrentUserException;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
+@XmlRootElement(name = "Domain")
 public class Domain implements Serializable {
 
-    private static final long serialVersionUID = 8478406829761508623L;
+    private static final long serialVersionUID = 3451213614811997006L;
 
     @NotNull
-    private final List<Project> projectList = new ArrayList<>();
+    @XmlElement
+    private final ProjectDomain projects = new ProjectDomain();
 
     @NotNull
-    private final List<Task> taskList = new ArrayList<>();
+    @XmlElement
+    private final TaskDomain tasks = new TaskDomain();
 
     public void initFromInternalStorage(@NotNull final IServiceLocator bootstrap) {
-        projectList.addAll(bootstrap.getProjectService().getAll());
-        taskList.addAll(bootstrap.getTaskService().getAll());
+        @Nullable final User user = bootstrap.getUserService().getCurrentUser();
+        if (user == null) throw new NoCurrentUserException();
+        projects.getProjects().addAll(bootstrap.getProjectService().findAllByUserId(user.getId()));
+        tasks.getTasks().addAll(bootstrap.getTaskService().findAllByUserId(user.getId()));
     }
 }

@@ -2,10 +2,7 @@ package ru.levin.tm;
 
 import org.jetbrains.annotations.NotNull;
 import ru.levin.tm.command.project.*;
-import ru.levin.tm.command.system.AboutCommand;
-import ru.levin.tm.command.system.HelpCommand;
-import ru.levin.tm.command.system.LoadSerializedCommand;
-import ru.levin.tm.command.system.SaveSerializedCommand;
+import ru.levin.tm.command.system.*;
 import ru.levin.tm.command.task.*;
 import ru.levin.tm.command.user.*;
 import ru.levin.tm.context.Bootstrap;
@@ -22,7 +19,7 @@ public final class Application {
             TaskListCommand.class, TaskChangeSelectedCommand.class, TaskRemoveSelectedCommand.class,
             TaskJoinCommand.class, UserLogoutCommand.class, UserChangePasswordCommand.class,
             UserShowProfileCommand.class, UserEditProfileCommand.class, SaveSerializedCommand.class,
-            LoadSerializedCommand.class
+            LoadSerializedCommand.class, SaveJAXBXmlCommand.class, LoadJAXBXmlCommand.class
     };
 
     public static void main(String[] args) {

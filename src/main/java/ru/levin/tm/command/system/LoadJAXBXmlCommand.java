@@ -10,15 +10,16 @@ import ru.levin.tm.entity.User;
 import ru.levin.tm.exception.DeserializeException;
 import ru.levin.tm.exception.NoCurrentUserException;
 
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 
-public final class LoadSerializedCommand extends AbstractCommand {
+public final class LoadJAXBXmlCommand extends AbstractCommand {
 
     @NotNull
     private final ITerminalService terminalService;
 
-    public LoadSerializedCommand(@NotNull final IServiceLocator bootstrap) {
+    public LoadJAXBXmlCommand(@NotNull final IServiceLocator bootstrap) {
         super(bootstrap);
         this.terminalService = bootstrap.getTerminalService();
     }
@@ -26,7 +27,7 @@ public final class LoadSerializedCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getName() {
-        return "load-serialized";
+        return "load-jaxb-xml";
     }
 
     @Override
@@ -38,7 +39,7 @@ public final class LoadSerializedCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getDescription() {
-        return "Deserialize data from file";
+        return "Unmarshal data from xml via JAXB";
     }
 
     @Override
@@ -50,18 +51,19 @@ public final class LoadSerializedCommand extends AbstractCommand {
     public void execute() {
         @Nullable final User user = bootstrap.getUserService().getCurrentUser();
         if (user == null) throw new NoCurrentUserException();
-        @NotNull final String fileName = user.getLogin() + "admindata.ser";
-        @Nullable Domain domain;
-        try (FileInputStream dataFile = new FileInputStream(fileName);
-             ObjectInputStream objectInputStream = new ObjectInputStream(dataFile)) {
-            domain = (Domain) objectInputStream.readObject();
+        @NotNull final String fileName = user.getLogin() + "jaxbdata.xml";
+        try {
+            @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(Domain.class);
+            @NotNull final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            @NotNull final Domain domain = (Domain) unmarshaller.unmarshal(new File(fileName));
+            domain.getProjects().getProjects().forEach(project -> bootstrap.getProjectService().save(project));
+            domain.getTasks().getTasks().forEach(task -> bootstrap.getTaskService().save(task));
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             throw new DeserializeException();
         }
 
-        domain.getProjects().getProjects().forEach(project -> bootstrap.getProjectService().save(project));
-        domain.getTasks().getTasks().forEach(task -> bootstrap.getTaskService().save(task));
-        terminalService.println("Data was successfully loaded from " + fileName);
+        terminalService.println("Load JAXB XML successfully from " + fileName);
     }
 
 }
