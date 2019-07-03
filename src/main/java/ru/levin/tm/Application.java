@@ -19,7 +19,8 @@ public final class Application {
             TaskListCommand.class, TaskChangeSelectedCommand.class, TaskRemoveSelectedCommand.class,
             TaskJoinCommand.class, UserLogoutCommand.class, UserChangePasswordCommand.class,
             UserShowProfileCommand.class, UserEditProfileCommand.class, SaveSerializedCommand.class,
-            LoadSerializedCommand.class, SaveJAXBXmlCommand.class, LoadJAXBXmlCommand.class
+            LoadSerializedCommand.class, SaveJAXBXmlCommand.class, LoadJAXBXmlCommand.class,
+            SaveJAXBJsonCommand.class, LoadJAXBJsonCommand.class
     };
 
     public static void main(String[] args) {

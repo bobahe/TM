@@ -50,7 +50,7 @@ public final class LoadSerializedCommand extends AbstractCommand {
     public void execute() {
         @Nullable final User user = bootstrap.getUserService().getCurrentUser();
         if (user == null) throw new NoCurrentUserException();
-        @NotNull final String fileName = user.getLogin() + "admindata.ser";
+        @NotNull final String fileName = user.getLogin() + "data.ser";
         @Nullable Domain domain;
         try (FileInputStream dataFile = new FileInputStream(fileName);
              ObjectInputStream objectInputStream = new ObjectInputStream(dataFile)) {
