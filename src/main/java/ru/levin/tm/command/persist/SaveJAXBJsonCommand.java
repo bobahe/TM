@@ -1,4 +1,4 @@
-package ru.levin.tm.command.system;
+package ru.levin.tm.command.persist;
 
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
 import org.jetbrains.annotations.NotNull;
@@ -8,21 +8,21 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.dto.Domain;
 import ru.levin.tm.entity.User;
-import ru.levin.tm.exception.DeserializeException;
 import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.SerializeException;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class LoadJAXBJsonCommand extends AbstractCommand {
+public final class SaveJAXBJsonCommand extends AbstractCommand {
 
     @NotNull
     private final ITerminalService terminalService;
 
-    public LoadJAXBJsonCommand(@NotNull final IServiceLocator bootstrap) {
+    public SaveJAXBJsonCommand(@NotNull final IServiceLocator bootstrap) {
         super(bootstrap);
         this.terminalService = bootstrap.getTerminalService();
     }
@@ -30,7 +30,7 @@ public final class LoadJAXBJsonCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getName() {
-        return "load-jaxb-json";
+        return "save-jaxb-json";
     }
 
     @Override
@@ -42,7 +42,7 @@ public final class LoadJAXBJsonCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getDescription() {
-        return "Unmarshal data from json via JAXB";
+        return "Marshal data into json via JAXB";
     }
 
     @Override
@@ -55,23 +55,23 @@ public final class LoadJAXBJsonCommand extends AbstractCommand {
         @Nullable final User user = bootstrap.getUserService().getCurrentUser();
         if (user == null) throw new NoCurrentUserException();
         @NotNull final String fileName = user.getLogin() + "jaxbdata.json";
+        @NotNull final Domain domain = new Domain();
+        domain.initFromInternalStorage(bootstrap);
 
         System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
         @NotNull final Map<String, Object> jaxbProperties = new HashMap<>();
         jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-        jaxbProperties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, true);
+        jaxbProperties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
         try {
             @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(new Class[] {Domain.class}, jaxbProperties);
-            @NotNull final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            @NotNull final Domain domain = (Domain) unmarshaller.unmarshal(new File(fileName));
-            domain.getProjects().getProjects().forEach(project -> bootstrap.getProjectService().save(project));
-            domain.getTasks().getTasks().forEach(task -> bootstrap.getTaskService().save(task));
+            @NotNull final Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(domain, new File(fileName));
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new DeserializeException();
+            throw new SerializeException();
         }
 
-        terminalService.println("Load JAXB XML successfully from " + fileName);
+        terminalService.println("Saved JAXB Json successfully to " + fileName);
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.levin.tm.command.system;
+package ru.levin.tm.command.persist;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,8 +59,8 @@ public final class LoadSerializedCommand extends AbstractCommand {
             throw new DeserializeException();
         }
 
-        domain.getProjects().getProjects().forEach(project -> bootstrap.getProjectService().save(project));
-        domain.getTasks().getTasks().forEach(task -> bootstrap.getTaskService().save(task));
+        domain.getProjects().forEach(project -> bootstrap.getProjectService().save(project));
+        domain.getTasks().forEach(task -> bootstrap.getTaskService().save(task));
         terminalService.println("Data was successfully loaded from " + fileName);
     }
 
