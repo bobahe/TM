@@ -22,7 +22,8 @@ public final class Application {
             TaskJoinCommand.class, UserLogoutCommand.class, UserChangePasswordCommand.class,
             UserShowProfileCommand.class, UserEditProfileCommand.class, SaveSerializedCommand.class,
             LoadSerializedCommand.class, SaveJAXBXmlCommand.class, LoadJAXBXmlCommand.class,
-            SaveJAXBJsonCommand.class, LoadJAXBJsonCommand.class
+            SaveJAXBJsonCommand.class, LoadJAXBJsonCommand.class, SaveFasterXmlCommand.class,
+            LoadFasterXmlCommand.class
     };
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package ru.levin.tm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @XmlRootElement(name = "Domain")
 @XmlAccessorType(XmlAccessType.FIELD)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Domain implements Serializable {
 
     private static final long serialVersionUID = 3451213614811997006L;

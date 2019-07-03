@@ -1,6 +1,6 @@
 package ru.levin.tm.command.persist;
 
-import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.IServiceLocator;
@@ -11,18 +11,14 @@ import ru.levin.tm.entity.User;
 import ru.levin.tm.exception.DeserializeException;
 import ru.levin.tm.exception.NoCurrentUserException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
 
-public final class LoadJAXBJsonCommand extends AbstractCommand {
+public final class LoadFasterXmlCommand extends AbstractCommand {
 
     @NotNull
     private final ITerminalService terminalService;
 
-    public LoadJAXBJsonCommand(@NotNull final IServiceLocator bootstrap) {
+    public LoadFasterXmlCommand(@NotNull final IServiceLocator bootstrap) {
         super(bootstrap);
         this.terminalService = bootstrap.getTerminalService();
     }
@@ -30,7 +26,7 @@ public final class LoadJAXBJsonCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getName() {
-        return "load-jaxb-json";
+        return "load-fxml-xml";
     }
 
     @Override
@@ -42,7 +38,7 @@ public final class LoadJAXBJsonCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getDescription() {
-        return "Unmarshal data from json via JAXB";
+        return "Unmarshal data from xml via FasterXML";
     }
 
     @Override
@@ -54,17 +50,11 @@ public final class LoadJAXBJsonCommand extends AbstractCommand {
     public void execute() {
         @Nullable final User user = bootstrap.getUserService().getCurrentUser();
         if (user == null) throw new NoCurrentUserException();
-        @NotNull final String fileName = user.getLogin() + "jaxbdata.json";
+        @NotNull final String fileName = user.getLogin() + "fxmldata.xml";
 
-        System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
-        @NotNull final Map<String, Object> jaxbProperties = new HashMap<>();
-        jaxbProperties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
-        jaxbProperties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
         try {
-            @NotNull final JAXBContext jaxbContext = JAXBContext.newInstance(new Class[] {Domain.class}, jaxbProperties);
-            @NotNull final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            @NotNull final StreamSource jsonFile = new StreamSource(fileName);
-            @NotNull final Domain domain = unmarshaller.unmarshal(jsonFile, Domain.class).getValue();
+            @NotNull final XmlMapper mapper = new XmlMapper();
+            @NotNull final Domain domain = mapper.readValue(new File(fileName), Domain.class);
             domain.getProjects().forEach(project -> bootstrap.getProjectService().save(project));
             domain.getTasks().forEach(task -> bootstrap.getTaskService().save(task));
         } catch (Exception e) {
