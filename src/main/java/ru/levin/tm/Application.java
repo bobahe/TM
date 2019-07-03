@@ -23,7 +23,7 @@ public final class Application {
             UserShowProfileCommand.class, UserEditProfileCommand.class, SaveSerializedCommand.class,
             LoadSerializedCommand.class, SaveJAXBXmlCommand.class, LoadJAXBXmlCommand.class,
             SaveJAXBJsonCommand.class, LoadJAXBJsonCommand.class, SaveFasterXmlCommand.class,
-            LoadFasterXmlCommand.class
+            LoadFasterXmlCommand.class, SaveFasterJsonCommand.class, LoadFasterJsonCommand.class
     };
 
     public static void main(String[] args) {

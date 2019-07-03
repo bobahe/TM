@@ -1,7 +1,6 @@
 package ru.levin.tm.command.persist;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.IServiceLocator;
@@ -9,17 +8,17 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.dto.Domain;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.DeserializeException;
 import ru.levin.tm.exception.NoCurrentUserException;
-import ru.levin.tm.exception.SerializeException;
 
 import java.io.File;
 
-public final class SaveFasterXmlCommand extends AbstractCommand {
+public final class LoadFasterJsonCommand extends AbstractCommand {
 
     @NotNull
     private final ITerminalService terminalService;
 
-    public SaveFasterXmlCommand(@NotNull final IServiceLocator bootstrap) {
+    public LoadFasterJsonCommand(@NotNull final IServiceLocator bootstrap) {
         super(bootstrap);
         this.terminalService = bootstrap.getTerminalService();
     }
@@ -27,7 +26,7 @@ public final class SaveFasterXmlCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getName() {
-        return "save-fxml-xml";
+        return "load-fxml-json";
     }
 
     @Override
@@ -39,7 +38,7 @@ public final class SaveFasterXmlCommand extends AbstractCommand {
     @Override
     @NotNull
     public String getDescription() {
-        return "Marshal data into xml via FasterXML";
+        return "Unmarshal data from json via FasterXML";
     }
 
     @Override
@@ -51,19 +50,18 @@ public final class SaveFasterXmlCommand extends AbstractCommand {
     public void execute() {
         @Nullable final User user = bootstrap.getUserService().getCurrentUser();
         if (user == null) throw new NoCurrentUserException();
-        @NotNull final String fileName = user.getLogin() + "fxmldata.xml";
-        @NotNull final Domain domain = new Domain();
-        domain.initFromInternalStorage(bootstrap);
+        @NotNull final String fileName = user.getLogin() + "fxmldata.json";
 
         try {
-            @NotNull final XmlMapper mapper = new XmlMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            mapper.writeValue(new File(fileName), domain);
+            @NotNull final ObjectMapper mapper = new ObjectMapper();
+            @NotNull final Domain domain = mapper.readValue(new File(fileName), Domain.class);
+            domain.getProjects().forEach(project -> bootstrap.getProjectService().save(project));
+            domain.getTasks().forEach(task -> bootstrap.getTaskService().save(task));
         } catch (Exception e) {
-            throw new SerializeException();
+            throw new DeserializeException();
         }
 
-        terminalService.println("Saved FasterXML XML successfully to " + fileName);
+        terminalService.println("Load FasterXML Json successfully from " + fileName);
     }
 
 }

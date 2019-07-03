@@ -61,7 +61,7 @@ public final class LoadFasterXmlCommand extends AbstractCommand {
             throw new DeserializeException();
         }
 
-        terminalService.println("Load JAXB XML successfully from " + fileName);
+        terminalService.println("Load FasterXML XML successfully from " + fileName);
     }
 
 }
