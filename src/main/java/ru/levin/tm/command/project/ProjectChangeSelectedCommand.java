@@ -6,6 +6,7 @@ import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Status;
+import ru.levin.tm.exception.NoSelectedProjectException;
 import ru.levin.tm.util.CommandUtil;
 
 public final class ProjectChangeSelectedCommand extends AbstractCommand {
@@ -64,11 +65,8 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute() {
-        if (selectedProject == null) {
-            terminalService.println("You have to choose project first.");
-            return;
-        }
+    public void execute() throws IllegalStateException {
+        if (selectedProject == null) throw new NoSelectedProjectException();
 
         terminalService.println(this.getTitle());
         terminalService.println(NAME_PROMPT);
@@ -88,12 +86,7 @@ public final class ProjectChangeSelectedCommand extends AbstractCommand {
         @NotNull final int statusType = Integer.parseInt(terminalService.getLine());
         selectedProject.setStatus(Status.values()[statusType - 1]);
 
-        try {
-            projectService.update(selectedProject);
-        } catch (Exception e) {
-            terminalService.printerr(e.getMessage());
-            return;
-        }
+        projectService.update(selectedProject);
         terminalService.println(SUCCESS_MESSAGE);
     }
 

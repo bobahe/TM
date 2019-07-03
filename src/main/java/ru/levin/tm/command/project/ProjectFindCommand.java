@@ -6,6 +6,7 @@ import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
+import ru.levin.tm.exception.NoCurrentUserException;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public final class ProjectFindCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         terminalService.println("Enter (part) of name or description:");
         @NotNull final List<Project> projects = projectService.findAllByPartOfNameOrDescription(terminalService.getLine());
         projects.forEach(project -> terminalService.println(project.toString()));

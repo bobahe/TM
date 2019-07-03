@@ -6,6 +6,8 @@ import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Status;
+import ru.levin.tm.exception.NoSelectedTaskException;
+import ru.levin.tm.exception.UpdateException;
 import ru.levin.tm.util.CommandUtil;
 
 public final class TaskChangeSelectedCommand extends AbstractCommand {
@@ -65,7 +67,7 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (selectedTask == null) return;
+        if (selectedTask == null) throw new NoSelectedTaskException();
 
         terminalService.println(this.getTitle());
         terminalService.println(NAME_PROMPT);
@@ -85,12 +87,7 @@ public final class TaskChangeSelectedCommand extends AbstractCommand {
         @NotNull final int statusType = Integer.parseInt(terminalService.getLine());
         selectedTask.setStatus(Status.values()[statusType - 1]);
 
-        try {
-            taskService.update(selectedTask);
-        } catch (Exception e) {
-            terminalService.printerr(e.getMessage());
-            return;
-        }
+        if (taskService.update(selectedTask) == null) throw new UpdateException();
         terminalService.println(SUCCESS_MESSAGE);
     }
 

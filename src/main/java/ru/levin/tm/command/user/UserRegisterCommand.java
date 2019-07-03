@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.SaveException;
 
 public final class UserRegisterCommand extends AbstractCommand {
 
@@ -63,12 +64,7 @@ public final class UserRegisterCommand extends AbstractCommand {
         user.setPassword(password);
         user.setRoleType(RoleType.USER);
 
-        try {
-            userService.save(user);
-        } catch (Exception e) {
-            terminalService.printerr(e.getMessage());
-        }
-
+        if (userService.save(user) == null) throw new SaveException();
         terminalService.println("You are registered successfully");
     }
 

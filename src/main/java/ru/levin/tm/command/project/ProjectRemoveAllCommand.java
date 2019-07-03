@@ -7,6 +7,8 @@ import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.NoIdForCurrentUserException;
 
 public final class ProjectRemoveAllCommand extends AbstractCommand {
 
@@ -54,9 +56,9 @@ public final class ProjectRemoveAllCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         @Nullable final String userId = bootstrap.getUserService().getCurrentUser().getId();
-        if (userId == null) return;
+        if (userId == null) throw new NoIdForCurrentUserException();
         projectService.removeByUserId(userId);
 
         taskService.getAll().forEach(task -> {

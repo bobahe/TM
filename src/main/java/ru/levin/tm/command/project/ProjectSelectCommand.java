@@ -5,6 +5,8 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.NoIdForCurrentUserException;
 
 public final class ProjectSelectCommand extends AbstractCommand {
 
@@ -55,20 +57,16 @@ public final class ProjectSelectCommand extends AbstractCommand {
         return true;
     }
 
+    @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
+        if (bootstrap.getUserService().getCurrentUser().getId() == null) throw new NoIdForCurrentUserException();
 
         terminalService.println(this.getTitle());
         terminalService.println(SERIAL_NUMBER_PROMPT);
-        try {
-            final int index = Integer.parseInt(terminalService.getLine());
-            selectedProject = projectService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
-            terminalService.println(SELECTED_PROJECT_MESSAGE + selectedProject);
-        } catch (NumberFormatException nfe) {
-            terminalService.println(ERROR_MESSAGE);
-        } catch (IndexOutOfBoundsException iobe) {
-            terminalService.println(NO_SUCH_ITEM);
-        }
+        final int index = Integer.parseInt(terminalService.getLine());
+        selectedProject = projectService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
+        terminalService.println(SELECTED_PROJECT_MESSAGE + selectedProject);
     }
 
 }

@@ -1,16 +1,17 @@
 package ru.levin.tm.command.project;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.NoIdForCurrentUserException;
+import ru.levin.tm.exception.NoSelectedProjectException;
 
 public class ProjectRemoveSelectedCommand extends AbstractCommand {
-
-    @NotNull
-    private static final String PROJECT_NOT_SELECTED = "PROJECT IS NOT SELECTED";
 
     @NotNull
     protected static final String SUCCESS_MESSAGE = "[OK]\n";
@@ -56,22 +57,13 @@ public class ProjectRemoveSelectedCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (selectedProject == null) {
-            terminalService.println(PROJECT_NOT_SELECTED);
-            return;
-        }
-        if (bootstrap.getUserService().getCurrentUser() == null) {
-            return;
-        }
+        if (selectedProject == null) throw new NoSelectedProjectException();
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
+        if (bootstrap.getUserService().getCurrentUser().getId() == null) throw new NoIdForCurrentUserException();
 
-        try {
-            projectService.remove(selectedProject);
-            final String userId = bootstrap.getUserService().getCurrentUser().getId();
-            taskService.removeAllByUserIdAndProjectId(userId, selectedProject.getId());
-        } catch (Exception e) {
-            terminalService.println(e.getMessage());
-            return;
-        }
+        projectService.remove(selectedProject);
+        @Nullable final String userId = bootstrap.getUserService().getCurrentUser().getId();
+        taskService.removeAllByUserIdAndProjectId(userId, selectedProject.getId());
 
         selectedProject = null;
         terminalService.println(SUCCESS_MESSAGE);

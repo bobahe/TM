@@ -6,6 +6,7 @@ import ru.levin.tm.api.service.IProjectService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
+import ru.levin.tm.exception.NoCurrentUserException;
 import ru.levin.tm.util.CommandUtil;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public final class ProjectListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         @NotNull final List<Project> projectList =
                 projectService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
         terminalService.println("Select option to sort list (1 by default):");

@@ -5,6 +5,7 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoSelectedTaskException;
 
 public final class TaskRemoveSelectedCommand extends AbstractCommand {
 
@@ -51,17 +52,8 @@ public final class TaskRemoveSelectedCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (selectedTask == null) {
-            terminalService.println(TASK_NOT_SELECTED);
-            return;
-        }
-
-        try {
-            taskService.remove(selectedTask);
-        } catch (Exception e) {
-            terminalService.println(e.getMessage());
-            return;
-        }
+        if (selectedTask == null) throw new NoSelectedTaskException();
+        taskService.remove(selectedTask);
         selectedTask = null;
         terminalService.println(SUCCESS_MESSAGE);
     }

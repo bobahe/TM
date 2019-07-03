@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoCurrentUserException;
 
 public final class UserLogoutCommand extends AbstractCommand {
 
@@ -40,7 +41,7 @@ public final class UserLogoutCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         selectedProject = null;
         selectedTask = null;
         terminalService.println("Good bye, " + bootstrap.getUserService().getCurrentUser().getLogin());

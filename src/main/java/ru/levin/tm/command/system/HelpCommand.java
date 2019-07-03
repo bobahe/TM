@@ -44,6 +44,7 @@ public final class HelpCommand extends AbstractCommand {
         return false;
     }
 
+    @Override
     public void execute() {
         commands.values().forEach(command -> terminalService.println(command.getName() + ": " + command.getDescription()));
         terminalService.println("exit: Exit from application");

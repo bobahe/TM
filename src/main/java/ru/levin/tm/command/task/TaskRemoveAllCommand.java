@@ -5,6 +5,7 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoCurrentUserException;
 
 public final class TaskRemoveAllCommand extends AbstractCommand {
 
@@ -48,7 +49,7 @@ public final class TaskRemoveAllCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         taskService.removeByUserId(bootstrap.getUserService().getCurrentUser().getId());
         selectedTask = null;
         terminalService.println(ALL_TASK_REMOVED_MESSAGE);

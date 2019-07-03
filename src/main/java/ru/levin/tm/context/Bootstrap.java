@@ -15,6 +15,8 @@ import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.RoleType;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.CommandNotFoundException;
+import ru.levin.tm.exception.NoCurrentUserException;
 import ru.levin.tm.repository.ProjectRepository;
 import ru.levin.tm.repository.TaskRepository;
 import ru.levin.tm.repository.UserRepository;
@@ -112,15 +114,13 @@ public final class Bootstrap implements IServiceLocator {
     private void invokeCommand(String commandName) {
         @Nullable final AbstractCommand command = commands.get(commandName);
 
-        if (command == null) {
-            terminalService.printerr("There is not such command");
-            return;
+        try {
+            if (command == null) throw new CommandNotFoundException();
+            if (userService.getCurrentUser() == null && command.isRequiredAuthorization()) throw new NoCurrentUserException();
+            command.execute();
+        } catch (Exception e) {
+            terminalService.printerr(e.getMessage());
         }
-        if (userService.getCurrentUser() == null && command.isRequiredAuthorization()) {
-            terminalService.println("You have to log in first.");
-            return;
-        }
-        command.execute();
     }
 
 }

@@ -5,6 +5,7 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoCurrentUserException;
 
 public final class TaskSelectCommand extends AbstractCommand {
 
@@ -55,19 +56,14 @@ public final class TaskSelectCommand extends AbstractCommand {
         return true;
     }
 
+    @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         terminalService.println(this.getTitle());
         terminalService.println(SERIAL_NUMBER_PROMPT);
-        try {
-            final int index = Integer.parseInt(terminalService.getLine());
-            selectedTask = taskService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
-            terminalService.println(SELECTED_TASK_MESSAGE + selectedTask);
-        } catch (NumberFormatException nfe) {
-            terminalService.println(ERROR_MESSAGE);
-        } catch (IndexOutOfBoundsException iobe) {
-            terminalService.println(NO_SUCH_ITEM);
-        }
+        final int index = Integer.parseInt(terminalService.getLine());
+        selectedTask = taskService.findOneByIndex(bootstrap.getUserService().getCurrentUser().getId(), index);
+        terminalService.println(SELECTED_TASK_MESSAGE + selectedTask);
     }
 
 }

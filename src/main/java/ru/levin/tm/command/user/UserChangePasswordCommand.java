@@ -6,6 +6,9 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.PasswordsNotEqualException;
+import ru.levin.tm.exception.UpdateException;
 
 public final class UserChangePasswordCommand extends AbstractCommand {
 
@@ -52,29 +55,18 @@ public final class UserChangePasswordCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) {
-            return;
-        }
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
 
         terminalService.println(PASSWORD_PROMPT);
         final String passwordOne = terminalService.getLine();
         terminalService.println(PASSWORD_AGAIN_PROMPT);
         final String passwordTwo = terminalService.getLine();
 
-        if (!passwordOne.equals(passwordTwo)) {
-            terminalService.println("You have entered different passwords. Abort.");
-            return;
-        }
+        if (!passwordOne.equals(passwordTwo)) throw new PasswordsNotEqualException();
 
         final User user = userService.setNewPassword(bootstrap.getUserService().getCurrentUser(), passwordOne);
 
-        try {
-            userService.update(user);
-        } catch (Exception e) {
-            terminalService.printerr(e.getMessage());
-            return;
-        }
-
+        if (userService.update(user) == null) throw new UpdateException();
         terminalService.println("Your password has changed successfully");
     }
 

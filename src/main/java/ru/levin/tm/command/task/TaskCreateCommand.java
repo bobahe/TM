@@ -8,6 +8,9 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.NoIdForCurrentUserException;
+import ru.levin.tm.exception.SaveException;
 import ru.levin.tm.util.CommandUtil;
 
 public final class TaskCreateCommand extends AbstractCommand {
@@ -65,12 +68,11 @@ public final class TaskCreateCommand extends AbstractCommand {
         return true;
     }
 
+    @Override
     public void execute() {
         @Nullable final User currentUser = bootstrap.getUserService().getCurrentUser();
-        if (currentUser == null || currentUser.getId() == null) {
-            terminalService.printerr("There is no authorized user.");
-            return;
-        }
+        if (currentUser == null) throw new NoCurrentUserException();
+        if (currentUser.getId() == null) throw new NoIdForCurrentUserException();
 
         @NotNull final Task task = new Task();
         terminalService.println(this.getTitle());
@@ -90,12 +92,7 @@ public final class TaskCreateCommand extends AbstractCommand {
             if (!"n".equals(joinAnswer)) task.setProjectId(selectedProject.getId());
         }
 
-        try {
-            taskService.save(task);
-        } catch (Exception e) {
-            terminalService.printerr(e.getMessage());
-            return;
-        }
+        if (taskService.save(task) == null) throw new SaveException();
         terminalService.println(SUCCESS_MESSAGE);
     }
 

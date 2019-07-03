@@ -35,6 +35,6 @@ public abstract class AbstractCommand {
 
     public abstract boolean isRequiredAuthorization();
 
-    public abstract void execute();
+    public abstract void execute() throws Exception;
 
 }

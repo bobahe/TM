@@ -7,6 +7,7 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.AuthorizationException;
 
 public final class UserLoginCommand extends AbstractCommand {
 
@@ -59,14 +60,8 @@ public final class UserLoginCommand extends AbstractCommand {
         @NotNull final String login = terminalService.getLine();
         terminalService.println(PASSWORD_PROMPT);
         @NotNull final String password = terminalService.getLine();
-
         @Nullable final User user = userService.getUserByLoginAndPassword(login, password);
-
-        if (user == null) {
-            terminalService.printerr("There is no such user with entered login and password");
-            return;
-        }
-
+        if (user == null) throw new AuthorizationException();
         bootstrap.getUserService().setCurrentUser(user);
         terminalService.println("Welcome, " + user.getLogin() + "!");
     }

@@ -5,6 +5,9 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoSelectedProjectException;
+import ru.levin.tm.exception.NoSelectedTaskException;
+import ru.levin.tm.exception.UpdateException;
 
 public final class TaskJoinCommand extends AbstractCommand {
 
@@ -58,15 +61,10 @@ public final class TaskJoinCommand extends AbstractCommand {
         return true;
     }
 
+    @Override
     public void execute() {
-        if (selectedProject == null || selectedProject.getId() == null) {
-            terminalService.println(SELECT_PROJECT_MESSAGE);
-            return;
-        }
-        if (selectedTask == null) {
-            terminalService.println(SELECT_TASK_MESSAGE);
-            return;
-        }
+        if (selectedProject == null || selectedProject.getId() == null) throw new NoSelectedProjectException();
+        if (selectedTask == null) throw new NoSelectedTaskException();
 
         terminalService.println(this.getTitle());
         terminalService.println(SELECTED_PROJECT_MESSAGE + selectedProject);
@@ -75,12 +73,7 @@ public final class TaskJoinCommand extends AbstractCommand {
         @NotNull final String joinAnswer = terminalService.getLine();
         if (!"n".equals(joinAnswer)) selectedTask.setProjectId(selectedProject.getId());
 
-        try {
-            taskService.update(selectedTask);
-        } catch (Exception e) {
-            terminalService.printerr(e.getMessage());
-            return;
-        }
+        if (taskService.update(selectedTask) == null) throw new UpdateException();
         terminalService.println(SUCCESS_MESSAGE);
     }
 

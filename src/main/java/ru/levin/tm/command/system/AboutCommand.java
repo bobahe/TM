@@ -39,18 +39,15 @@ public final class AboutCommand extends AbstractCommand {
         return false;
     }
 
+    @Override
     public void execute() {
-        try {
-            @NotNull final String buildDeveloper = Manifests.read("Build-Developer");
-            @NotNull final String buildVersion = Manifests.read("Build-Version");
-            @NotNull final String buildNumber = Manifests.read("Build-Number");
-            terminalService.println("[ABOUT APPLICATION]");
-            terminalService.println(buildDeveloper);
-            terminalService.println(buildVersion);
-            terminalService.println(buildNumber);
-        } catch (IllegalArgumentException iae) {
-            terminalService.println(iae.getMessage());
-        }
+        @NotNull final String buildDeveloper = Manifests.read("Build-Developer");
+        @NotNull final String buildVersion = Manifests.read("Build-Version");
+        @NotNull final String buildNumber = Manifests.read("Build-Number");
+        terminalService.println("[ABOUT APPLICATION]");
+        terminalService.println(buildDeveloper);
+        terminalService.println(buildVersion);
+        terminalService.println(buildNumber);
     }
 
 }

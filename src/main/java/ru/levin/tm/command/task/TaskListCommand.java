@@ -6,6 +6,8 @@ import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.NoStatusException;
 import ru.levin.tm.util.CommandUtil;
 
 import java.util.List;
@@ -49,7 +51,7 @@ public final class TaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         @NotNull final List<Task> taskList = taskService.findAllByUserId(bootstrap.getUserService().getCurrentUser().getId());
         terminalService.println("Select option to sort list (1 by default):");
         terminalService.println("1. Saved order");
@@ -60,7 +62,7 @@ public final class TaskListCommand extends AbstractCommand {
         CommandUtil.sort(orderType, taskList);
         for (int i = 0; i < taskList.size(); i++) {
             @NotNull final Task task = taskList.get(i);
-            if (task.getStatus() == null) return;
+            if (task.getStatus() == null) throw new NoStatusException();
             terminalService.println((i + 1) + ". " + task.getName());
             terminalService.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {

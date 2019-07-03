@@ -8,6 +8,9 @@ import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Project;
 import ru.levin.tm.entity.User;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.NoIdForCurrentUserException;
+import ru.levin.tm.exception.SaveException;
 import ru.levin.tm.util.CommandUtil;
 
 public final class ProjectCreateCommand extends AbstractCommand {
@@ -62,9 +65,11 @@ public final class ProjectCreateCommand extends AbstractCommand {
         return true;
     }
 
+    @Override
     public void execute() {
         @Nullable final User currentUser = bootstrap.getUserService().getCurrentUser();
-        if (currentUser == null || currentUser.getId() == null) return;
+        if (currentUser == null) throw new NoCurrentUserException();
+        if (currentUser.getId() == null) throw new NoIdForCurrentUserException();
         @NotNull final Project project = new Project();
 
         terminalService.println(this.getTitle());
@@ -79,12 +84,7 @@ public final class ProjectCreateCommand extends AbstractCommand {
 
         project.setUserId(currentUser.getId());
 
-        try {
-            projectService.save(project);
-        } catch (Exception e) {
-            terminalService.println(e.getMessage());
-            return;
-        }
+        if (projectService.save(project) == null) throw new SaveException();
         terminalService.println(SUCCESS_MESSAGE);
     }
 

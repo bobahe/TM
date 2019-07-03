@@ -5,6 +5,8 @@ import ru.levin.tm.api.IServiceLocator;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.api.service.IUserService;
 import ru.levin.tm.command.AbstractCommand;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.UpdateException;
 
 public final class UserEditProfileCommand extends AbstractCommand {
 
@@ -48,20 +50,10 @@ public final class UserEditProfileCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (bootstrap.getUserService().getCurrentUser() == null) {
-            return;
-        }
-
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
         terminalService.println(LOGIN_PROMPT);
         bootstrap.getUserService().getCurrentUser().setLogin(terminalService.getLine());
-
-        try {
-            userService.update(bootstrap.getUserService().getCurrentUser());
-        } catch (Exception e) {
-            terminalService.printerr(e.getMessage());
-            return;
-        }
-
+        if (userService.update(bootstrap.getUserService().getCurrentUser()) == null) throw new UpdateException();
         terminalService.println("Your profile changed successfully");
     }
 

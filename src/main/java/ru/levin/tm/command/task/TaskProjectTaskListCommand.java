@@ -6,6 +6,9 @@ import ru.levin.tm.api.service.ITaskService;
 import ru.levin.tm.api.service.ITerminalService;
 import ru.levin.tm.command.AbstractCommand;
 import ru.levin.tm.entity.Task;
+import ru.levin.tm.exception.NoCurrentUserException;
+import ru.levin.tm.exception.NoSelectedProjectException;
+import ru.levin.tm.exception.NoStatusException;
 import ru.levin.tm.util.CommandUtil;
 
 import java.util.List;
@@ -52,11 +55,8 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (selectedProject == null) {
-            terminalService.println(SELECT_PROJECT_MESSAGE);
-            return;
-        }
-        if (bootstrap.getUserService().getCurrentUser() == null) return;
+        if (selectedProject == null) throw new NoSelectedProjectException();
+        if (bootstrap.getUserService().getCurrentUser() == null) throw new NoCurrentUserException();
 
         terminalService.println(getTitle() + " for " + selectedProject.getName());
         @NotNull final List<Task> taskList = taskService
@@ -64,6 +64,7 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
 
         for (int i = 0; i < taskList.size(); i++) {
             @NotNull final Task task = taskList.get(i);
+            if (task.getStatus() == null) throw new NoStatusException();
             terminalService.println((i + 1) + ". " + task.getName());
             terminalService.println("\tDescription: " + task.getDescription());
             if (task.getStartDate() != null) {
@@ -76,6 +77,7 @@ public final class TaskProjectTaskListCommand extends AbstractCommand {
             } else {
                 terminalService.println("\tEnd date: not set");
             }
+            terminalService.println("\tStatus: " + task.getStatus().getDisplayName());
         }
     }
 
